@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title><%= title%></title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <style type="text/css">
+        div.alert {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <div class="alert alert-success" style="text-align: center">
+        保存成功
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="panel-manager">
+                        <h5>显示：</h5>
+                        <a href="case_show_list.html#" class="panel-control active">宫格排列</a>
+                        <a href="case_show_list.html#" class="panel-control">列表排列</a>
+
+                        <div class="hr-line-dashed"></div>
+                        <button class="btn btn-primary btn-block" onclick="onAddCase()">添加菜品</button>
+                        <div class="hr-line-dashed"></div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9 animated fadeInRight">
+            <div class="row">
+                <div id="case_container" class="col-sm-12">
+                    <%results.forEach(function(result){%>
+                    <div class="panel-box">
+                        <div class="panel">
+                            <a href="javascript:;"
+                               onclick="onTap('<%= result.dataValues.caseName%>','<%= result.dataValues.casePrice%>','<%= result.dataValues.caseHot%>','<%= result.dataValues.caseImagePath%>')">
+                                <span class="corner"></span>
+
+                                <div class="image">
+                                    <img alt="image" class="img-responsive" src="<%= result.dataValues.caseImagePath%>">
+                                </div>
+                                <div class="panel-name">
+                                    <%= result.dataValues.caseName%>
+                                    <a style="float: right;margin-left: 5px" class="close-link"
+                                       onclick="onRemove('<%= result.dataValues.caseId%>', '<%= result.dataValues.caseName%>')">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                    <a style="float: right" class="dropdown-toggle" data-toggle="dropdown"
+                                       href=""
+                                       onclick="onModify('<%= result.dataValues.caseId%>','<%= result.dataValues.caseName%>','<%= result.dataValues.casePrice%>','<%= result.dataValues.caseHot%>','<%= result.dataValues.caseImagePath%>')">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <%})%>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+
+<!-- 自定义js -->
+<script src="js/content.js?v=1.0.0"></script>
+
+
+<script>
+
+    function onModify(caseId, caseName, price, hotId, imgPath) {
+        layer.open({
+            title: '修改信息',
+            type: 2,
+            area: ['320px', '80%'], //宽高
+            content: 'caseAmendForm' + '?price=' + price
+            + '&case_name=' + caseName
+            + '&hotId=' + hotId
+            + '&imgPath=' + imgPath
+            + '&caseId=' + caseId
+        });
+    }
+
+    function onTap(caseName, price, hotId, imgPath) {
+        layer.open({
+            title: '菜品展示',
+            type: 2,
+            area: ['320px', '80%'], //宽高
+            content: 'caseShow' + '?price=' + price + '&case_name=' + caseName + '&hotId=' + hotId + '&imgPath=' + imgPath
+
+        });
+    }
+    ;
+
+    function onAddCase() {
+        layer.open({
+            title: '添加菜品',
+            type: 2,
+            area: ['320px', '80%'], //宽高
+            content: 'caseNewForm',
+            yes: function (index, layero) {
+
+            },
+            cancel: function (data) {
+                return true;
+            }
+        });
+    }
+
+    function onRemove(caseId, caseName) {
+        swal({
+            title: "您确定要删除 " + caseName + " ?",
+            text: "删除后将无法恢复，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "删除",
+            closeOnConfirm: false
+        }, function () {
+            $.ajax({
+                url: 'removeCase?caseId=' + caseId,
+                type: 'GET',
+                success: function (data) {
+                    if (data.status == 0) {
+                        layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+                            location.reload(); // 父页面刷新
+                        });
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                    if (err.status == 1) {
+                        layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+                            //parent.location.reload(); // 父页面刷新
+                        });
+                    }
+                }
+            })
+        })
+    }
+
+</script>
+
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+<script src="js/plugins/layer/layer.min.js"></script>
+
+</body>
+
+</html>

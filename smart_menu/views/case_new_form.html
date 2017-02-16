@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title><%= title%></title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="css/fileinput/fileinput.min.css" rel="stylesheet">
+
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+
+    <link href="themes/explorer/theme.css" media="all" rel="stylesheet" type="text/css"/>
+    <script src="js/fileinput/plugins/sortable.js" type="text/javascript"></script>
+    <script src="js/fileinput/fileinput.js" type="text/javascript"></script>
+    <script src="themes/explorer/theme.js" type="text/javascript"></script>
+
+
+
+    <style type="text/css">
+        div.upload {
+            width: 100%;
+            height: 150px;
+            border: 2px dashed #e6e6e6;
+            text-align: center;
+            background: url(../../../img/defaut_image_icon.png) center no-repeat;
+            color: #cccccc;
+            font-size: 18px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        img.fileImage {
+            width: 100%;
+            height: auto;
+            position: relative;
+            margin-bottom: 10px;
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div id="container" class="ibox-content">
+
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <% if (locals.success) { %>
+                            <div id="alt_sucess" class="alert alert-success">
+                                <%- success %>
+                            </div>
+                            <% } %>
+
+                            <% if (locals.error) { %>
+                            <div id="alt_warning" class="alert alert-warning">
+                                <%= error %>
+                            </div>
+                            <% } %>
+                            <label class="col-sm-2 control-label">菜品图片</label>
+
+                            <div class="col-sm-10">
+                                <img id="fileImage" class="fileImage">
+
+                                <div id="upload" class="upload">
+                                </div>
+                                <div class="btns_container">
+                                    <input id="imageFile" name="imageFile" type="file" class="file"
+                                           data-show-preview="false">
+                                    <!--<button id="btnSub" class="btn btn-primary" type="submit">上 传</button>-->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">名称</label>
+
+                            <div class="col-sm-10">
+                                <input id="caseName" name="caseName" type="text" class="form-control"
+                                       placeholder="请输入菜品名称" required="required">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">价格</label>
+
+                            <div class="col-sm-10">
+                                <div class="input-group m-b"><span class="input-group-addon">&yen;</span>
+                                    <input id="price" name="price" type="number" class="form-control" placeholder="请输入价格"
+                                           required="required"> <span
+                                            class="input-group-addon">.00</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">热度</label>
+
+                            <div class="col-sm-10">
+                                <select id="hot_select" class="form-control m-b">
+                                    <option>选择</option>
+                                    <option>1星好评</option>
+                                    <option>2星好评</option>
+                                    <option>3星好评</option>
+                                    <option>4星好评</option>
+                                    <option>5星好评</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary" type="submit" id="save">保存内容</button>
+                                <button class="btn btn-white" type="button" id="cancel">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Web Uploader -->
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/fileinput/fileinput.min.js"></script>
+
+<script type="text/javascript">
+    var isAmending = false;
+</script>
+
+<!-- 自定义js -->
+<script src="js/content.js?v=1.0.0"></script>
+<script src="js/plugins/imageUploader/imageUploader.js"></script>
+<script src="js/plugins/layer/layer.min.js"></script>
+<script src="js/regex/regex.js"></script>
+
+<script type="text/javascript">
+
+    var imageName = "<%= imgName %>";
+    if (imageName) {
+        $(".btns_container").css('display', 'none');
+        $("#fileImage").attr('src', imageName);
+        $(".upload").css('display', 'none');
+        $(".fileImage").css('display', 'block');
+    } else {
+        $(".btns_container").css('display', 'block');
+    }
+
+    var isAmending = false;
+
+    $("#cancel").click(function () {
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index, 0);
+    });
+
+</script>
+</body>
+
+</html>
