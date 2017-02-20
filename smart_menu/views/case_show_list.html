@@ -39,7 +39,7 @@
                         <a href="case_show_list.html#" class="panel-control">列表排列</a>
 
                         <div class="hr-line-dashed"></div>
-                        <button class="btn btn-primary btn-block" onclick="onAddCase()">添加菜品</button>
+                        <button class="btn btn-primary btn-block" onclick="onAddCase('<%= caseTypeId%>')">添加菜品</button>
                         <div class="hr-line-dashed"></div>
                         <div class="clearfix"></div>
                     </div>
@@ -67,7 +67,7 @@
                                     </a>
                                     <a style="float: right" class="dropdown-toggle" data-toggle="dropdown"
                                        href=""
-                                       onclick="onModify('<%= result.dataValues.caseId%>','<%= result.dataValues.caseName%>','<%= result.dataValues.casePrice%>','<%= result.dataValues.caseHot%>','<%= result.dataValues.caseImagePath%>')">
+                                       onclick="onModify('<%= result.dataValues.caseId%>','<%= result.dataValues.caseName%>','<%= result.dataValues.casePrice%>','<%= result.dataValues.caseHot%>','<%= result.dataValues.caseImagePath%>','<%= caseTypeId%>')">
                                         <i class="fa fa-pencil"></i>
                                     </a>
                                 </div>
@@ -106,23 +106,22 @@
         });
     }
 
-    function onTap(caseName, price, hotId, imgPath) {
+    function onTap(caseName, price, hotId, imgPath, caseTypeId) {
         layer.open({
             title: '菜品展示',
             type: 2,
             area: ['320px', '80%'], //宽高
-            content: 'caseShow' + '?price=' + price + '&case_name=' + caseName + '&hotId=' + hotId + '&imgPath=' + imgPath
-
+            content: 'caseShow' + '?price=' + price + '&case_name=' + caseName + '&hotId=' + hotId + '&imgPath=' + imgPath + '&caseTypeId=' + caseTypeId
         });
     }
     ;
 
-    function onAddCase() {
+    function onAddCase(caseTypeId) {
         layer.open({
             title: '添加菜品',
             type: 2,
             area: ['320px', '80%'], //宽高
-            content: 'caseNewForm',
+            content: 'caseNewForm' + '?caseTypeId=' + caseTypeId,
             yes: function (index, layero) {
 
             },

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_basic.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:01 GMT -->
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title><%= title%></title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-9 m-b-xs">
+                            <a class="btn btn-white btn-bitbucket">
+                                <i class="fa fa-repeat"></i>
+                            </a>
+                            <div class="btn-group">
+                                <button data-toggle="dropdown" class="btn btn-white dropdown-toggle">下单时间 <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="buttons.html#">今天</a>
+                                    </li>
+                                    <li><a href="buttons.html#">昨天</a>
+                                    </li>
+                                    <li><a href="buttons.html#">七天前</a>
+                                    </li>
+                                    <li><a href="buttons.html#">一个月前</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <button data-toggle="dropdown" class="btn btn-white dropdown-toggle">订单状态 <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="buttons.html#">订单状态</a>
+                                    </li>
+                                    <li><a href="buttons.html#">未处理</a>
+                                    </li>
+                                    <li><a href="buttons.html#">已接单</a>
+                                    </li>
+                                    <li><a href="buttons.html#">已完成</a>
+                                    </li>
+                                    <li><a href="buttons.html#">已取消</a>
+                                    </li>
+                                    <li><a href="buttons.html#">已拒绝</a>
+                                    </li>
+                                    <li><a href="buttons.html#">已作废</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <button data-toggle="dropdown" class="btn btn-white dropdown-toggle">支付状态 <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="buttons.html#">支付状态</a>
+                                    </li>
+                                    <li><a href="buttons.html#">未支付</a>
+                                    </li>
+                                    <li><a href="buttons.html#">已支付</a>
+                                    </li>
+                                    <li><a href="buttons.html#">已退款</a>
+                                    </li>
+                                    <li><a href="buttons.html#">退款中</a>
+                                    </li>
+                                    <li><a href="buttons.html#">退款失败</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button class="btn btn-white " type="button"><i class="fa fa-cloud-download"></i> 导出CSV文件</button>
+                            <button class="btn btn-white " type="button"><i class="fa fa-cloud-download"></i> 导出菜品数据</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" placeholder="手机号、订单编号" class="input-sm form-control"> <span class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+
+                                <th>订单编号</th>
+                                <th>订单总额</th>
+                                <th>实际支付</th>
+                                <th>联系人</th>
+                                <th>联系电话</th>
+                                <th>下单时间</th>
+                                <th>所属门店</th>
+                                <th>订单状态</th>
+                                <th>支付状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1234567890</td>
+                                <td>256.0￥</td>
+                                <td>200.0￥</td>
+                                <td>张三</td>
+                                <td>18812345678</td>
+                                <td>2017.2.20 16:30</td>
+                                <td>越江店</td>
+                                <td>已接单</td>
+                                <td>已支付</td>
+                                <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="js/plugins/iCheck/icheck.min.js"></script>
+
+<!-- 自定义js -->
+<script src="js/content.js?v=1.0.0"></script>
+<script>
+    $(document).ready(function(){$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})});
+</script>
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+</body>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_basic.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:01 GMT -->
+</html>

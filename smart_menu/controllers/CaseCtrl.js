@@ -10,8 +10,14 @@ var randomID = require('../utils/randomIdUtil.js');
 var fsmanager = require('../utils/fileManagerUtil.js');
 
 exports.onSpecialCase = function (req, res) {
-	caseModel.findAll(global.sql.case, function (result) {
-		res.render("case_show_list", {title: '特色菜', results: result});
+	var caseTypeId = req.query.caseTypeId;
+	var condition = {
+		where:{
+			caseType:caseTypeId
+		}
+	}
+	caseModel.findAll(global.sql.case, condition, function (result) {
+		res.render("case_show_list", {title: '特色菜', caseTypeId: caseTypeId, results: result});
 	});
 };
 
@@ -92,19 +98,20 @@ exports.onUpload = function (req, res) {
 			var avatarName = randomID.getUUID() + '.' + extName;
 			imageName = avatarName;
 			var newPath = form.uploadDir + avatarName;
-			console.log(newPath);
 			fs.renameSync(files[key].path, newPath);  //重命名
 		}
 
 		var caseName = fields.caseName;
 		var price = fields.price;
 		var hotId = fields.hotId;
+		var caseTypeId = fields.caseTypeId;
+		console.log('==='+caseTypeId);
 		var Case;
 		if(avatarName){
 			Case = {
 				caseId: fields.caseId == null ? randomID.getUUID() : fields.caseId,
 				caseName: caseName,
-				caseType: 1,
+				caseType: caseTypeId,
 				caseHot: hotId,
 				casePrice: price,
 				caseImagePath: avatarName
@@ -113,7 +120,7 @@ exports.onUpload = function (req, res) {
 			Case = {
 				caseId: fields.caseId,
 				caseName: caseName,
-				caseType: 1,
+				caseType: caseTypeId,
 				caseHot: hotId,
 				casePrice: price
 			};
@@ -183,5 +190,6 @@ exports.onShowCaseInfo = function (req, res) {
 
 /*添加新菜品*/
 exports.onShowNewCaseForm = function (req, res) {
-	res.render("case_new_form", {title: '添加菜品', imgName: ''});
+	var caseTypeId = req.query.caseTypeId;
+	res.render("case_new_form", {title: '添加菜品', caseTypeId: caseTypeId, imgName: ''});
 };

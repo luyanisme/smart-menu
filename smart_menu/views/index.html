@@ -62,23 +62,37 @@
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
+                            <%results.forEach(function(result){%>
                             <li>
-                                <a class="J_menuItem" href="caseShowList" data-index="0">特色菜</a>
+                                <a class="J_menuItem" href="caseShowList?caseTypeId=<%= result.dataValues.caseTypeId%>"><%= result.dataValues.caseTypeName%></a>
                             </li>
-                            <li>
-                                <a class="J_menuItem" href="index_v2.html">冷菜</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="index_v3.html">炒菜</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="index_v4.html">素菜</a>
-                            </li>
-                            <li>
-                                <a href="index_v5.html" target="_blank">汤类</a>
-                            </li>
+                            <%})%>
+                            <!--<li>-->
+                                <!--<a class="J_menuItem" href="caseShowList" data-index="0">特色菜</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a class="J_menuItem" href="index_v2.html">冷菜</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a class="J_menuItem" href="index_v3.html">炒菜</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a class="J_menuItem" href="index_v4.html">素菜</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a href="index_v5.html" target="_blank">汤类</a>-->
+                            <!--</li>-->
                         </ul>
 
+                    </li>
+                    <!--<li>-->
+                        <!--<a class="J_menuItem" href="showOrders">-->
+                            <!--<i class="fa  fa-shopping-cart"></i>-->
+                            <!--<span class="nav-label">订单管理</span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <li>
+                        <a class="J_menuItem" href="showOrders"><i class="fa fa-shopping-cart"></i> <span class="nav-label">订单管理</span></a>
                     </li>
 
                 </ul>
@@ -188,7 +202,7 @@
                 </button>
                 <nav class="page-tabs J_menuTabs">
                     <div class="page-tabs-content">
-                        <a href="javascript:;" class="active J_menuTab" data-id="caseShowList">菜品分类</a>
+                        <a href="javascript:;" class="active J_menuTab" data-id="caseType">菜品分类</a>
                     </div>
                 </nav>
                 <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
@@ -210,7 +224,7 @@
                 <a href="login.html" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
             </div>
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="caseShowList" frameborder="0" data-id="caseShowList" seamless></iframe>
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="caseType" frameborder="0" data-id="caseType" seamless></iframe>
             </div>
             <div class="footer">
                 <div class="pull-right">&copy; 2014-2015 <a href="http://www.zi-han.net/" target="_blank">zihan's blog</a>

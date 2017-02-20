@@ -6,6 +6,7 @@
 
 var Sequelize = require('sequelize');
 var caseModel = require('../models/CaseModel.js');
+var caseTypeModel = require('../models/CaseTypeModel.js');
 //var adminModel = require('../models/AdminModel.js');
 
 var db = {
@@ -32,6 +33,7 @@ var db = {
 }
 
 db.case = caseModel.onCreate(db.sequelize);
+db.caseType = caseTypeModel.onCreate(db.sequelize);
 //db.admin = adminModel.onCreate(db.sequelize);
 
 module.exports = db;

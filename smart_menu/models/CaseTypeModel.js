@@ -1,55 +1,46 @@
 /**
- * Created by luyan on 2/14/17.
+ * Created by luyan on 2/17/17.
  */
 var Sequelize = require('sequelize');
 
 exports.onCreate = function (sequelize) {
-	var Case = sequelize.define(
-		'case',
+	var caseType = sequelize.define(
+		'case_type',
 		{
-			caseId: {
-				field: 'case_id',
+			caseTypeId: {
+				field: 'case_type_id',
 				primaryKey: false,
 				type: Sequelize.STRING,
 				allowNull: false
 			},
-			casePrice: {
-				field: 'case_price',
+			caseTypeName: {
+				field: 'case_type_name',
+				primaryKey: false,
 				type: Sequelize.STRING,
 				allowNull: false
 			},
-			caseName: {
-				field: 'case_name',
-				type: Sequelize.STRING,
-				allowNull: false
-			},
-			/*菜品热度*/
-			caseHot: {
-				field: 'case_hot',
+			caseNums: {
+				field: 'case_num',
+				primaryKey: false,
 				type: Sequelize.BIGINT,
 				allowNull: false
 			},
-			/*菜品类型*/
-			caseType:{
+			caseOnNums: {
+				field: 'case_on_num',
+				primaryKey: false,
+				type: Sequelize.BIGINT,
+				allowNull: false
+			},
+			caseOffNums: {
+				field: 'case_off_num',
+				primaryKey: false,
+				type: Sequelize.BIGINT,
+				allowNull: false
+			},
+			/*是否显示*/
+			caseTypeSaling:{
 				field: 'case_type',
-				type: Sequelize.STRING,
-				allowNull: true
-			},
-			caseImagePath: {
-				field: 'case_image_path',
-				type: Sequelize.STRING,
-				allowNull: true
-			},
-			/*是否上架*/
-			caseScaling:{
-				field: 'case_scaling',
 				type: Sequelize.BOOLEAN,
-				allowNull: true
-			},
-			/*总销量*/
-			caseScaledNums:{
-				field: 'case_scaled_num',
-				type: Sequelize.BIGINT,
 				allowNull: true
 			},
 			updateTime: {
@@ -59,7 +50,7 @@ exports.onCreate = function (sequelize) {
 			}
 		},
 		{
-			tableName: 'case',
+			tableName: 'case_type',
 			timestamps: false,
 			freezeTableName: true
 		}
@@ -71,24 +62,21 @@ exports.onCreate = function (sequelize) {
 		console.log("Server failed to start due to error: %s", err);
 	});
 
-	return Case;
+	return caseType;
 }
 
-exports.insert = function (Case ,data, callBack) {
-	//User.sync({force: true}).then(function () {
-	// Table created
-	return Case.create(data).then(function (result) {
+exports.insert = function (CaseType ,data, callBack) {
+	return CaseType.create(data).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
 		console.log("发生错误：" + err);
 	});
-	//})
 }
 
-exports.update = function(Case, condition, data, callBack){
-	return Case.update(data,{
+exports.update = function(CaseType, condition, data, callBack){
+	return CaseType.update(data,{
 		where:{
-			caseId:condition
+			caseTypeId:condition
 		}
 	}).then(function (result) {
 		callBack(result);
@@ -97,20 +85,20 @@ exports.update = function(Case, condition, data, callBack){
 	});
 }
 
-exports.findAll = function(Case, condition, callBack){
-	return Case.findAll(condition).then(
+exports.findAll = function(CaseType, callBack){
+	return CaseType.findAll().then(
 		function (result) {
 			callBack(result);
 		}
 	).catch(function (err) {
 			console.log("发生错误：" + err);
-	});
+		});
 }
 
-exports.remove = function(Case, condition, callBack){
-	return Case.destroy({
+exports.remove = function(CaseType, condition, callBack){
+	return CaseType.destroy({
 		where:{
-			caseId:condition
+			caseTypeId:condition
 		}
 	}).then(
 		function (result) {
@@ -121,10 +109,10 @@ exports.remove = function(Case, condition, callBack){
 		});
 }
 
-exports.findOne = function(Case, condition, callBack){
-	return Case.findOne({
+exports.findOne = function(CaseType, condition, callBack){
+	return CaseType.findOne({
 		where:{
-			caseId:condition
+			caseTypeId:condition
 		}
 	}).then(
 		function (result) {

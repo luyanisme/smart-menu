@@ -135,6 +135,7 @@ $(function () {
 		data.append('hotId', hotId);
 		data.append('caseName', caseName);
 		data.append('price', price);
+		data.append('caseTypeId', caseTypeId);
 		$.ajax({
 			url: isAmending == true ? 'caseAmendForm' : 'caseNewForm',
 			type: 'POST',

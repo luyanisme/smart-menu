@@ -117,6 +117,17 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">是否上架</label>
+
+                            <div class="col-sm-10">
+                                <select id="scaling" class="form-control m-b">
+                                    <option>上架</option>
+                                    <option>下架</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
                                 <button class="btn btn-primary" type="submit" id="save">保存内容</button>
@@ -137,6 +148,7 @@
 
 <script type="text/javascript">
     var isAmending = false;
+    var caseTypeId = '<%=caseTypeId%>';
 </script>
 
 <!-- 自定义js -->
@@ -156,13 +168,19 @@
         $(".btns_container").css('display', 'block');
     }
 
-    var isAmending = false;
-
     $("#cancel").click(function () {
         var index = parent.layer.getFrameIndex(window.name);
         parent.layer.close(index, 0);
     });
 
+    $(function(){
+        document.onkeydown = function(e){
+            var ev = document.all ? window.event : e;
+            if(ev.keyCode==13) {
+                $('#save').click();
+            }
+        }
+    });
 </script>
 </body>
 
