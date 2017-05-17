@@ -98,25 +98,25 @@ $(function () {
 			}
 		}
 
-			var caseName = $('#caseName').val();
-			var price = $('#price').val();
-			var hotId = $("#hot_select ").get(0).selectedIndex;
-			if (caseName == '') {
-				layer.msg('您还未输入菜品名称', {time: 1000}, function () {
-					//parent.location.reload(); // 父页面刷新
-				});
-				return;
-			}
+		var caseName = $('#caseName').val();
+		var price = $('#price').val();
+		var hotId = $("#hot_select ").get(0).selectedIndex;
+		if (caseName == '') {
+			layer.msg('您还未输入商品名称', {time: 1000}, function () {
+				//parent.location.reload(); // 父页面刷新
+			});
+			return;
+		}
 
-			if (price == '') {
-				layer.msg('您还未输入菜品价格', {time: 1000}, function () {
-					//parent.location.reload(); // 父页面刷新
-				});
-				return;
-			}
+		if (price == '') {
+			layer.msg('您还未输入商品价格', {time: 1000}, function () {
+				//parent.location.reload(); // 父页面刷新
+			});
+			return;
+		}
 
-		if(regex(caseName) == false){
-			layer.msg('菜品名称含非法字符', {time: 1000}, function () {
+		if (regex(caseName) == false) {
+			layer.msg('商品名称含非法字符', {time: 1000}, function () {
 				//parent.location.reload(); // 父页面刷新
 			});
 			return;
@@ -130,14 +130,17 @@ $(function () {
 		}
 
 		if (isAmending == true) {
-				data.append('caseId', caseId);
+			data.append('caseId', caseId);
 		}
 		data.append('hotId', hotId);
+		data.append('caseScaling', isScaling);
 		data.append('caseName', caseName);
 		data.append('price', price);
 		data.append('caseTypeId', caseTypeId);
+		data.append('standardVals', JSON.stringify(standardVals));
+		data.append('propertyVals', JSON.stringify(propertyVals));
 		$.ajax({
-			url: isAmending == true ? 'caseAmendForm' : 'caseNewForm',
+			url: 'caseNew',
 			type: 'POST',
 			data: data,
 			async: false,
@@ -147,9 +150,11 @@ $(function () {
 			success: function (data) {
 				if (data.status == 0) {
 					layer.msg(data.msg, {time: 1000, icon: 1}, function () {
-						parent.location.reload(); // 父页面刷新
-						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-						parent.layer.close(index);
+						// parent.location.reload(); // 父页面刷新
+						// var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+						// parent.layer.close(index);
+						self.location = document.referrer;
+						/*返回上一级并且刷新*/
 					});
 				}
 			},

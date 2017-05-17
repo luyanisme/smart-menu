@@ -9,9 +9,11 @@ exports.onCreate = function (sequelize) {
 		{
 			caseId: {
 				field: 'case_id',
-				primaryKey: false,
-				type: Sequelize.STRING,
-				allowNull: false
+				primaryKey: true,
+				type: Sequelize.BIGINT,
+				autoIncrement : true,
+				allowNull: false,
+				unique : true
 			},
 			casePrice: {
 				field: 'case_price',
@@ -23,21 +25,35 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.STRING,
 				allowNull: false
 			},
-			/*菜品热度*/
+			/*商品热度*/
 			caseHot: {
 				field: 'case_hot',
 				type: Sequelize.BIGINT,
 				allowNull: false
 			},
-			/*菜品类型*/
-			caseType:{
-				field: 'case_type',
-				type: Sequelize.STRING,
-				allowNull: true
+			/*商品类型*/
+			caseTypeId:{
+				field: 'case_type_id',
+				type: Sequelize.BIGINT,
+				allowNull: false,
+				references: {
+					model: 'case_type',
+					key: 'case_type_id'
+				},
 			},
 			caseImagePath: {
 				field: 'case_image_path',
 				type: Sequelize.STRING,
+				allowNull: true
+			},
+			caseStandardVals: {
+				field: 'case_standard_vals',
+				type: Sequelize.TEXT,
+				allowNull: true
+			},
+			casePropertyVals: {
+				field: 'case_property_vals',
+				type: Sequelize.TEXT,
 				allowNull: true
 			},
 			/*是否上架*/
@@ -66,7 +82,7 @@ exports.onCreate = function (sequelize) {
 	);
 
 	sequelize.sync({force: false}).then(function () {
-		console.log("Server successed to start");
+		console.log("Case Server successed to start");
 	}).catch(function (err) {
 		console.log("Server failed to start due to error: %s", err);
 	});

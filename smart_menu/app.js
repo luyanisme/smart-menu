@@ -6,8 +6,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routeHelper = require("./routes/route.js");
+var dateUtil = require('./utils/dateUtil.js');
 
 global.sql = require('./utils/sqlUtil.js');
+global.date = dateUtil.getDate();
+global.uploadFloder = 'DATAS/';
 
 var app = express();
 
@@ -25,7 +28,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routeHelper);
 

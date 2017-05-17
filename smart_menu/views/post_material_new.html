@@ -2,25 +2,20 @@
 <html>
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title><%= title%></title>
-
     <link rel="shortcut icon" href="favicon.ico">
     <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
     <link href="css/fileinput/fileinput.min.css" rel="stylesheet">
-
     <link href="css/style.css?v=4.1.0" rel="stylesheet">
-
     <link href="themes/explorer/theme.css" media="all" rel="stylesheet" type="text/css"/>
     <script src="js/fileinput/plugins/sortable.js" type="text/javascript"></script>
     <script src="js/fileinput/fileinput.js" type="text/javascript"></script>
     <script src="themes/explorer/theme.js" type="text/javascript"></script>
-
-
+    <link href="css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
 
     <style type="text/css">
         div.upload {
@@ -42,6 +37,11 @@
             margin-bottom: 10px;
             display: none;
         }
+
+        .close i {
+            color: #000;
+        }
+
     </style>
 
 </head>
@@ -51,6 +51,14 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><%=title%></h5>
+                    <div class="ibox-tools">
+                        <a class="close">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
                 <div id="container" class="ibox-content">
 
                     <div class="form-horizontal">
@@ -66,9 +74,9 @@
                                 <%= error %>
                             </div>
                             <% } %>
-                            <label class="col-sm-2 control-label">菜品图片</label>
+                            <label class="col-sm-2 control-label">海报图片</label>
 
-                            <div class="col-sm-10">
+                            <div class="col-sm-3">
                                 <img id="fileImage" class="fileImage">
 
                                 <div id="upload" class="upload">
@@ -86,48 +94,28 @@
                             <label class="col-sm-2 control-label">名称</label>
 
                             <div class="col-sm-10">
-                                <input id="caseName" name="caseName" type="text" class="form-control"
-                                       placeholder="请输入菜品名称" required="required">
+                                <input id="postName" name="postName" type="text" class="form-control"
+                                       placeholder="请输入海报名称" required="required">
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">价格</label>
+                            <label class="col-sm-2 control-label">时间</label>
 
                             <div class="col-sm-10">
-                                <div class="input-group m-b"><span class="input-group-addon">&yen;</span>
-                                    <input id="price" name="price" type="number" class="form-control" placeholder="请输入价格"
-                                           required="required"> <span
-                                            class="input-group-addon">.00</span>
+                                <input placeholder="开始日期" class="form-control layer-date" id="start">
+                                <input placeholder="结束日期" class="form-control layer-date" id="end">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">描述</label>
+                            <div class="col-sm-10">
+                                <div class="summernote" id="summernote">
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">热度</label>
-
-                            <div class="col-sm-10">
-                                <select id="hot_select" class="form-control m-b">
-                                    <option>选择</option>
-                                    <option>1星好评</option>
-                                    <option>2星好评</option>
-                                    <option>3星好评</option>
-                                    <option>4星好评</option>
-                                    <option>5星好评</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">是否上架</label>
-
-                            <div class="col-sm-10">
-                                <select id="scaling" class="form-control m-b">
-                                    <option>上架</option>
-                                    <option>下架</option>
-                                </select>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
                                 <button class="btn btn-primary" type="submit" id="save">保存内容</button>
@@ -147,40 +135,103 @@
 <script src="js/fileinput/fileinput.min.js"></script>
 
 <script type="text/javascript">
-    var isAmending = false;
-    var caseTypeId = '<%=caseTypeId%>';
+	var isAmending = false;
 </script>
 
 <!-- 自定义js -->
 <script src="js/content.js?v=1.0.0"></script>
-<script src="js/plugins/imageUploader/imageUploader.js"></script>
+<script src="js/plugins/imageUploader/postMaterialUploader.js"></script>
 <script src="js/plugins/layer/layer.min.js"></script>
 <script src="js/regex/regex.js"></script>
 
+<script src="js/plugins/summernote/summernote.min.js"></script>
+<script src="js/plugins/summernote/summernote-zh-CN.js"></script>
+<script src="js/plugins/layer/laydate/laydate.js"></script>
+<script>
+	var start = {
+		elem: "#start",
+		format: "YYYY/MM/DD",
+		min: laydate.now(),
+		max: "2099-06-16",
+		istime: true,
+		istoday: false,
+		choose: function (datas) {
+			end.min = datas;
+			end.start = datas
+		}
+	};
+	/*YYYY/MM/DD hh:mm:ss*/
+	/*2099-06-16 23:59:59*/
+	var end = {
+		elem: "#end",
+		format: "YYYY/MM/DD",
+		min: laydate.now(),
+		max: "2099-06-16",
+		istime: true,
+		istoday: false,
+		choose: function (datas) {
+			start.max = datas
+		}
+	};
+	laydate(start);
+	laydate(end);
+</script>
+<script>
+	$(document).ready(function () {
+		$(".summernote").summernote({
+			lang: "zh-CN",
+			height: 400,
+			callbacks: {
+				onImageUpload: function (files) {
+					var formData = new FormData();
+					formData.append('file', files[0]);
+					$.ajax({
+						url: 'onUploadImage',//后台文件上传接口
+						type: 'POST',
+						data: formData,
+						processData: false,
+						contentType: false,
+						success: function (data) {
+							if (data.status == 0) {
+								layer.msg('图片上传成功', {time: 1000}, function () {
+									$('.summernote').summernote('insertImage', data.url);
+								});
+							}
+
+							if (data.status == 1) {
+								layer.msg('图片上传失败', {time: 1000}, function () {
+								});
+							}
+
+						}
+					});
+				}
+			}
+		});
+	});
+
+</script>
+
 <script type="text/javascript">
-    var imageName = "<%= imgName %>";
-    if (imageName) {
-        $(".btns_container").css('display', 'none');
-        $("#fileImage").attr('src', imageName);
-        $(".upload").css('display', 'none');
-        $(".fileImage").css('display', 'block');
-    } else {
-        $(".btns_container").css('display', 'block');
-    }
 
-    $("#cancel").click(function () {
-        var index = parent.layer.getFrameIndex(window.name);
-        parent.layer.close(index, 0);
-    });
+	var imageName = '';
+	if (imageName) {
+		$(".btns_container").css('display', 'none');
+		$("#fileImage").attr('src', imageName);
+		$(".upload").css('display', 'none');
+		$(".fileImage").css('display', 'block');
+	} else {
+		$(".btns_container").css('display', 'block');
+	}
 
-    $(function(){
-        document.onkeydown = function(e){
-            var ev = document.all ? window.event : e;
-            if(ev.keyCode==13) {
-                $('#save').click();
-            }
-        }
-    });
+	$(".close").on('click', function () {
+		history.back(-1);
+	});
+
+	$("#cancel").on('click', function () {
+		history.back(-1);
+	});
+
 </script>
 </body>
 

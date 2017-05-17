@@ -4,22 +4,92 @@
 var express = require('express');
 var router = express.Router();
 
+var MENU_PATH = "/getMenu";
+
+/*view*/
 var indexCtrl = require('../controllers/IndexCtrl.js');
 var caseCtrl = require('../controllers/CaseCtrl.js');
 var caseTypeCtrl = require('../controllers/CaseTypeCtrl.js');
 var ordersCtrl = require('../controllers/OrdersCtrl.js');
+var webUploadCtrl = require('../controllers/WebUploadCtrl.js');
+var postCtrl = require('../controllers/PostCtrl.js');
 
-router.route('/index').get(indexCtrl.doLoad);
-router.route('/caseType').get(caseTypeCtrl.onShowCaseTypes);
-router.route('/caseTypeForm').get(caseTypeCtrl.onShowCaseTypesForm);
-router.route('/removeCaseType').get(caseTypeCtrl.onRemoveCaseType);
-router.route('/addCaseTypeForm').get(caseTypeCtrl.onAddCaseType);
-router.route('/caseShowList').get(caseCtrl.onSpecialCase);
-router.route('/caseAmendForm').get(caseCtrl.onShowAmendForm).post(caseCtrl.onUpload);
-router.route('/caseShow').get(caseCtrl.onShowCaseInfo);
-router.route('/caseNewForm').get(caseCtrl.onShowNewCaseForm).post(caseCtrl.onUpload);
-router.route('/removeCase').get(caseCtrl.onRemoveCase);
+router.route('/index').get(indexCtrl.doLoad);/*主页*/
+router.route('/caseType').get(caseTypeCtrl.onShowCaseTypes);/*商品分类*/
+router.route('/caseTypeForm').get(caseTypeCtrl.onShowCaseTypesForm);/*商品分类*/
+router.route('/caseTypeAmendForm').get(caseTypeCtrl.onShowCaseAmendTypesForm);/*商品分类*/
+router.route('/removeCaseType').get(caseTypeCtrl.onRemoveCaseType);/*删除商品分类*/
+router.route('/addCaseTypeForm').get(caseTypeCtrl.onAddCaseType);/*商品分类添加*/
 
-router.route('/showOrders').get(ordersCtrl.onShowOrderList);
+router.route('/caseShowList').get(caseCtrl.onSpecialCase);/*展示商品*/
+router.route('/caseNew').get(caseCtrl.onShowNewCase).post(caseCtrl.onUpload);/*添加新的商品*/
+router.route('/caseShow').get(caseCtrl.onShowCaseInfo);/*展示商品信息*/
+router.route('/caseDetail').get(caseCtrl.onShowCaseDetail);/*商品详情*/
+router.route('/caseStandard').get(caseCtrl.onShowCaseStandard);/*展示商品规格*/
+router.route('/caseNewStandard').get(caseCtrl.onShowCaseNewStandard).post(caseCtrl.onSaveCaseStandard);/*添加商品规格*/
+router.route('/caseStandardForm').get(caseCtrl.onShowCaseStandardForm);/*添加商品规格表单*/
+router.route('/caseDetailStandard').get(caseCtrl.onShowCaseDetailStandard);/*商品规格详情*/
+router.route('/removeCaseStandard').get(caseCtrl.onDeleteCaseStandard);/*删除商品规格*/
+
+router.route('/caseProperty').get(caseCtrl.onShowCaseProperty);/*展示商品属性*/
+router.route('/caseNewProperty').get(caseCtrl.onShowCaseNewProperty).post(caseCtrl.onSaveCaseProperty);/*添加商品属性*/
+router.route('/casePropertyForm').get(caseCtrl.onShowCasePropertyForm);/*添加商品属性表单*/
+router.route('/caseDetailProperty').get(caseCtrl.onShowCaseDetailProperty);/*商品属性详情*/
+router.route('/removeCaseProperty').get(caseCtrl.onDeleteCaseProperty);/*删除商品属性*/
+
+router.route('/changeCaseSaling').get(caseCtrl.onChangeCaseSaling);/*修改商品上架*/
+
+router.route('/removeCase').get(caseCtrl.onRemoveCase);/*删除商品*/
+router.route('/webUpLoad').get(webUploadCtrl.onShowWebUpload);/*上传*/
+
+router.route('/postMaterial').get(postCtrl.onShowPostMaterial);/*海报素材*/
+router.route('/postNewMaterial').get(postCtrl.onShowNewPostMaterial).post(postCtrl.onUpload);/*海报素材*/
+router.route('/postDetailMaterial').get(postCtrl.onShowDetailPostMaterial);/*海报素材*/
+router.route('/removePostMaterial').get(postCtrl.onRemovePostMaterial);/*海报素材*/
+router.route('/onUploadImage').post(postCtrl.onUploadImage);/*富文本编辑上传图片*/
+router.route('/addPost').get(postCtrl.onAddPost);/*添加海报*/
+router.route('/choosePostForm').get(postCtrl.onShowPostChooseForm);/*海报选择*/
+router.route('/choosePost').get(postCtrl.onChoosePost);/*海报添加*/
+router.route('/removePost').get(postCtrl.onRemovePost);/*移除海报*/
+
+router.route('/showOrders').get(ordersCtrl.onShowOrderList);/*订单详情*/
+
+/*interface*/
+var Api = require('../api/Api.js');
+router.route(MENU_PATH).get(Api.getMenuList);
+
+const WebSocket = require('ws');
+
+const wss = new WebSocket.Server({ port: 8181 });
+
+//广播
+wss.broadcast = function broadcast(s,ws) {
+	// console.log(ws);
+	// debugger;
+	wss.clients.forEach(function each(client) {
+		// if (typeof client.user != "undefined") {
+		if(s == 1){
+			client.send(ws.name + ":" + ws.msg);
+		}
+		if(s == 0){
+			client.send(ws + "退出聊天室");
+		}
+		// }
+	});
+};
+
+wss.on('connection', function connection(ws) {
+	ws.on('message', function incoming(message) {
+		console.log('received: %s', message);
+		wss.clients.forEach(function each(client) {
+			/*判断当前客户端是否为本身*/
+			if (client !== ws && client.readyState === WebSocket.OPEN) {
+				client.send('something');
+			}
+		});
+	});
+
+	//ws.send('something');
+});
 
 module.exports = router;

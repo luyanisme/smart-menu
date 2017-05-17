@@ -7,7 +7,9 @@
 var Sequelize = require('sequelize');
 var caseModel = require('../models/CaseModel.js');
 var caseTypeModel = require('../models/CaseTypeModel.js');
-//var adminModel = require('../models/AdminModel.js');
+var caseStandardModel = require('../models/CaseStandardModel.js');
+var casePropertyModel = require('../models/CasePropertyModel.js');
+var postModel = require('../models/PostModel.js');
 
 var db = {
 	sequelize : new Sequelize(
@@ -32,8 +34,21 @@ var db = {
 	)
 }
 
-db.case = caseModel.onCreate(db.sequelize);
+/*商品类型*/
 db.caseType = caseTypeModel.onCreate(db.sequelize);
+
+/*商品*/
+db.case = caseModel.onCreate(db.sequelize);
+
+/*商品规格*/
+db.caseStandard = caseStandardModel.onCreate(db.sequelize);
+
+/*商品属性*/
+db.caseProperty = casePropertyModel.onCreate(db.sequelize);
+
+/*商品海报*/
+db.post = postModel.onCreate(db.sequelize);
+
 //db.admin = adminModel.onCreate(db.sequelize);
 
 module.exports = db;

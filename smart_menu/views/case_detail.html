@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title><%= title%></title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="css/fileinput/fileinput.min.css" rel="stylesheet">
+
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+
+    <link href="themes/explorer/theme.css" media="all" rel="stylesheet" type="text/css"/>
+    <script src="js/fileinput/plugins/sortable.js" type="text/javascript"></script>
+    <script src="js/fileinput/fileinput.js" type="text/javascript"></script>
+    <script src="themes/explorer/theme.js" type="text/javascript"></script>
+
+    <style type="text/css">
+        div.upload {
+            width: 100%;
+            height: 150px;
+            border: 2px dashed #e6e6e6;
+            text-align: center;
+            background: url(../../../img/defaut_image_icon.png) center no-repeat;
+            color: #cccccc;
+            font-size: 18px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        img.fileImage {
+            width: 100%;
+            height: auto;
+            position: relative;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .close i {
+            color: #000;
+        }
+
+        .remove_icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            background-color: red;
+            margin-left: 5px;
+            color: #ffffff;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .list-group li {
+            list-style: none;
+            align-items: center;
+            display: flex;
+        }
+
+        .standval {
+            font-size: 14px;
+            margin-bottom: 0px !important;
+        }
+    </style>
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>商品添加</h5>
+                    <div class="ibox-tools">
+                        <a class="close">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div id="container" class="ibox-content">
+
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <% if (locals.success) { %>
+                            <div id="alt_sucess" class="alert alert-success">
+                                <%- success %>
+                            </div>
+                            <% } %>
+
+                            <% if (locals.error) { %>
+                            <div id="alt_warning" class="alert alert-warning">
+                                <%= error %>
+                            </div>
+                            <% } %>
+                            <label class="col-sm-2 control-label">商品图片</label>
+
+                            <div class="col-sm-3">
+                                <img id="fileImage" class="fileImage">
+
+                                <div id="upload" class="upload">
+                                </div>
+                                <div class="btns_container">
+                                    <input id="imageFile" name="imageFile" type="file" class="file"
+                                           data-show-preview="false">
+                                    <!--<button id="btnSub" class="btn btn-primary" type="submit">上 传</button>-->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">名称</label>
+
+                            <div class="col-sm-10">
+                                <input id="caseName" name="caseName" type="text" class="form-control"
+                                       placeholder="请输入商品名称" required="required">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">规格</label>
+
+                            <div class="col-sm-10">
+                                <button class="btn btn-primary add-standard" type="button"><i
+                                        class="fa fa-plus-circle"></i>&nbsp;添加规格
+                                </button>
+                                <ul class="list-group standard" style="width: 50%">
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">属性</label>
+
+                            <div class="col-sm-10">
+                                <button class="btn btn-primary add-property" type="button"><i
+                                        class="fa fa-plus-circle"></i>&nbsp;添加属性
+                                </button>
+                                <ul class="list-group property" style="width: 50%">
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">默认价格</label>
+
+                            <div class="col-sm-10">
+                                <div class="input-group m-b"><span class="input-group-addon">&yen;</span>
+                                    <input id="price" name="price" type="number" class="form-control"
+                                           placeholder="请输入默认价格"
+                                           required="required"> <span
+                                            class="input-group-addon">.00</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">热度</label>
+
+                            <div class="col-sm-10">
+                                <select id="hot_select" class="form-control m-b">
+                                    <option>选择</option>
+                                    <option>1星好评</option>
+                                    <option>2星好评</option>
+                                    <option>3星好评</option>
+                                    <option>4星好评</option>
+                                    <option>5星好评</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <!--<div class="form-group">-->
+                            <!--<label class="col-sm-2 control-label">是否上架</label>-->
+
+                            <!--<div class="col-sm-10">-->
+                                <!--<select id="scaling" class="form-control m-b">-->
+                                    <!--<option>上架</option>-->
+                                    <!--<option>下架</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary" type="submit" id="save">保存内容</button>
+                                <button class="btn btn-white" type="button" id="cancel">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Web Uploader -->
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/fileinput/fileinput.min.js"></script>
+
+<script type="text/javascript">
+	var isAmending = true;
+</script>
+
+<!-- 自定义js -->
+<script src="js/content.js?v=1.0.0"></script>
+<script src="js/plugins/imageUploader/imageUploader.js"></script>
+<script src="js/plugins/layer/layer.min.js"></script>
+<script src="js/regex/regex.js"></script>
+
+<script type="text/javascript">
+	var standardVals = [];
+	var propertyVals = [];
+
+	var result = JSON.parse('<%=JSON.stringify(result) %>'.replace(/&#34;/g, '"'));
+	var caseTypeId = result.caseTypeId;
+		var caseId = result.caseId;
+
+	var imageName = result.caseImagePath;
+	if (imageName) {
+		$(".btns_container").css('display', 'block');
+		$("#fileImage").attr('src', imageName);
+		$(".upload").css('display', 'none');
+		$(".fileImage").css('display', 'block');
+	}
+	$("#caseName").val(result.caseName);
+	$("#price").val(result.casePrice);
+	$("#hot_select option:eq(" + result.caseHot + ")").prop('selected', true);
+	result.caseStandardVals.forEach(function (caseStandardVal) {
+		standardVals.push(caseStandardVal);
+		var html = '<li class="form-inline">' +
+			'<label class="form-control standval">' + caseStandardVal.caseStandardValue + '</label>' +
+			'<label style="padding-left: 5px;padding-right: 5px;">-</label>' +
+			'<input id="casePrice_' + caseStandardVal.caseStandardValId + '"' + ' name="casePrice" type="number" class="form-control" value="' + caseStandardVal.casePrice + '" placeholder="请输入价格" required="required">' +
+			'<label class="form-control standval">.00￥</label>' +
+			'<label class="remove_icon">-</label>' +
+			'</li>'
+		$(".standard").append(html);
+
+		$("#casePrice_" + caseStandardVal.caseStandardValId).blur(function () {
+			caseStandardVal.casePrice = $("#casePrice_" + caseStandardVal.caseStandardValId).val();
+		});
+	});
+
+	result.casePropertyVals.forEach(function (casePropertyVal) {
+		propertyVals.push(casePropertyVal);
+		var html = '<li class="form-inline">' +
+			'<label class="form-control standval">' + casePropertyVal.casePropertyValue + '</label>' +
+			'<label class="remove_icon">-</label>' +
+			'</li>'
+		$(".property").append(html);
+	});
+
+	$(".close").click(function () {
+		history.back(-1);
+	});
+
+	$(function () {
+		document.onkeydown = function (e) {
+			var ev = document.all ? window.event : e;
+			if (ev.keyCode == 13) {
+				$('#save').click();
+			}
+		}
+	});
+
+	$('.add-standard').on('click', function () {
+
+		layer.open({
+			title: '添加规格',
+			type: 2,
+			area: ['320px', '280px'], //宽高
+			content: 'caseStandardForm',
+			btn: ['确定', '关闭'],
+			yes: function (index, layero) {
+				var result = $(layero).find("iframe")[0].contentWindow.resultData();//获取layer层的数据
+				if (result.caseStandardValue == null) {
+					layer.msg('请选择规格值', {time: 1000}, function () {
+						//parent.location.reload(); // 父页面刷新
+					});
+					return;
+				}
+				for (var i = 0; i < standardVals.length; i++) {
+					if (standardVals[i].caseStandardValId == result.caseStandardValId) {
+						layer.msg('改规格值已选', {time: 1000}, function () {
+
+						});
+						return;
+					}
+				}
+				standardVals.push(result);
+				layer.close(index);
+				var html = '<li class="form-inline">' +
+					'<label class="form-control standval">' + result.caseStandardValue + '</label>' +
+					'<label style="padding-left: 5px;padding-right: 5px;">-</label>' +
+					'<input id="casePrice_' + result.caseStandardValId + '"' + ' name="casePrice" type="number" class="form-control" placeholder="请输入价格" required="required">' +
+					'<label class="form-control standval">.00￥</label>' +
+					'<label class="remove_icon">-</label>' +
+					'</li>'
+				$(".standard").append(html);
+
+				$("#casePrice_" + result.caseStandardValId).blur(function () {
+					result.casePrice = $("#casePrice_" + result.caseStandardValId).val();
+				});
+			}
+
+		});
+
+
+	});
+
+	$('.add-property').on('click', function () {
+
+		layer.open({
+			title: '添加属性',
+			type: 2,
+			area: ['320px', '280px'], //宽高
+			content: 'casePropertyForm',
+			btn: ['确定', '关闭'],
+			yes: function (index, layero) {
+				var result = $(layero).find("iframe")[0].contentWindow.resultData();//获取layer层的数据
+				if (result.casePropertyValue == null) {
+					layer.msg('请选择属性值', {time: 1000}, function () {
+					});
+					return;
+				}
+
+				for (var i = 0; i < propertyVals.length; i++) {
+					if (propertyVals[i].casePropertyValId == result.casePropertyValId) {
+						layer.msg('改属性值已选', {time: 1000}, function () {
+
+						});
+						return;
+					}
+				}
+				propertyVals.push(result);
+				layer.close(index);
+				var html = '<li class="form-inline">' +
+					'<label class="form-control standval">' + result.casePropertyValue + '</label>' +
+					'<label class="remove_icon">-</label>' +
+					'</li>'
+				$(".property").append(html);
+			}
+
+		});
+
+
+	})
+
+	$('.standard').on('click', '.remove_icon', function () {
+		var li = $(this).parent();
+		standardVals.splice(li.index(), 1);
+		li.remove();
+	})
+
+	$('.property').on('click', '.remove_icon', function () {
+		var li = $(this).parent();
+		propertyVals.splice(li.index(), 1);
+		li.remove();
+	})
+
+  /*是否上架*/
+	var isScaling = true;
+	$("#scaling").on('change', function () {
+		var scalingIndex = $('option:selected', '#scaling').index();
+		if (scalingIndex == 1) {
+			isScaling = false;
+		}
+	});
+</script>
+</body>
+
+</html>

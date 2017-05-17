@@ -9,37 +9,35 @@ exports.onCreate = function (sequelize) {
 		{
 			caseTypeId: {
 				field: 'case_type_id',
-				primaryKey: false,
-				type: Sequelize.STRING,
-				allowNull: false
+				type: Sequelize.BIGINT,
+				primaryKey: true,
+				autoIncrement : true,
+				allowNull: false,
+				unique : true
 			},
 			caseTypeName: {
 				field: 'case_type_name',
-				primaryKey: false,
 				type: Sequelize.STRING,
 				allowNull: false
 			},
 			caseNums: {
 				field: 'case_num',
-				primaryKey: false,
 				type: Sequelize.BIGINT,
 				allowNull: false
 			},
 			caseOnNums: {
 				field: 'case_on_num',
-				primaryKey: false,
 				type: Sequelize.BIGINT,
 				allowNull: false
 			},
 			caseOffNums: {
 				field: 'case_off_num',
-				primaryKey: false,
 				type: Sequelize.BIGINT,
 				allowNull: false
 			},
 			/*是否显示*/
 			caseTypeSaling:{
-				field: 'case_type',
+				field: 'case_type_saling',
 				type: Sequelize.BOOLEAN,
 				allowNull: true
 			},
@@ -57,7 +55,7 @@ exports.onCreate = function (sequelize) {
 	);
 
 	sequelize.sync({force: false}).then(function () {
-		console.log("Server successed to start");
+		console.log("CaseType Server successed to start");
 	}).catch(function (err) {
 		console.log("Server failed to start due to error: %s", err);
 	});

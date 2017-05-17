@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title><%= title%></title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <style type="text/css">
+        div.alert {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <div class="alert alert-success" style="text-align: center">
+        保存成功
+    </div>
+    <div class="row">
+        <div class="col-sm-12 animated fadeInRight">
+            <div class="row">
+                <div id="case_container" class="col-sm-12">
+                    <%results.forEach(function(result){%>
+                    <div class="panel-box">
+                        <div class="panel">
+                            <a href="javascript:;"
+                               onclick="onTap('<%=result.dataValues.postId%>')">
+                                <span class="corner"></span>
+                                <div class="image">
+                                    <img alt="image" class="img-responsive" src="<%= result.dataValues.postImagePath%>">
+                                </div>
+                                <div class="panel-name">
+                                    <%= result.dataValues.postName%>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <%})%>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+
+<!-- 自定义js -->
+<script src="js/content.js?v=1.0.0"></script>
+
+<script>
+	function onTap(postId) {
+		$.ajax({
+			url: 'choosePost?postId=' + postId,
+			type: 'GET',
+			success: function (data) {
+				if (data.status == 0) {
+					layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+						parent.location.reload(); // 父页面刷新
+						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+						parent.layer.close(index);
+					});
+				}
+
+				if (data.status == 1) {
+					layer.msg(data.msg, {time: 1500}, function () {
+					});
+				}
+			},
+			error: function (err) {
+				if (err.status == 1) {
+					layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+						//parent.location.reload(); // 父页面刷新
+					});
+				}
+			}
+		})
+	}
+
+</script>
+
+<script src="js/plugins/layer/layer.min.js"></script>
+
+</body>
+
+</html>

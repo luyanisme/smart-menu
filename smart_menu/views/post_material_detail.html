@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title%></title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="css/fileinput/fileinput.min.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="themes/explorer/theme.css" media="all" rel="stylesheet" type="text/css"/>
+    <script src="js/fileinput/plugins/sortable.js" type="text/javascript"></script>
+    <script src="js/fileinput/fileinput.js" type="text/javascript"></script>
+    <script src="themes/explorer/theme.js" type="text/javascript"></script>
+    <link href="css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+
+    <style type="text/css">
+        div.upload {
+            width: 100%;
+            height: 150px;
+            border: 2px dashed #e6e6e6;
+            text-align: center;
+            background: url(../../../img/defaut_image_icon.png) center no-repeat;
+            color: #cccccc;
+            font-size: 18px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        img.fileImage {
+            width: 100%;
+            height: auto;
+            position: relative;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .close i {
+            color: #000;
+        }
+
+    </style>
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><%=title%></h5>
+                    <div class="ibox-tools">
+                        <a class="close">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div id="container" class="ibox-content">
+
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <% if (locals.success) { %>
+                            <div id="alt_sucess" class="alert alert-success">
+                                <%- success %>
+                            </div>
+                            <% } %>
+
+                            <% if (locals.error) { %>
+                            <div id="alt_warning" class="alert alert-warning">
+                                <%= error %>
+                            </div>
+                            <% } %>
+                            <label class="col-sm-2 control-label">海报图片</label>
+
+                            <div class="col-sm-3">
+                                <img id="fileImage" class="fileImage">
+
+                                <div id="upload" class="upload">
+                                </div>
+                                <div class="btns_container">
+                                    <input id="imageFile" name="imageFile" type="file" class="file"
+                                           data-show-preview="false">
+                                    <!--<button id="btnSub" class="btn btn-primary" type="submit">上 传</button>-->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">名称</label>
+
+                            <div class="col-sm-10">
+                                <input value="<%=result.dataValues.postName%>" id="postName" name="postName" type="text"
+                                       class="form-control"
+                                       placeholder="请输入海报名称" required="required">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">时间</label>
+
+                            <div class="col-sm-10">
+                                <input value="<%=result.dataValues.postStartDate%>" placeholder="开始日期" class="form-control layer-date" id="start">
+                                <input value="<%=result.dataValues.postEndDate%>" placeholder="结束日期" class="form-control layer-date" id="end">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">描述</label>
+
+                            <div class="col-sm-10">
+                                <div style="display:none;" id="hidden_div"></div>
+                                <div class="summernote" id="summernote">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary" type="submit" id="save">保存内容</button>
+                                <button class="btn btn-white" type="button" id="cancel">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Web Uploader -->
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/fileinput/fileinput.min.js"></script>
+
+<script type="text/javascript">
+	var isAmending = true;
+</script>
+
+<!-- 自定义js -->
+<script src="js/content.js?v=1.0.0"></script>
+<script src="js/plugins/imageUploader/postMaterialUploader.js"></script>
+<script src="js/plugins/layer/layer.min.js"></script>
+<script src="js/regex/regex.js"></script>
+
+<script src="js/plugins/summernote/summernote.min.js"></script>
+<script src="js/plugins/summernote/summernote-zh-CN.js"></script>
+<script src="js/plugins/layer/laydate/laydate.js"></script>
+<script>
+	var start = {
+		elem: "#start",
+		format: "YYYY/MM/DD hh:mm:ss",
+		min: laydate.now(),
+		max: "2099-06-16 23:59:59",
+		istime: true,
+		istoday: false,
+		choose: function (datas) {
+			end.min = datas;
+			end.start = datas
+		}
+	};
+	var end = {
+		elem: "#end",
+		format: "YYYY/MM/DD hh:mm:ss",
+		min: laydate.now(),
+		max: "2099-06-16 23:59:59",
+		istime: true,
+		istoday: false,
+		choose: function (datas) {
+			start.max = datas
+		}
+	};
+	laydate(start);
+	laydate(end);
+</script>
+<script>
+	$(document).ready(function () {
+		$(".summernote").summernote({
+			lang: "zh-CN",
+			height: 400,
+			callbacks: {
+				onImageUpload: function (files) {
+					var formData = new FormData();
+					formData.append('file', files[0]);
+					$.ajax({
+						url: 'onUploadImage',//后台文件上传接口
+						type: 'POST',
+						data: formData,
+						processData: false,
+						contentType: false,
+						success: function (data) {
+							if (data.status == 0) {
+								layer.msg('图片上传成功', {time: 1000}, function () {
+									$('.summernote').summernote('insertImage', data.url);
+								});
+							}
+
+							if (data.status == 1) {
+								layer.msg('图片上传失败', {time: 1000}, function () {
+								});
+							}
+
+						}
+					});
+				}
+			}
+		});
+	});
+
+</script>
+
+<script type="text/javascript">
+
+    var postId = '<%=result.dataValues.postId%>';
+	var imageName = '<%=result.dataValues.postImagePath%>';
+	if (imageName) {
+		$(".btns_container").css('display', 'block');
+		$("#fileImage").attr('src', imageName);
+		$(".upload").css('display', 'none');
+		$(".fileImage").css('display', 'block');
+	}
+
+    $('#hidden_div').html('<%=result.dataValues.postDesc%>');
+    $('.summernote').html($('#hidden_div').text());
+
+	$(".close").on('click', function () {
+		history.back(-1);
+	});
+
+    $("#cancel").on('click', function () {
+	    history.back(-1);
+    });
+
+</script>
+</body>
+
+</html>

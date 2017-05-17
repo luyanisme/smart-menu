@@ -16,10 +16,19 @@
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css?v=4.1.0" rel="stylesheet">
     <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
 
     <style type="text/css">
         div.alert {
             display: none;
+        }
+
+        .mask_checked {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            top: 5px;
+            left: 5px;
         }
     </style>
 </head>
@@ -34,12 +43,12 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <div class="panel-manager">
-                        <h5>显示：</h5>
-                        <a href="case_show_list.html#" class="panel-control active">宫格排列</a>
-                        <a href="case_show_list.html#" class="panel-control">列表排列</a>
+                        <!--<h5>显示：</h5>-->
+                        <!--<a href="case_show_list.html#" class="panel-control active">宫格排列</a>-->
+                        <!--<a href="case_show_list.html#" class="panel-control">列表排列</a>-->
 
                         <div class="hr-line-dashed"></div>
-                        <button class="btn btn-primary btn-block" onclick="onAddCase('<%= caseTypeId%>')">添加菜品</button>
+                        <button class="btn btn-primary btn-block" onclick="onAddCase('<%= caseTypeId%>')">添加商品</button>
                         <div class="hr-line-dashed"></div>
                         <div class="clearfix"></div>
                     </div>
@@ -48,37 +57,28 @@
         </div>
         <div class="col-sm-9 animated fadeInRight">
             <div class="row">
-                <div id="case_container" class="col-sm-12">
-                    <%results.forEach(function(result){%>
-                    <div class="panel-box">
-                        <div class="panel">
-                            <a href="javascript:;"
-                               onclick="onTap('<%= result.dataValues.caseName%>','<%= result.dataValues.casePrice%>','<%= result.dataValues.caseHot%>','<%= result.dataValues.caseImagePath%>')">
-                                <span class="corner"></span>
-
-                                <div class="image">
-                                    <img alt="image" class="img-responsive" src="<%= result.dataValues.caseImagePath%>">
-                                </div>
-                                <div class="panel-name">
-                                    <%= result.dataValues.caseName%>
-                                    <a style="float: right;margin-left: 5px" class="close-link"
-                                       onclick="onRemove('<%= result.dataValues.caseId%>', '<%= result.dataValues.caseName%>')">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                    <a style="float: right" class="dropdown-toggle" data-toggle="dropdown"
-                                       href=""
-                                       onclick="onModify('<%= result.dataValues.caseId%>','<%= result.dataValues.caseName%>','<%= result.dataValues.casePrice%>','<%= result.dataValues.caseHot%>','<%= result.dataValues.caseImagePath%>','<%= caseTypeId%>')">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                </div>
-                            </a>
-                        </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>上架</th>
+                                <th>商品名称</th>
+                                <th>商品价格</th>
+                                <th>热度</th>
+                                <th>添加时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody class="case_table">
+                            </tbody>
+                        </table>
                     </div>
-                    <%})%>
-
                 </div>
+
             </div>
         </div>
+
     </div>
 </div>
 
@@ -86,82 +86,151 @@
 <script src="js/jquery.min.js?v=2.1.4"></script>
 <script src="js/bootstrap.min.js?v=3.3.6"></script>
 <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="js/plugins/iCheck/icheck.min.js"></script>
+<script type="text/javascript" src="js/contabs.js"></script>
 
 <!-- 自定义js -->
 <script src="js/content.js?v=1.0.0"></script>
 
-
 <script>
+	$(document).ready(function () {
+		$(".i-checks").iCheck({checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green"})
+	});
 
-    function onModify(caseId, caseName, price, hotId, imgPath) {
-        layer.open({
-            title: '修改信息',
-            type: 2,
-            area: ['320px', '80%'], //宽高
-            content: 'caseAmendForm' + '?price=' + price
-            + '&case_name=' + caseName
-            + '&hotId=' + hotId
-            + '&imgPath=' + imgPath
-            + '&caseId=' + caseId
-        });
-    }
+	var results = JSON.parse('<%=JSON.stringify(results) %>'.replace(/&#34;/g, '"'));
+	var html = '';
+	results.forEach(function (result, i) {
+		html += '<tr>' +
+			'<td style="position: relative">' +
+			(result.caseScaling == true ?
+				'<input type="checkbox" checked class="i-checks" name="input[]">' :
+				'<input type="checkbox" class="i-checks" name="input[]">') +
+			'<div class="mask_checked"></div>' +
+			'</td>' +
+			'<td>' + result.caseName + '</td>' +
+			'<td>' + result.casePrice + '</td>' +
+			'<td>' + result.caseHot + '</td>' +
+			'<td>' + result.updateTime + '</td>' +
 
-    function onTap(caseName, price, hotId, imgPath, caseTypeId) {
-        layer.open({
-            title: '菜品展示',
-            type: 2,
-            area: ['320px', '80%'], //宽高
-            content: 'caseShow' + '?price=' + price + '&case_name=' + caseName + '&hotId=' + hotId + '&imgPath=' + imgPath + '&caseTypeId=' + caseTypeId
-        });
-    }
-    ;
+			'<td>' +
+			'<a class="btn btn-primary btn-xs"' +
+			'href="caseDetail?caseId=' + result.caseId + '">详情</a>' +
+			'<button type="button" style="margin-left: 5px" class="btn btn-primary btn-danger btn-xs"' +
+			'onclick=onRemove(' + result.caseId + ',"' + result.caseName + '")>' +
+			'删除' +
+			'</button>' +
+			'</td>' +
+			'</tr>'
+	})
+	$(".case_table").html(html);
 
-    function onAddCase(caseTypeId) {
-        layer.open({
-            title: '添加菜品',
-            type: 2,
-            area: ['320px', '80%'], //宽高
-            content: 'caseNewForm' + '?caseTypeId=' + caseTypeId,
-            yes: function (index, layero) {
+	$(".mask_checked").on('click', function () {
+		var index = $(this).parent().parent().index();
+		var checkedState = $(this).parent().find(".i-checks").attr('checked');
+		if (checkedState == "checked") {
+			swal({
+				title: "您确定要将 " + results[index].caseName + " 下架",
+				text: "请谨慎操作！",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "下架",
+				closeOnConfirm: false
+			}, function (isConfirm) {
+				if (isConfirm) {
+					$.ajax({
+						url: 'changeCaseSaling?caseId=' + results[index].caseId + "&caseScaling=false",
+						type: 'GET',
+						success: function (data) {
+							if (data.status == 0) {
+								layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+									location.reload(); // 父页面刷新
+								});
+							}
+						},
+						error: function (err) {
+							console.log(err);
+							if (err.status == 1) {
+								layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+									//parent.location.reload(); // 父页面刷新
+								});
+							}
+						}
+					})
+				}
+			})
+		} else {
+			swal({
+				title: "您确定要将 " + results[index].caseName + " 上架",
+				text: "请谨慎操作！",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "上架",
+				closeOnConfirm: false,
+			}, function (isConfirm) {
+				if (isConfirm) {
+					$.ajax({
+						url: 'changeCaseSaling?caseId=' + results[index].caseId + "&caseScaling=true",
+						type: 'GET',
+						success: function (data) {
+							if (data.status == 0) {
+								layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+									location.reload(); // 父页面刷新
+								});
+							}
+						},
+						error: function (err) {
+							console.log(err);
+							if (err.status == 1) {
+								layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+									//parent.location.reload(); // 父页面刷新
+								});
+							}
+						}
+					})
+				}
+			})
 
-            },
-            cancel: function (data) {
-                return true;
-            }
-        });
-    }
+		}
+	});
 
-    function onRemove(caseId, caseName) {
-        swal({
-            title: "您确定要删除 " + caseName + " ?",
-            text: "删除后将无法恢复，请谨慎操作！",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "删除",
-            closeOnConfirm: false
-        }, function () {
-            $.ajax({
-                url: 'removeCase?caseId=' + caseId,
-                type: 'GET',
-                success: function (data) {
-                    if (data.status == 0) {
-                        layer.msg(data.msg, {time: 1000, icon: 1}, function () {
-                            location.reload(); // 父页面刷新
-                        });
-                    }
-                },
-                error: function (err) {
-                    console.log(err);
-                    if (err.status == 1) {
-                        layer.msg(err.msg, {time: 1000, icon: 1}, function () {
-                            //parent.location.reload(); // 父页面刷新
-                        });
-                    }
-                }
-            })
-        })
-    }
+	function onAddCase(caseTypeId) {
+		location.href = 'caseNew' + '?caseTypeId=' + caseTypeId
+	}
+
+	function onRemove(caseId, caseName) {
+		swal({
+			title: "您确定要删除 " + caseName + " ?",
+			text: "删除后将无法恢复，请谨慎操作！",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "删除",
+			closeOnConfirm: false
+		}, function () {
+			$.ajax({
+				url: 'removeCase?caseId=' + caseId,
+				type: 'GET',
+				success: function (data) {
+					if (data.status == 0) {
+						layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+							location.reload(); // 父页面刷新
+						});
+					}
+				},
+				error: function (err) {
+					console.log(err);
+					if (err.status == 1) {
+						layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+							//parent.location.reload(); // 父页面刷新
+						});
+					}
+				}
+			})
+		})
+	}
+
 
 </script>
 

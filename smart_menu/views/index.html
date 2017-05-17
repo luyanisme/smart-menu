@@ -58,7 +58,7 @@
                     <li>
                         <a href="#">
                             <i class="fa fa-cutlery"></i>
-                            <span class="nav-label">菜品分类</span>
+                            <span class="nav-label">商品分类</span>
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
@@ -67,34 +67,44 @@
                                 <a class="J_menuItem" href="caseShowList?caseTypeId=<%= result.dataValues.caseTypeId%>"><%= result.dataValues.caseTypeName%></a>
                             </li>
                             <%})%>
-                            <!--<li>-->
-                                <!--<a class="J_menuItem" href="caseShowList" data-index="0">特色菜</a>-->
-                            <!--</li>-->
-                            <!--<li>-->
-                                <!--<a class="J_menuItem" href="index_v2.html">冷菜</a>-->
-                            <!--</li>-->
-                            <!--<li>-->
-                                <!--<a class="J_menuItem" href="index_v3.html">炒菜</a>-->
-                            <!--</li>-->
-                            <!--<li>-->
-                                <!--<a class="J_menuItem" href="index_v4.html">素菜</a>-->
-                            <!--</li>-->
-                            <!--<li>-->
-                                <!--<a href="index_v5.html" target="_blank">汤类</a>-->
-                            <!--</li>-->
                         </ul>
 
                     </li>
-                    <!--<li>-->
-                        <!--<a class="J_menuItem" href="showOrders">-->
-                            <!--<i class="fa  fa-shopping-cart"></i>-->
-                            <!--<span class="nav-label">订单管理</span>-->
-                        <!--</a>-->
-                    <!--</li>-->
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-cube"></i>
+                            <span class="nav-label">商品配置</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a class="J_menuItem" href="caseStandard">商品规格</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="caseProperty">商品属性</a>
+                            </li>
+                        </ul>
+
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-newspaper-o"></i>
+                            <span class="nav-label">海报管理</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a class="J_menuItem" href="addPost">当前海报</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="postMaterial">海报素材</a>
+                            </li>
+                        </ul>
+
+                    </li>
                     <li>
                         <a class="J_menuItem" href="showOrders"><i class="fa fa-shopping-cart"></i> <span class="nav-label">订单管理</span></a>
                     </li>
-
                 </ul>
             </div>
         </nav>
@@ -189,9 +199,9 @@
                         <li class="hidden-xs">
                             <a href="index_v1.html" class="J_menuItem" data-index="0"><i class="fa fa-cart-arrow-down"></i> 购买</a>
                         </li>
-                        <li class="dropdown hidden-xs">
-                            <a class="right-sidebar-toggle" aria-expanded="false">
-                                <i class="fa fa-tasks"></i> 主题
+                        <li class="hidden-xs">
+                            <a class="J_menuItem" href="webUpLoad">
+                                <i class="fa fa-upload"></i> 批量上传
                             </a>
                         </li>
                     </ul>
@@ -202,7 +212,7 @@
                 </button>
                 <nav class="page-tabs J_menuTabs">
                     <div class="page-tabs-content">
-                        <a href="javascript:;" class="active J_menuTab" data-id="caseType">菜品分类</a>
+                        <a href="javascript:;" class="active J_menuTab" data-id="caseType">商品分类</a>
                     </div>
                 </nav>
                 <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
@@ -227,7 +237,7 @@
                 <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="caseType" frameborder="0" data-id="caseType" seamless></iframe>
             </div>
             <div class="footer">
-                <div class="pull-right">&copy; 2014-2015 <a href="http://www.zi-han.net/" target="_blank">zihan's blog</a>
+                <div class="pull-right">&copy; 2017 <a>Hnesoo</a>
                 </div>
             </div>
         </div>

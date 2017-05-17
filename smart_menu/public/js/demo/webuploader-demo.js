@@ -87,7 +87,7 @@ jQuery(function() {
         //server: 'http://2betop.net/fileupload.php',
 	    server: '/upload_chunks',
 	    disableGlobalDnd: true,
-	    fileNumLimit: 1,
+	    fileNumLimit: 300,
 	    fileSizeLimit: 200 * 1024 * 1024,    // 200 M
 	    fileSingleSizeLimit: 50 * 1024 * 1024    // 50 MM
     });
