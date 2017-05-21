@@ -25,29 +25,39 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.STRING,
 				allowNull: false
 			},
-			passWord: {
+			password: {
 				field: 'password',
 				type: Sequelize.STRING,
 				allowNull: false
 			},
-			avaterImagePath: {
-				field: 'avater_image_path',
+			realName: {
+				field: 'real_name',
 				type: Sequelize.STRING,
-				allowNull: false
+				allowNull: true
+			},
+			email: {
+				field: 'email',
+				type: Sequelize.STRING,
+				allowNull: true
+			},
+			identify: {
+				field: 'identify',
+				type: Sequelize.STRING,
+				allowNull: true
 			},
 			shopId:{
 				field: 'shop_id',
 				type: Sequelize.BIGINT,
-				allowNull: false,
+				allowNull: true,
 				references: {
-					model: 'case_type',
-					key: 'case_type_id'
+					model: 'shop',
+					key: 'shop_id'
 				},
 			},
-			authority: {
-				field: 'authority',
+			authorityId: {
+				field: 'authority_id',
 				type: Sequelize.BIGINT,
-				allowNull: true
+				allowNull: false
 			},
 			updateTime: {
 				field: 'update_time',
@@ -63,7 +73,7 @@ exports.onCreate = function (sequelize) {
 	);
 
 	sequelize.sync({force: false}).then(function () {
-		console.log("user Server successed to start");
+		console.log("User Server successed to start");
 	}).catch(function (err) {
 		console.log("Server failed to start due to error: %s", err);
 	});
@@ -71,7 +81,7 @@ exports.onCreate = function (sequelize) {
 	return user;
 }
 
-exports.insert = function (user ,data, callBack) {
+exports.insert = function (user ,data, callBack, errBack) {
 	//User.sync({force: true}).then(function () {
 	// Table created
 	return user.create(data).then(function (result) {
@@ -82,52 +92,50 @@ exports.insert = function (user ,data, callBack) {
 	//})
 }
 
-exports.update = function(user, condition, data, callBack){
+exports.update = function(user, condition, data, callBack, errBack){
 	return user.update(data,{
-		where:{
-			userId:condition
-		}
+		where:condition
 	}).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.findAll = function(user, condition, callBack){
+exports.findAll = function(user, condition, callBack, errBack){
 	return user.findAll(condition).then(
 		function (result) {
 			callBack(result);
 		}
 	).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.remove = function(user, condition, callBack){
+exports.remove = function(user, condition, callBack, errBack){
 	return user.destroy({
-		where:{
-			userId:condition
-		}
+		where:condition
 	}).then(
 		function (result) {
 			callBack(result);
 		}
 	).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.findOne = function(user, condition, callBack){
+exports.findOne = function(user, condition, callBack, errBack){
 	return user.findOne({
-		where:{
-			userId:condition
-		}
+		where:condition
 	}).then(
 		function (result) {
 			callBack(result);
 		}
 	).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }

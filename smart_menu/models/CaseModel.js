@@ -11,9 +11,9 @@ exports.onCreate = function (sequelize) {
 				field: 'case_id',
 				primaryKey: true,
 				type: Sequelize.BIGINT,
-				autoIncrement : true,
+				autoIncrement: true,
 				allowNull: false,
-				unique : true
+				unique: true
 			},
 			casePrice: {
 				field: 'case_price',
@@ -32,7 +32,7 @@ exports.onCreate = function (sequelize) {
 				allowNull: false
 			},
 			/*商品类型*/
-			caseTypeId:{
+			caseTypeId: {
 				field: 'case_type_id',
 				type: Sequelize.BIGINT,
 				allowNull: false,
@@ -57,13 +57,13 @@ exports.onCreate = function (sequelize) {
 				allowNull: true
 			},
 			/*是否上架*/
-			caseScaling:{
+			caseScaling: {
 				field: 'case_scaling',
 				type: Sequelize.BOOLEAN,
 				allowNull: true
 			},
 			/*总销量*/
-			caseScaledNums:{
+			caseScaledNums: {
 				field: 'case_scaled_num',
 				type: Sequelize.BIGINT,
 				allowNull: true
@@ -90,7 +90,7 @@ exports.onCreate = function (sequelize) {
 	return Case;
 }
 
-exports.insert = function (Case ,data, callBack) {
+exports.insert = function (Case, data, callBack) {
 	//User.sync({force: true}).then(function () {
 	// Table created
 	return Case.create(data).then(function (result) {
@@ -101,52 +101,56 @@ exports.insert = function (Case ,data, callBack) {
 	//})
 }
 
-exports.update = function(Case, condition, data, callBack){
-	return Case.update(data,{
-		where:{
-			caseId:condition
+exports.update = function (Case, condition, data, callBack, errBack) {
+	return Case.update(data, {
+		where: {
+			caseId: condition
 		}
 	}).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
+		errBack(err)
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.findAll = function(Case, condition, callBack){
+exports.findAll = function (Case, condition, callBack, errBack) {
 	return Case.findAll(condition).then(
 		function (result) {
 			callBack(result);
 		}
 	).catch(function (err) {
-			console.log("发生错误：" + err);
+		errBack(err);
+		console.log("发生错误：" + err);
 	});
 }
 
-exports.remove = function(Case, condition, callBack){
+exports.remove = function (Case, condition, callBack, errBack) {
 	return Case.destroy({
-		where:{
-			caseId:condition
+		where: {
+			caseId: condition
 		}
 	}).then(
 		function (result) {
 			callBack(result);
 		}
 	).catch(function (err) {
-			console.log("发生错误：" + err);
-		});
+		errBack(err);
+		console.log("发生错误：" + err);
+	});
 }
 
-exports.findOne = function(Case, condition, callBack){
+exports.findOne = function (Case, condition, callBack, errBack) {
 	return Case.findOne({
-		where:{
-			caseId:condition
+		where: {
+			caseId: condition
 		}
 	}).then(
 		function (result) {
 			callBack(result);
 		}
 	).catch(function (err) {
-			console.log("发生错误：" + err);
-		});
+		errBack(err);
+		console.log("发生错误：" + err);
+	});
 }

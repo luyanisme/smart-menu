@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/index_v5.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:18:51 GMT -->
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title><%=title%></title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="css/style.min.css?v=4.1.0" rel="stylesheet">
+
+    <style type="text/css">
+        .navbar-collapse {
+            margin-left: 0px;
+        }
+    </style>
+</head>
+
+<body class="gray-bg top-navigation">
+
+<div id="wrapper">
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom white-bg">
+            <nav class="navbar navbar-static-top" role="navigation">
+                <div class="navbar-header">
+                    <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse"
+                            class="navbar-toggle collapsed" type="button">
+                        <i class="fa fa-reorder"></i>
+                    </button>
+                    <a href="#" class="navbar-brand">账号管理</a>
+                </div>
+                <div class="navbar-collapse collapse" id="navbar">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a aria-expanded="false" role="button" href=""> 返回首页</a>
+                        </li>
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="#" class="dropdown-toggle"
+                               data-toggle="dropdown"> 菜单 <span class="caret"></span></a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li><a href="#">菜单列表</a>
+                                </li>
+                                <li><a href="#">菜单列表</a>
+                                </li>
+                                <li><a href="#">菜单列表</a>
+                                </li>
+                                <li><a href="#">菜单列表</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <a href="login.html">
+                                <i class="fa fa-sign-out"></i> 退出
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="wrapper wrapper-content">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <div class="panel-manager">
+                                    <!--<h5>显示：</h5>-->
+                                    <!--<a href="case_show_list.html#" class="panel-control active">宫格排列</a>-->
+                                    <!--<a href="case_show_list.html#" class="panel-control">列表排列</a>-->
+
+                                    <div class="hr-line-dashed"></div>
+                                    <button class="btn btn-primary btn-block" onclick="onAddCaseStandard()">添加账户
+                                    </button>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-9 animated fadeInRight">
+
+                        <div class="row">
+                            <div class="ibox-content">
+                                <div class="row" style="margin-bottom: 5px">
+                                    <div class="col-sm-5 m-b-xs">
+
+                                    </div>
+                                    <div class="col-sm-4 m-b-xs">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="input-group">
+                                            <input type="text" placeholder="请输入关键词" class="input-sm form-control"> <span
+                                                class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>id</th>
+                                            <th>用户名</th>
+                                            <th>手机号</th>
+                                            <th>权限</th>
+                                            <th>添加时间</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <%results.forEach(function(result){%>
+                                        <tr>
+                                            <td><%= result.dataValues.userId%></td>
+                                            <td><%= result.dataValues.userName%></td>
+                                            <td><%= result.dataValues.phoneNum%></td>
+                                            <th><%= result.dataValues.authority%></th>
+                                            <td><%= result.dataValues.updateTime%></td>
+                                            <td>
+                                                <a class="btn btn-primary btn-xs"
+                                                   href="accountDetail?userId=<%= result.dataValues.userId%>">详情</a>
+                                                <button type="button" class="btn btn-primary btn-danger btn-xs" onclick="onRemove('<%= result.dataValues.userId%>')">
+                                                    删除
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <%})%>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="js/plugins/layer/layer.min.js"></script>
+
+<script>
+    function onAddCaseStandard() {
+      location.href = 'addNewAccount'
+    }
+
+    function onRemove(userId) {
+	    swal({
+		    title: "您确定要删除?",
+		    text: "删除后将无法恢复，请谨慎操作！",
+		    type: "warning",
+		    showCancelButton: true,
+		    confirmButtonColor: "#DD6B55",
+		    confirmButtonText: "删除",
+		    closeOnConfirm: false
+	    }, function () {
+		    $.ajax({
+			    url: 'removeAccount?userId=' + userId,
+			    type: 'GET',
+			    success: function (data) {
+				    if (data.status == 0) {
+					    layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+						    location.reload(); // 父页面刷新
+					    });
+				    }
+			    },
+			    error: function (err) {
+				    console.log(err);
+				    if (err.status == 1) {
+					    layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+						    //parent.location.reload(); // 父页面刷新
+					    });
+				    }
+			    }
+		    })
+	    })
+    }
+</script>
+</body>
+
+
+</html>

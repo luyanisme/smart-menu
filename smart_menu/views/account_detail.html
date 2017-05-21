@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title%></title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+
+    <style type="text/css">
+
+        .close i {
+            color: #000;
+        }
+
+    </style>
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><%=title%></h5>
+                    <div class="ibox-tools">
+                        <a class="close">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div id="container" class="ibox-content">
+
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <% if (locals.success) { %>
+                            <div id="alt_sucess" class="alert alert-success">
+                                <%- success %>
+                            </div>
+                            <% } %>
+
+                            <% if (locals.error) { %>
+                            <div id="alt_warning" class="alert alert-warning">
+                                <%= error %>
+                            </div>
+                            <% } %>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户姓名</label>
+
+                            <div class="col-sm-10">
+                                <input value="<%=User.dataValues.userName%>" id="userName" name="userName" type="text"
+                                       class="form-control"
+                                       placeholder="请输入用户名称" required="required">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户密码</label>
+
+                            <div class="col-sm-10">
+                                <input value="<%=User.dataValues.password%>" id="password" name="password" type="text"
+                                       class="form-control"
+                                       placeholder="请输入用户密码" required="required">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">联系电话</label>
+
+                            <div class="col-sm-10">
+                                <input value="<%=User.dataValues.phoneNum%>" id="phoneNum" name="phoneNum"
+                                       type="number" class="form-control"
+                                       placeholder="请输入联系电话" required="required">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户权限</label>
+
+                            <div class="col-sm-10">
+                                <select id="authority_select" class="form-control m-b">
+                                    <%results.forEach(function(result){%>
+                                    <option value="<%=result.dataValues.authorityId%>">
+                                        <%=result.dataValues.authorityName%>
+                                    </option>
+                                    <%})%>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">店铺详情</label>
+
+                            <div class="col-sm-10">
+                                <button class="btn btn-primary shop-detail" type="button">&nbsp;查看详情
+                                </button>
+                                <ul class="list-group property" style="width: 50%">
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary" type="submit" id="save">保存内容</button>
+                                <button class="btn btn-white" type="button" id="cancel">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Web Uploader -->
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/plugins/layer/layer.min.js"></script>
+
+<!-- 自定义js -->
+<script src="js/plugins/layer/layer.min.js"></script>
+<script src="js/regex/regex.js"></script>
+
+<script type="text/javascript">
+
+	//	$("#authority_select option:eq(" + "<%=User.dataValues.authorityId%>" + ")").prop('selected', true);
+	$("#authority_select").val("<%=User.dataValues.authorityId%>");
+
+	$(".close").click(function () {
+		history.back(-1);
+	});
+
+	$("#cancel").click(function () {
+		history.back(-1);
+	});
+
+	$("#save").click(function () {
+		var userName = $("#userName").val();
+		var password = $("#password").val();
+		var phoneNum = $("#phoneNum").val();
+		var authorityId = $("#authority_select ").get(0).selectedIndex;
+		var authority = $('#authority_select option:selected').text();
+		var userId = parseInt("<%=User.dataValues.userId%>");
+
+		if (userName == "") {
+			layer.msg('请输入用户姓名', {time: 1000}, function () {
+			});
+			return;
+		}
+
+		if (password == "") {
+			layer.msg('请输入用户密码', {time: 1000}, function () {
+			});
+			return;
+		}
+
+		if (phoneNum == "") {
+			layer.msg('请输入联系电话', {time: 1000}, function () {
+			});
+			return;
+		}
+
+		var data = {
+			userName: userName,
+			password: password,
+			phoneNum: phoneNum,
+			authorityId: authorityId,
+			authority: authority,
+			userId: userId
+		}
+		$.ajax({
+			url: 'addNewAccount',//后台文件上传接口
+			type: 'POST',
+			data: data,
+			success: function (data) {
+				if (data.status == 0) {
+					layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+						self.location = document.referrer;
+					});
+				}
+			}
+		});
+	});
+</script>
+</body>
+
+</html>

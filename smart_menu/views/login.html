@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:18:23 GMT -->
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title><%=title%></title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min.css?v=4.1.0" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+<div class="middle-box text-center loginscreen  animated fadeInDown">
+    <div>
+        <div>
+
+            <h1 class="logo-name">M</h1>
+
+        </div>
+        <h3>欢迎使用 M</h3>
+
+        <div class="m-t" role="form">
+            <div class="form-group">
+                <input type="text" id="username" class="form-control" placeholder="用户名" required="">
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" class="form-control" placeholder="密码" required="">
+            </div>
+            <button class="btn btn-primary block full-width m-b" onclick="onSubmit()">登 录</button>
+
+            <p class="text-muted text-center"><a href="login.html#">
+                <small>忘记密码了？</small>
+            </a> | <a href="register.html">注册一个新账号</a>
+            </p>
+
+        </div>
+    </div>
+</div>
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/plugins/layer/layer.min.js"></script>
+
+<script>
+	$(document).ready(function () {
+		var msg = "";
+		var elements = document.getElementsByTagName("INPUT");
+
+		for (var i = 0; i < elements.length; i++) {
+			elements[i].oninvalid = function (e) {
+				if (!e.target.validity.valid) {
+					switch (e.target.id) {
+						case 'password' :
+							e.target.setCustomValidity("请输入密码");
+							break;
+						case 'username' :
+							e.target.setCustomValidity("请填写用户名");
+							break;
+						default :
+							e.target.setCustomValidity("");
+							break;
+
+					}
+				}
+			};
+			elements[i].oninput = function (e) {
+				e.target.setCustomValidity(msg);
+			};
+		}
+	})
+
+	function onSubmit() {
+		var username = $('#username').val();
+		var password = $('#password').val();
+		if (username == '') {
+			return;
+		}
+
+		if (password == '') {
+			return;
+		}
+		var data = {
+			username: username,
+			password: password
+		};
+		$.ajax({
+			url: 'login',
+			type: 'POST',
+			data: data,
+			success: function (data) {
+				if (data.status == 0) {
+					if (data.user.authorityId == 2) {
+						location.href = 'index_v1'
+					} else if (data.user.authorityId == 0) {
+						location.href = 'formWizard?userId=' + data.user.userId;
+					} else if (data.user.authorityId == 1) {
+					}
+
+				}
+
+				if (data.status == 1) {
+					layer.msg(data.msg, {time: 1000}, function () {
+					});
+				}
+			},
+			error: function (err) {
+				console.log(err);
+				if (err.status == 1) {
+					layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+					});
+				}
+			}
+		})
+	}
+
+	$(function () {
+		document.onkeydown = function (e) {
+			var ev = document.all ? window.event : e;
+			if (ev.keyCode == 13) {
+				onSubmit();
+			}
+		}
+	});
+
+</script>
+</body>
+
+
+</html>

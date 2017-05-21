@@ -13,8 +13,18 @@ var caseTypeCtrl = require('../controllers/CaseTypeCtrl.js');
 var ordersCtrl = require('../controllers/OrdersCtrl.js');
 var webUploadCtrl = require('../controllers/WebUploadCtrl.js');
 var postCtrl = require('../controllers/PostCtrl.js');
+var loginCtrl = require('../controllers/LoginCtrl.js');
+var accountCtrl = require('../controllers/AccountCtrl.js');
+
+router.route('/addNewAccount').get(accountCtrl.onAddNewAccount).post(accountCtrl.onSaveAccount);/*添加账户*/
+router.route('/accountDetail').get(accountCtrl.onShowDetailAccount)/*账户详情*/
+router.route('/removeAccount').get(accountCtrl.onRemoveAccount)/*删除账户*/
+
+router.route('/login').get(loginCtrl.onShowLogin).post(loginCtrl.routeToView);/*登录*/
+router.route('/formWizard').get(accountCtrl.onShowFormWizard).post(accountCtrl.onSaveFormWizard)/*表单验证*/
 
 router.route('/index').get(indexCtrl.doLoad);/*主页*/
+router.route('/index_v1').get(indexCtrl.doLoadV1);/*账号管理界面*/
 router.route('/caseType').get(caseTypeCtrl.onShowCaseTypes);/*商品分类*/
 router.route('/caseTypeForm').get(caseTypeCtrl.onShowCaseTypesForm);/*商品分类*/
 router.route('/caseTypeAmendForm').get(caseTypeCtrl.onShowCaseAmendTypesForm);/*商品分类*/

@@ -10,6 +10,9 @@ var caseTypeModel = require('../models/CaseTypeModel.js');
 var caseStandardModel = require('../models/CaseStandardModel.js');
 var casePropertyModel = require('../models/CasePropertyModel.js');
 var postModel = require('../models/PostModel.js');
+var userModel = require('../models/UserModel.js');
+var authorityModel = require('../models/AuthorityModel.js');
+var shopModel = require('../models/ShopModel.js');
 
 var db = {
 	sequelize : new Sequelize(
@@ -49,6 +52,13 @@ db.caseProperty = casePropertyModel.onCreate(db.sequelize);
 /*商品海报*/
 db.post = postModel.onCreate(db.sequelize);
 
-//db.admin = adminModel.onCreate(db.sequelize);
+/*用户*/
+db.user = userModel.onCreate(db.sequelize);
+
+/*权限*/
+db.authority = authorityModel.onCreate(db.sequelize);
+
+/*商店*/
+db.shop = shopModel.onCreate(db.sequelize);
 
 module.exports = db;

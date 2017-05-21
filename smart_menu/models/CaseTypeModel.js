@@ -11,9 +11,9 @@ exports.onCreate = function (sequelize) {
 				field: 'case_type_id',
 				type: Sequelize.BIGINT,
 				primaryKey: true,
-				autoIncrement : true,
+				autoIncrement: true,
 				allowNull: false,
-				unique : true
+				unique: true
 			},
 			caseTypeName: {
 				field: 'case_type_name',
@@ -36,7 +36,7 @@ exports.onCreate = function (sequelize) {
 				allowNull: false
 			},
 			/*是否显示*/
-			caseTypeSaling:{
+			caseTypeSaling: {
 				field: 'case_type_saling',
 				type: Sequelize.BOOLEAN,
 				allowNull: true
@@ -63,60 +63,65 @@ exports.onCreate = function (sequelize) {
 	return caseType;
 }
 
-exports.insert = function (CaseType ,data, callBack) {
+exports.insert = function (CaseType, data, callBack, errBack) {
 	return CaseType.create(data).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.update = function(CaseType, condition, data, callBack){
-	return CaseType.update(data,{
-		where:{
-			caseTypeId:condition
+exports.update = function (CaseType, condition, data, callBack, errBack) {
+	return CaseType.update(data, {
+		where: {
+			caseTypeId: condition
 		}
 	}).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.findAll = function(CaseType, callBack){
+exports.findAll = function (CaseType, callBack, errBack) {
 	return CaseType.findAll().then(
 		function (result) {
 			callBack(result);
 		}
 	).catch(function (err) {
-			console.log("发生错误：" + err);
-		});
+		errBack(err);
+		console.log("发生错误：" + err);
+	});
 }
 
-exports.remove = function(CaseType, condition, callBack){
+exports.remove = function (CaseType, condition, callBack, errBack) {
 	return CaseType.destroy({
-		where:{
-			caseTypeId:condition
+		where: {
+			caseTypeId: condition
 		}
 	}).then(
 		function (result) {
 			callBack(result);
 		}
 	).catch(function (err) {
-			console.log("发生错误：" + err);
-		});
+		errBack(err);
+		console.log("发生错误：" + err);
+	});
 }
 
-exports.findOne = function(CaseType, condition, callBack){
+exports.findOne = function (CaseType, condition, callBack, errBack) {
 	return CaseType.findOne({
-		where:{
-			caseTypeId:condition
+		where: {
+			caseTypeId: condition
 		}
 	}).then(
 		function (result) {
 			callBack(result);
 		}
 	).catch(function (err) {
-			console.log("发生错误：" + err);
-		});
+		errBack(err);
+		console.log("发生错误：" + err);
+	});
 }

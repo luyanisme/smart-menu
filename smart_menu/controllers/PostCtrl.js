@@ -11,6 +11,8 @@ var fsmanager = require('../utils/fileManagerUtil.js');
 exports.onShowPostMaterial = function (req, res) {
 	PostModel.findAll(global.sql.post, function (result) {
 		res.render("post_material_list", {title: '海报素材', results: result});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	})
 }
 
@@ -22,6 +24,8 @@ exports.onShowDetailPostMaterial = function (req, res) {
 	var postId = req.query.postId;
 	PostModel.findOne(global.sql.post, postId, function (result) {
 		res.render("post_material_detail", {title: '海报详情', result: result});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	})
 }
 
@@ -105,17 +109,25 @@ exports.onUpload = function (req, res) {
 					fsmanager.deleteFile(path, function () {
 						PostModel.update(global.sql.post, fields.postId, post, function (result) {
 							res.send({msg: '保存成功!', status: 0});
+						},function (err) {
+							res.send({msg: err, status: 1});
 						});
 					})
+				},function (err) {
+					res.send({msg: err, status: 1});
 				})
 			} else {
 				PostModel.update(global.sql.post, fields.postId, post, function (result) {
 					res.send({msg: '保存成功!', status: 0});
+				},function (err) {
+					res.send({msg: err, status: 1});
 				});
 			}
 		} else {
 			PostModel.insert(global.sql.post, post, function (result) {
 				res.send({msg: '保存成功!', status: 0});
+			},function (err) {
+				res.send({msg: err, status: 1});
 			});
 		}
 
@@ -194,7 +206,11 @@ exports.onRemovePostMaterial = function (req, res) {
 			fsmanager.deleteFile(path, function () {
 				res.send({msg: '删除成功', status: 0});
 			})
+		},function (err) {
+			res.send({msg: err, status: 1});
 		});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	});
 };
 
@@ -202,6 +218,8 @@ exports.onRemovePostMaterial = function (req, res) {
 exports.onAddPost = function (req, res) {
 	PostModel.find(global.sql.post,{postIsChoosed: true},function (result) {
 		res.render('post_add', {title: '海报添加', results: result});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	})
 };
 
@@ -209,6 +227,8 @@ exports.onAddPost = function (req, res) {
 exports.onShowPostChooseForm = function (req, res) {
 	PostModel.findAll(global.sql.post, function (result) {
 		res.render('post_choose_form', {title: '海报选择', results: result});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	});
 };
 
@@ -224,8 +244,12 @@ exports.onChoosePost = function (req, res) {
 			}
 			PostModel.update(global.sql.post, postId, post, function (result) {
 				res.send({msg: '添加成功', status: 0});
+			},function (err) {
+				res.send({msg: err, status: 1});
 			});
 		}
+	},function (err) {
+		res.send({msg: err, status: 1});
 	});
 
 };
@@ -238,6 +262,8 @@ exports.onRemovePost = function (req, res) {
 	}
 	PostModel.update(global.sql.post, postId, post, function (result) {
 		res.send({msg: '移除成功', status: 0});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	});
 
 };

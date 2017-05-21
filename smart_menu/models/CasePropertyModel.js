@@ -58,15 +58,16 @@ exports.onCreate = function (sequelize) {
 	return caseProperty;
 }
 
-exports.insert = function (CaseProperty ,data, callBack) {
+exports.insert = function (CaseProperty ,data, callBack, errBack) {
 	return CaseProperty.create(data).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.update = function(CaseProperty, condition, data, callBack){
+exports.update = function(CaseProperty, condition, data, callBack, errBack){
 	return CaseProperty.update(data,{
 		where:{
 			casePropertyId:condition
@@ -74,21 +75,23 @@ exports.update = function(CaseProperty, condition, data, callBack){
 	}).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.findAll = function(CaseProperty, callBack){
+exports.findAll = function(CaseProperty, callBack, errBack){
 	return CaseProperty.findAll().then(
 		function (result) {
 			callBack(result);
 		}
 	).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.remove = function(CaseProperty, condition, callBack){
+exports.remove = function(CaseProperty, condition, callBack, errBack){
 	return CaseProperty.destroy({
 		where:{
 			casePropertyId:condition
@@ -98,11 +101,12 @@ exports.remove = function(CaseProperty, condition, callBack){
 			callBack(result);
 		}
 	).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.findOne = function(CaseProperty, condition, callBack){
+exports.findOne = function(CaseProperty, condition, callBack, errBack){
 	return CaseProperty.findOne({
 		where:{
 			casePropertyId:condition
@@ -112,6 +116,7 @@ exports.findOne = function(CaseProperty, condition, callBack){
 			callBack(result);
 		}
 	).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }

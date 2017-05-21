@@ -58,15 +58,16 @@ exports.onCreate = function (sequelize) {
 	return caseStandard;
 }
 
-exports.insert = function (CaseStandard ,data, callBack) {
+exports.insert = function (CaseStandard ,data, callBack, errBack) {
 	return CaseStandard.create(data).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.update = function(CaseStandard, condition, data, callBack){
+exports.update = function(CaseStandard, condition, data, callBack, errBack){
 	return CaseStandard.update(data,{
 		where:{
 			caseStandardId:condition
@@ -74,21 +75,23 @@ exports.update = function(CaseStandard, condition, data, callBack){
 	}).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.findAll = function(CaseStandard, callBack){
+exports.findAll = function(CaseStandard, callBack, errBack){
 	return CaseStandard.findAll().then(
 		function (result) {
 			callBack(result);
 		}
 	).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.remove = function(CaseStandard, condition, callBack){
+exports.remove = function(CaseStandard, condition, callBack, errBack){
 	return CaseStandard.destroy({
 		where:{
 			caseStandardId:condition
@@ -98,11 +101,12 @@ exports.remove = function(CaseStandard, condition, callBack){
 			callBack(result);
 		}
 	).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.findOne = function(CaseStandard, condition, callBack){
+exports.findOne = function(CaseStandard, condition, callBack, errBack){
 	return CaseStandard.findOne({
 		where:{
 			caseStandardId:condition
@@ -112,6 +116,7 @@ exports.findOne = function(CaseStandard, condition, callBack){
 			callBack(result);
 		}
 	).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }

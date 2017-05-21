@@ -25,6 +25,8 @@ exports.onSpecialCase = function (req, res) {
 			r.casePropertyVals = JSON.parse(r.casePropertyVals);
 		})
 		res.render("case_show_list", {title: '商品列表', caseTypeId: caseTypeId, results: result});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	});
 };
 
@@ -42,10 +44,18 @@ exports.onRemoveCase = function (req, res) {
 					fsmanager.deleteFile(path, function () {
 						res.send({msg: '删除成功', status: 0});
 					})
+				},function (err) {
+					res.send({msg: err, status: 1});
 				});
+			},function (err) {
+				res.send({msg: err, status: 1});
 			})
 
+		},function (err) {
+			res.send({msg: err, status: 1});
 		});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	});
 };
 
@@ -140,10 +150,14 @@ exports.onUpload = function (req, res) {
 							res.send({msg: '保存成功!', status: 0});
 						});
 					})
+				},function (err) {
+					res.send({msg: err, status: 1});
 				})
 			} else {
 				CaseModel.update(global.sql.case, fields.caseId, Case, function (result) {
 					res.send({msg: '保存成功!', status: 0});
+				},function (err) {
+					res.send({msg: err, status: 1});
 				});
 			}
 		} else {
@@ -152,7 +166,11 @@ exports.onUpload = function (req, res) {
 					var caseNum = parseInt(result.caseNums) + 1;
 					CaseTypeModel.update(global.sql.caseType, result.caseTypeId, {caseNums: caseNum}, function (result) {
 						res.send({msg: '保存成功!', status: 0});
+					},function (err) {
+						res.send({msg: err, status: 1});
 					});
+				},function (err) {
+					res.send({msg: err, status: 1});
 				})
 
 			});
@@ -208,6 +226,8 @@ exports.onShowCaseDetail = function (req, res) {
 		result.caseStandardVals = JSON.parse(result.caseStandardVals);
 		result.casePropertyVals = JSON.parse(result.casePropertyVals);
 		res.render("case_detail", {title: '商品详情', result: result});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	})
 }
 
@@ -224,6 +244,8 @@ exports.onShowCaseStandard = function (req, res) {
 			result.standardVals = JSON.parse(result.standardVals);
 		})
 		res.render("case_standard_list", {title: '商品规格', results: result});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	})
 };
 
@@ -238,6 +260,8 @@ exports.onShowCaseDetailStandard = function (req, res) {
 	CaseStandardModel.findOne(global.sql.caseStandard, caseStandardId, function (result) {
 		result.standardVals = JSON.parse(result.standardVals);
 		res.render("case_detail_standard", {title: '规格详情', result: result});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	})
 };
 
@@ -253,10 +277,14 @@ exports.onSaveCaseStandard = function (req, res) {
 	if (req.body.caseStandardId) {
 		CaseStandardModel.update(global.sql.caseStandard, req.body.caseStandardId, caseStandard, function (result) {
 			res.send({msg: '保存成功!', status: 0});
+		},function (err) {
+			res.send({msg: err, status: 1});
 		})
 	} else {
 		CaseStandardModel.insert(global.sql.caseStandard, caseStandard, function (result) {
 			res.send({msg: '保存成功!', status: 0});
+		},function (err) {
+			res.send({msg: err, status: 1});
 		})
 	}
 
@@ -268,6 +296,8 @@ exports.onShowCaseStandardForm = function (req, res) {
 			r.standardVals = JSON.parse(r.standardVals);
 		})
 		res.render("case_standard_form", {title: '添加规格', results: result});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	})
 };
 
@@ -275,6 +305,8 @@ exports.onDeleteCaseStandard = function (req, res) {
 	var caseStandardId = req.query.caseStandardId;
 	CaseStandardModel.remove(global.sql.caseStandard, caseStandardId, function (result) {
 		res.send({msg: '删除成功!', status: 0});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	})
 };
 
@@ -285,6 +317,8 @@ exports.onShowCaseProperty = function (req, res) {
 			result.propertyVals = JSON.parse(result.propertyVals);
 		})
 		res.render("case_property_list", {title: '商品属性', results: result});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	})
 };
 
@@ -299,6 +333,8 @@ exports.onShowCaseDetailProperty = function (req, res) {
 	CasePropertyModel.findOne(global.sql.caseProperty, casePropertyId, function (result) {
 		result.propertyVals = JSON.parse(result.propertyVals);
 		res.render("case_detail_property", {title: '属性详情', result: result});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	})
 };
 
@@ -314,10 +350,14 @@ exports.onSaveCaseProperty = function (req, res) {
 	if (req.body.casePropertyId) {
 		CasePropertyModel.update(global.sql.caseProperty, req.body.casePropertyId, caseProperty, function (result) {
 			res.send({msg: '保存成功!', status: 0});
+		},function (err) {
+			res.send({msg: err, status: 1});
 		})
 	} else {
 		CasePropertyModel.insert(global.sql.caseProperty, caseProperty, function (result) {
 			res.send({msg: '保存成功!', status: 0});
+		},function (err) {
+			res.send({msg: err, status: 1});
 		})
 	}
 
@@ -329,6 +369,8 @@ exports.onShowCasePropertyForm = function (req, res) {
 			r.propertyVals = JSON.parse(r.propertyVals);
 		})
 		res.render("case_property_form", {title: '添加属性', results: result});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	})
 };
 
@@ -336,6 +378,8 @@ exports.onDeleteCaseProperty = function (req, res) {
 	var casePropertyId = req.query.casePropertyId;
 	CasePropertyModel.remove(global.sql.caseProperty, casePropertyId, function (result) {
 		res.send({msg: '删除成功!', status: 0});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	})
 };
 
@@ -350,6 +394,8 @@ exports.onChangeCaseSaling = function (req, res) {
 
 	CaseModel.update(global.sql.case, caseId, data, function (result) {
 		res.send({msg: '修改成功!', status: 0});
+	},function (err) {
+		res.send({msg: err, status: 1});
 	})
 };
 

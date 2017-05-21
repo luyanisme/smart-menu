@@ -11,9 +11,9 @@ exports.onCreate = function (sequelize) {
 				field: 'post_id',
 				primaryKey: true,
 				type: Sequelize.BIGINT,
-				autoIncrement : true,
+				autoIncrement: true,
 				allowNull: false,
-				unique : true
+				unique: true
 			},
 			caseId: {
 				field: 'case_id',
@@ -39,22 +39,22 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.STRING,
 				allowNull: false
 			},
-			postIsChoosed:{
+			postIsChoosed: {
 				field: 'post_is_choose',
 				type: Sequelize.BOOLEAN,
 				allowNull: true
 			},
-			postShowIndex:{
+			postShowIndex: {
 				field: 'post_show_index',
 				type: Sequelize.BIGINT,
 				allowNull: true
 			},
-			postStartDate:{
+			postStartDate: {
 				field: 'post_start_date',
 				type: Sequelize.STRING,
 				allowNull: false
 			},
-			postEndDate:{
+			postEndDate: {
 				field: 'post_end_date',
 				type: Sequelize.STRING,
 				allowNull: false
@@ -81,37 +81,40 @@ exports.onCreate = function (sequelize) {
 	return post;
 }
 
-exports.insert = function (Post ,data, callBack) {
+exports.insert = function (Post, data, callBack, errBack) {
 	return Post.create(data).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.update = function(Post, condition, data, callBack){
-	return Post.update(data,{
-		where:{
-			postId:condition
+exports.update = function (Post, condition, data, callBack, errBack) {
+	return Post.update(data, {
+		where: {
+			postId: condition
 		}
 	}).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.findAll = function(Post, callBack){
+exports.findAll = function (Post, callBack, errBack) {
 	return Post.findAll().then(
 		function (result) {
 			callBack(result);
 		}
 	).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.find = function(Post, condition, callBack){
+exports.find = function (Post, condition, callBack, errBack) {
 	return Post.findAll({
 		where: condition
 	}).then(
@@ -119,34 +122,37 @@ exports.find = function(Post, condition, callBack){
 			callBack(result);
 		}
 	).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.remove = function(Post, condition, callBack){
+exports.remove = function (Post, condition, callBack, errBack) {
 	return Post.destroy({
-		where:{
-			postId:condition
+		where: {
+			postId: condition
 		}
 	}).then(
 		function (result) {
 			callBack(result);
 		}
 	).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
 
-exports.findOne = function(Post, condition, callBack){
+exports.findOne = function (Post, condition, callBack, errBack) {
 	return Post.findOne({
-		where:{
-			postId:condition
+		where: {
+			postId: condition
 		}
 	}).then(
 		function (result) {
 			callBack(result);
 		}
 	).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 }
