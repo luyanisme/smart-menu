@@ -59,6 +59,11 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.BIGINT,
 				allowNull: false
 			},
+			authority: {
+				field: 'authority',
+				type: Sequelize.STRING,
+				allowNull: true
+			},
 			updateTime: {
 				field: 'update_time',
 				type: Sequelize.STRING,
@@ -87,6 +92,7 @@ exports.insert = function (user ,data, callBack, errBack) {
 	return user.create(data).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 	//})

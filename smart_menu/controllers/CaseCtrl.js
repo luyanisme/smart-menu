@@ -14,12 +14,7 @@ var fsmanager = require('../utils/fileManagerUtil.js');
 
 exports.onSpecialCase = function (req, res) {
 	var caseTypeId = req.query.caseTypeId;
-	var condition = {
-		where: {
-			caseTypeId: caseTypeId
-		}
-	}
-	CaseModel.findAll(global.sql.case, condition, function (result) {
+	CaseModel.findAll(global.sql.case, {caseTypeId: caseTypeId}, function (result) {
 		result.forEach(function (r) {
 			r.caseStandardVals = JSON.parse(r.caseStandardVals);
 			r.casePropertyVals = JSON.parse(r.casePropertyVals);
@@ -33,13 +28,13 @@ exports.onSpecialCase = function (req, res) {
 /*删除*/
 exports.onRemoveCase = function (req, res) {
 	var caseId = req.query.caseId;
-	CaseModel.findOne(global.sql.case, caseId, function (result) {
+	CaseModel.findOne(global.sql.case, {caseId:caseId}, function (result) {
 		var path = global.uploadFloder + result.dataValues.caseImagePath;
 		var caseTypeId = result.caseTypeId;
-		CaseModel.remove(global.sql.case, caseId, function (result) {
-			CaseTypeModel.findOne(global.sql.caseType, caseTypeId, function (result) {
+		CaseModel.remove(global.sql.case, {caseId:caseId}, function (result) {
+			CaseTypeModel.findOne(global.sql.caseType, {caseTypeId:caseTypeId}, function (result) {
 				var caseNum = parseInt(result.caseNums) - 1;
-				CaseTypeModel.update(global.sql.caseType, result.caseTypeId, {caseNums: caseNum}, function (result) {
+				CaseTypeModel.update(global.sql.caseType, {caseTypeId:result.caseTypeId}, {caseNums: caseNum}, function (result) {
 					//将图片删除
 					fsmanager.deleteFile(path, function () {
 						res.send({msg: '删除成功', status: 0});
@@ -142,11 +137,11 @@ exports.onUpload = function (req, res) {
 		/*如果是修改商品信息*/
 		if (fields.caseId) {
 			if (Case.caseImagePath != null) {
-				CaseModel.findOne(global.sql.case, fields.caseId, function (result) {
+				CaseModel.findOne(global.sql.case, {caseId:fields.caseId}, function (result) {
 					//将图片删除
 					var path = global.uploadFloder + result.dataValues.caseImagePath;
 					fsmanager.deleteFile(path, function () {
-						CaseModel.update(global.sql.case, fields.caseId, Case, function (result) {
+						CaseModel.update(global.sql.case, {caseId:fields.caseId}, Case, function (result) {
 							res.send({msg: '保存成功!', status: 0});
 						});
 					})
@@ -154,7 +149,7 @@ exports.onUpload = function (req, res) {
 					res.send({msg: err, status: 1});
 				})
 			} else {
-				CaseModel.update(global.sql.case, fields.caseId, Case, function (result) {
+				CaseModel.update(global.sql.case, {caseId:fields.caseId}, Case, function (result) {
 					res.send({msg: '保存成功!', status: 0});
 				},function (err) {
 					res.send({msg: err, status: 1});
@@ -162,9 +157,9 @@ exports.onUpload = function (req, res) {
 			}
 		} else {
 			CaseModel.insert(global.sql.case, Case, function (result) {
-				CaseTypeModel.findOne(global.sql.caseType, caseTypeId, function (result) {
+				CaseTypeModel.findOne(global.sql.caseType, {caseTypeId:caseTypeId}, function (result) {
 					var caseNum = parseInt(result.caseNums) + 1;
-					CaseTypeModel.update(global.sql.caseType, result.caseTypeId, {caseNums: caseNum}, function (result) {
+					CaseTypeModel.update(global.sql.caseType, {caseTypeId:result.caseTypeId}, {caseNums: caseNum}, function (result) {
 						res.send({msg: '保存成功!', status: 0});
 					},function (err) {
 						res.send({msg: err, status: 1});
@@ -222,7 +217,7 @@ exports.onShowCaseInfo = function (req, res) {
 /*显示商品详情*/
 exports.onShowCaseDetail = function (req, res) {
 	var caseId = req.query.caseId;
-	CaseModel.findOne(global.sql.case, caseId, function (result) {
+	CaseModel.findOne(global.sql.case, {caseId:caseId}, function (result) {
 		result.caseStandardVals = JSON.parse(result.caseStandardVals);
 		result.casePropertyVals = JSON.parse(result.casePropertyVals);
 		res.render("case_detail", {title: '商品详情', result: result});
@@ -239,7 +234,8 @@ exports.onShowNewCase = function (req, res) {
 
 /*商品规格*/
 exports.onShowCaseStandard = function (req, res) {
-	CaseStandardModel.findAll(global.sql.caseStandard, function (result) {
+	var shopId = req.session.user.shopId;
+	CaseStandardModel.findAll(global.sql.caseStandard,{shopId:shopId}, function (result) {
 		result.forEach(function (result) {
 			result.standardVals = JSON.parse(result.standardVals);
 		})
@@ -257,7 +253,7 @@ exports.onShowCaseNewStandard = function (req, res) {
 /*规格详情*/
 exports.onShowCaseDetailStandard = function (req, res) {
 	var caseStandardId = req.query.caseStandardId;
-	CaseStandardModel.findOne(global.sql.caseStandard, caseStandardId, function (result) {
+	CaseStandardModel.findOne(global.sql.caseStandard, {caseStandardId:caseStandardId}, function (result) {
 		result.standardVals = JSON.parse(result.standardVals);
 		res.render("case_detail_standard", {title: '规格详情', result: result});
 	},function (err) {
@@ -267,15 +263,17 @@ exports.onShowCaseDetailStandard = function (req, res) {
 
 /*保存商品规格*/
 exports.onSaveCaseStandard = function (req, res) {
+	var shopId = req.session.user.shopId;
 	var caseStandard = {
 		caseStandardName: req.body.standardName,
 		caseStandardNums: req.body.caseStandardNums,
 		standardVals: req.body.standardVals,
 		caseStandardScaling: true,
+		shopId:shopId,
 		updateTime: global.date
 	};
 	if (req.body.caseStandardId) {
-		CaseStandardModel.update(global.sql.caseStandard, req.body.caseStandardId, caseStandard, function (result) {
+		CaseStandardModel.update(global.sql.caseStandard, {caseStandardId: req.body.caseStandardId}, caseStandard, function (result) {
 			res.send({msg: '保存成功!', status: 0});
 		},function (err) {
 			res.send({msg: err, status: 1});
@@ -291,7 +289,9 @@ exports.onSaveCaseStandard = function (req, res) {
 };
 
 exports.onShowCaseStandardForm = function (req, res) {
-	CaseStandardModel.findAll(global.sql.caseStandard, function (result) {
+	var shopId = req.session.user.shopId;
+
+	CaseStandardModel.findAll(global.sql.caseStandard, {shopId:shopId},function (result) {
 		result.forEach(function (r) {
 			r.standardVals = JSON.parse(r.standardVals);
 		})
@@ -303,7 +303,7 @@ exports.onShowCaseStandardForm = function (req, res) {
 
 exports.onDeleteCaseStandard = function (req, res) {
 	var caseStandardId = req.query.caseStandardId;
-	CaseStandardModel.remove(global.sql.caseStandard, caseStandardId, function (result) {
+	CaseStandardModel.remove(global.sql.caseStandard, {caseStandardId:caseStandardId}, function (result) {
 		res.send({msg: '删除成功!', status: 0});
 	},function (err) {
 		res.send({msg: err, status: 1});
@@ -312,7 +312,8 @@ exports.onDeleteCaseStandard = function (req, res) {
 
 /*商品属性*/
 exports.onShowCaseProperty = function (req, res) {
-	CasePropertyModel.findAll(global.sql.caseProperty, function (result) {
+	var shopId = req.session.user.shopId;
+	CasePropertyModel.findAll(global.sql.caseProperty, {shopId:shopId},function (result) {
 		result.forEach(function (result) {
 			result.propertyVals = JSON.parse(result.propertyVals);
 		})
@@ -330,7 +331,7 @@ exports.onShowCaseNewProperty = function (req, res) {
 /*属性详情*/
 exports.onShowCaseDetailProperty = function (req, res) {
 	var casePropertyId = req.query.casePropertyId;
-	CasePropertyModel.findOne(global.sql.caseProperty, casePropertyId, function (result) {
+	CasePropertyModel.findOne(global.sql.caseProperty, {casePropertyId:casePropertyId}, function (result) {
 		result.propertyVals = JSON.parse(result.propertyVals);
 		res.render("case_detail_property", {title: '属性详情', result: result});
 	},function (err) {
@@ -340,15 +341,17 @@ exports.onShowCaseDetailProperty = function (req, res) {
 
 /*保存商品属性*/
 exports.onSaveCaseProperty = function (req, res) {
+	var shopId = req.session.user.shopId;
 	var caseProperty = {
 		casePropertyName: req.body.propertyName,
 		casePropertyNums: req.body.casePropertyNums,
 		propertyVals: req.body.propertyVals,
 		casePropertyScaling: true,
+		shopId:shopId,
 		updateTime: global.date
 	};
 	if (req.body.casePropertyId) {
-		CasePropertyModel.update(global.sql.caseProperty, req.body.casePropertyId, caseProperty, function (result) {
+		CasePropertyModel.update(global.sql.caseProperty, {casePropertyId: req.body.casePropertyId}, caseProperty, function (result) {
 			res.send({msg: '保存成功!', status: 0});
 		},function (err) {
 			res.send({msg: err, status: 1});
@@ -364,7 +367,8 @@ exports.onSaveCaseProperty = function (req, res) {
 };
 
 exports.onShowCasePropertyForm = function (req, res) {
-	CasePropertyModel.findAll(global.sql.caseProperty, function (result) {
+	var shopId = req.session.user.shopId;
+	CasePropertyModel.findAll(global.sql.caseProperty, {shopId: shopId},function (result) {
 		result.forEach(function (r) {
 			r.propertyVals = JSON.parse(r.propertyVals);
 		})
@@ -376,7 +380,7 @@ exports.onShowCasePropertyForm = function (req, res) {
 
 exports.onDeleteCaseProperty = function (req, res) {
 	var casePropertyId = req.query.casePropertyId;
-	CasePropertyModel.remove(global.sql.caseProperty, casePropertyId, function (result) {
+	CasePropertyModel.remove(global.sql.caseProperty, {casePropertyId:casePropertyId}, function (result) {
 		res.send({msg: '删除成功!', status: 0});
 	},function (err) {
 		res.send({msg: err, status: 1});
@@ -392,7 +396,7 @@ exports.onChangeCaseSaling = function (req, res) {
 		caseScaling: caseScaling == "true" ? true : false,
 	};
 
-	CaseModel.update(global.sql.case, caseId, data, function (result) {
+	CaseModel.update(global.sql.case, {caseId: caseId}, data, function (result) {
 		res.send({msg: '修改成功!', status: 0});
 	},function (err) {
 		res.send({msg: err, status: 1});

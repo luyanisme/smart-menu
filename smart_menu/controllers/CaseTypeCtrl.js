@@ -4,7 +4,8 @@
 var caseTypeModel = require('../models/CaseTypeModel.js');
 
 exports.onShowCaseTypes = function (req, res) {
-	caseTypeModel.findAll(global.sql.caseType, function (result) {
+	var shopId = req.session.user.shopId;
+	caseTypeModel.findAll(global.sql.caseType, {shopId:shopId},function (result) {
 		res.render("case_type_list", {title: '商品分类', results: result});
 	},function (err) {
 		res.send({msg: err, status: 1});
@@ -42,6 +43,7 @@ exports.onAddCaseType = function(req, res) {
 		caseOnNums:0,
 		caseOffNums:0,
 		caseTypeSaling:true,
+		shopId:req.session.user.shopId,
 		updateTime: global.date
 	};
 	if (caseTypeId){

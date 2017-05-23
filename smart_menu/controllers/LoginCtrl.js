@@ -18,6 +18,7 @@ exports.routeToView = function (req, res) {
 			result;
 		}
 		if (password == result.dataValues.password){
+			req.session.user = result;
 			res.send({msg: '登录成功', status: 0, user: result});
 		} else {
 			res.send({msg: '密码或用户名错误', status: 1});
@@ -25,4 +26,9 @@ exports.routeToView = function (req, res) {
 	}, function (err) {
 		res.send({msg: err, status: 1});
 	})
+};
+
+exports.onLogout = function (req, res) {
+	req.session.destroy();
+	res.send({msg: '注销成功', status: 0});
 };

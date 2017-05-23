@@ -21,6 +21,7 @@ router.route('/accountDetail').get(accountCtrl.onShowDetailAccount)/*账户详�
 router.route('/removeAccount').get(accountCtrl.onRemoveAccount)/*删除账户*/
 
 router.route('/login').get(loginCtrl.onShowLogin).post(loginCtrl.routeToView);/*登录*/
+router.route('/logout').get(loginCtrl.onLogout);/*登出*/
 router.route('/formWizard').get(accountCtrl.onShowFormWizard).post(accountCtrl.onSaveFormWizard)/*表单验证*/
 
 router.route('/index').get(indexCtrl.doLoad);/*主页*/

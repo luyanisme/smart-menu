@@ -28,7 +28,7 @@ exports.onShowDetailAccount = function (req, res) {
 
 exports.onRemoveAccount = function (req, res) {
 	var userId = req.query.userId;
-	UserModel.remove(global.sql.user, userId, function (result) {
+	UserModel.remove(global.sql.user, {userId:userId}, function (result) {
 		res.send({msg: '账户删除成功', status: 0});
 	}, function (err) {
 		res.send({msg: err, status: 1});
@@ -52,7 +52,7 @@ exports.onSaveAccount = function (req, res) {
 		updateTime: global.date
 	}
 	if (userId) {
-		UserModel.update(global.sql.user, userId, user, function (result) {
+		UserModel.update(global.sql.user, {userId:userId}, user, function (result) {
 			res.send({msg: '账户更新成功', status: 0});
 		}, function (err) {
 			res.send({msg: err, status: 1});

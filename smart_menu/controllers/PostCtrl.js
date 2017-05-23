@@ -9,7 +9,8 @@ var randomID = require('../utils/randomIdUtil.js');
 var fsmanager = require('../utils/fileManagerUtil.js');
 
 exports.onShowPostMaterial = function (req, res) {
-	PostModel.findAll(global.sql.post, function (result) {
+	var shopId = req.session.user.shopId;
+	PostModel.findAll(global.sql.post, {shopId:shopId},function (result) {
 		res.render("post_material_list", {title: '海报素材', results: result});
 	},function (err) {
 		res.send({msg: err, status: 1});
@@ -22,7 +23,7 @@ exports.onShowNewPostMaterial = function (req, res) {
 
 exports.onShowDetailPostMaterial = function (req, res) {
 	var postId = req.query.postId;
-	PostModel.findOne(global.sql.post, postId, function (result) {
+	PostModel.findOne(global.sql.post, {postId:postId}, function (result) {
 		res.render("post_material_detail", {title: '海报详情', result: result});
 	},function (err) {
 		res.send({msg: err, status: 1});
@@ -31,6 +32,7 @@ exports.onShowDetailPostMaterial = function (req, res) {
 
 /*上传*/
 exports.onUpload = function (req, res) {
+	var shopId = req.session.user.shopId;
 	var form = new formidable.IncomingForm();   //创建上传表单
 	var imageName = '';
 	form.encoding = 'utf-8';        //设置编辑
@@ -88,6 +90,7 @@ exports.onUpload = function (req, res) {
 				postImagePath: avatarName,
 				postStartDate: startDate,
 				postEndDate: endDate,
+				shopId:shopId,
 				updateTime: global.date
 			};
 		} else {
@@ -96,6 +99,7 @@ exports.onUpload = function (req, res) {
 				postDesc: aHtml,
 				postStartDate: startDate,
 				postEndDate: endDate,
+				shopId:shopId,
 				updateTime: global.date
 			};
 		}
@@ -103,11 +107,11 @@ exports.onUpload = function (req, res) {
 		/*如果是修改商品信息*/
 		if (fields.postId) {
 			if (post.caseImagePath != null) {
-				PostModel.findOne(global.sql.post, fields.postId, function (result) {
+				PostModel.findOne(global.sql.post, {postId:fields.postId}, function (result) {
 					//将图片删除
 					var path = global.uploadFloder + result.dataValues.caseImagePath;
 					fsmanager.deleteFile(path, function () {
-						PostModel.update(global.sql.post, fields.postId, post, function (result) {
+						PostModel.update(global.sql.post, {postId:fields.postId}, post, function (result) {
 							res.send({msg: '保存成功!', status: 0});
 						},function (err) {
 							res.send({msg: err, status: 1});
@@ -117,7 +121,7 @@ exports.onUpload = function (req, res) {
 					res.send({msg: err, status: 1});
 				})
 			} else {
-				PostModel.update(global.sql.post, fields.postId, post, function (result) {
+				PostModel.update(global.sql.post, {postId:fields.postId}, post, function (result) {
 					res.send({msg: '保存成功!', status: 0});
 				},function (err) {
 					res.send({msg: err, status: 1});
@@ -199,9 +203,9 @@ exports.onUploadImage = function (req, res) {
 /*删除海报素材*/
 exports.onRemovePostMaterial = function (req, res) {
 	var postId = req.query.postId;
-	PostModel.findOne(global.sql.post, postId, function (result) {
+	PostModel.findOne(global.sql.post, {postId:postId}, function (result) {
 		var path = global.uploadFloder + result.dataValues.postImagePath;
-		PostModel.remove(global.sql.post, postId, function (result) {
+		PostModel.remove(global.sql.post, {postId:postId}, function (result) {
 			//将图片删除
 			fsmanager.deleteFile(path, function () {
 				res.send({msg: '删除成功', status: 0});
@@ -216,7 +220,7 @@ exports.onRemovePostMaterial = function (req, res) {
 
 /*添加海报*/
 exports.onAddPost = function (req, res) {
-	PostModel.find(global.sql.post,{postIsChoosed: true},function (result) {
+	PostModel.findAll(global.sql.post,{postIsChoosed: true},function (result) {
 		res.render('post_add', {title: '海报添加', results: result});
 	},function (err) {
 		res.send({msg: err, status: 1});
@@ -225,7 +229,8 @@ exports.onAddPost = function (req, res) {
 
 /*添加海报页面*/
 exports.onShowPostChooseForm = function (req, res) {
-	PostModel.findAll(global.sql.post, function (result) {
+	var shopId = req.session.user.shopId;
+	PostModel.findAll(global.sql.post, {shopId:shopId},function (result) {
 		res.render('post_choose_form', {title: '海报选择', results: result});
 	},function (err) {
 		res.send({msg: err, status: 1});
@@ -235,14 +240,14 @@ exports.onShowPostChooseForm = function (req, res) {
 /*添加海报*/
 exports.onChoosePost = function (req, res) {
 	var postId = req.query.postId;
-	PostModel.findOne(global.sql.post, postId, function (result) {
+	PostModel.findOne(global.sql.post, {postId:postId}, function (result) {
 		if (result.dataValues.postIsChoosed == true){
 			res.send({msg:'"'+result.dataValues.postName + '"已添加，请重新选择', status: 1});
 		} else {
 			var post = {
 				postIsChoosed: true
 			}
-			PostModel.update(global.sql.post, postId, post, function (result) {
+			PostModel.update(global.sql.post, {postId:postId}, post, function (result) {
 				res.send({msg: '添加成功', status: 0});
 			},function (err) {
 				res.send({msg: err, status: 1});
@@ -254,7 +259,7 @@ exports.onChoosePost = function (req, res) {
 
 };
 
-/*添加海报*/
+/*删除海报*/
 exports.onRemovePost = function (req, res) {
 	var postId = req.query.postId;
 	var post = {

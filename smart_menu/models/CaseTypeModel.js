@@ -41,6 +41,16 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.BOOLEAN,
 				allowNull: true
 			},
+			/*店铺归属*/
+			shopId: {
+				field: 'shop_id',
+				type: Sequelize.BIGINT,
+				allowNull: true,
+				references: {
+					model: 'shop',
+					key: 'shop_id'
+				},
+			},
 			updateTime: {
 				field: 'update_time',
 				type: Sequelize.STRING,
@@ -74,9 +84,7 @@ exports.insert = function (CaseType, data, callBack, errBack) {
 
 exports.update = function (CaseType, condition, data, callBack, errBack) {
 	return CaseType.update(data, {
-		where: {
-			caseTypeId: condition
-		}
+		where: condition
 	}).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
@@ -85,8 +93,10 @@ exports.update = function (CaseType, condition, data, callBack, errBack) {
 	});
 }
 
-exports.findAll = function (CaseType, callBack, errBack) {
-	return CaseType.findAll().then(
+exports.findAll = function (CaseType,condition, callBack, errBack) {
+	return CaseType.findAll({
+		where: condition
+	}).then(
 		function (result) {
 			callBack(result);
 		}
@@ -98,9 +108,7 @@ exports.findAll = function (CaseType, callBack, errBack) {
 
 exports.remove = function (CaseType, condition, callBack, errBack) {
 	return CaseType.destroy({
-		where: {
-			caseTypeId: condition
-		}
+		where: condition
 	}).then(
 		function (result) {
 			callBack(result);
@@ -113,9 +121,7 @@ exports.remove = function (CaseType, condition, callBack, errBack) {
 
 exports.findOne = function (CaseType, condition, callBack, errBack) {
 	return CaseType.findOne({
-		where: {
-			caseTypeId: condition
-		}
+		where: condition
 	}).then(
 		function (result) {
 			callBack(result);

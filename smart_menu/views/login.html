@@ -103,10 +103,13 @@
 					if (data.user.authorityId == 2) {
 						location.href = 'index_v1'
 					} else if (data.user.authorityId == 0) {
-						location.href = 'formWizard?userId=' + data.user.userId;
+						if (data.user.shopId) {
+							location.href = 'index';
+						} else {
+							location.href = 'formWizard?userId=' + data.user.userId;
+						}
 					} else if (data.user.authorityId == 1) {
 					}
-
 				}
 
 				if (data.status == 1) {

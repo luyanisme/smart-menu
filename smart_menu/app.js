@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var routeHelper = require("./routes/route.js");
 var dateUtil = require('./utils/dateUtil.js');
@@ -22,12 +23,29 @@ var ejs = require('ejs');
 app.engine('html',ejs.__express);
 app.set('view engine', 'html');
 
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true,
+	cookie:{
+		maxAge: 1000*60*30
+	}
+}));
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.all('/*', function(req,res,next){
+	if (!req.session.user && req.url != "/login"){
+		res.redirect('/login');
+	}else {
+		next();
+	}
+});
 
 app.use('/', routeHelper);
 

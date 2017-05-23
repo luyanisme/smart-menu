@@ -103,9 +103,7 @@ exports.insert = function (Case, data, callBack) {
 
 exports.update = function (Case, condition, data, callBack, errBack) {
 	return Case.update(data, {
-		where: {
-			caseId: condition
-		}
+		where: condition
 	}).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
@@ -115,7 +113,9 @@ exports.update = function (Case, condition, data, callBack, errBack) {
 }
 
 exports.findAll = function (Case, condition, callBack, errBack) {
-	return Case.findAll(condition).then(
+	return Case.findAll({
+		where: condition
+	}).then(
 		function (result) {
 			callBack(result);
 		}
@@ -127,9 +127,7 @@ exports.findAll = function (Case, condition, callBack, errBack) {
 
 exports.remove = function (Case, condition, callBack, errBack) {
 	return Case.destroy({
-		where: {
-			caseId: condition
-		}
+		where: condition
 	}).then(
 		function (result) {
 			callBack(result);
@@ -142,9 +140,7 @@ exports.remove = function (Case, condition, callBack, errBack) {
 
 exports.findOne = function (Case, condition, callBack, errBack) {
 	return Case.findOne({
-		where: {
-			caseId: condition
-		}
+		where: condition
 	}).then(
 		function (result) {
 			callBack(result);

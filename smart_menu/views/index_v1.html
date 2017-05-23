@@ -61,7 +61,7 @@
                     </ul>
                     <ul class="nav navbar-top-links navbar-right">
                         <li>
-                            <a href="login.html">
+                            <a onclick="onLogout()">
                                 <i class="fa fa-sign-out"></i> 退出
                             </a>
                         </li>
@@ -131,7 +131,8 @@
                                             <td>
                                                 <a class="btn btn-primary btn-xs"
                                                    href="accountDetail?userId=<%= result.dataValues.userId%>">详情</a>
-                                                <button type="button" class="btn btn-primary btn-danger btn-xs" onclick="onRemove('<%= result.dataValues.userId%>')">
+                                                <button type="button" class="btn btn-primary btn-danger btn-xs"
+                                                        onclick="onRemove('<%= result.dataValues.userId%>')">
                                                     删除
                                                 </button>
                                             </td>
@@ -158,41 +159,61 @@
 <script src="js/plugins/layer/layer.min.js"></script>
 
 <script>
-    function onAddCaseStandard() {
-      location.href = 'addNewAccount'
-    }
+	function onAddCaseStandard() {
+		location.href = 'addNewAccount'
+	}
 
-    function onRemove(userId) {
-	    swal({
-		    title: "您确定要删除?",
-		    text: "删除后将无法恢复，请谨慎操作！",
-		    type: "warning",
-		    showCancelButton: true,
-		    confirmButtonColor: "#DD6B55",
-		    confirmButtonText: "删除",
-		    closeOnConfirm: false
-	    }, function () {
-		    $.ajax({
-			    url: 'removeAccount?userId=' + userId,
-			    type: 'GET',
-			    success: function (data) {
-				    if (data.status == 0) {
-					    layer.msg(data.msg, {time: 1000, icon: 1}, function () {
-						    location.reload(); // 父页面刷新
-					    });
-				    }
-			    },
-			    error: function (err) {
-				    console.log(err);
-				    if (err.status == 1) {
-					    layer.msg(err.msg, {time: 1000, icon: 1}, function () {
-						    //parent.location.reload(); // 父页面刷新
-					    });
-				    }
-			    }
-		    })
-	    })
-    }
+	function onRemove(userId) {
+		swal({
+			title: "您确定要删除?",
+			text: "删除后将无法恢复，请谨慎操作！",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "删除",
+			closeOnConfirm: false
+		}, function () {
+			$.ajax({
+				url: 'removeAccount?userId=' + userId,
+				type: 'GET',
+				success: function (data) {
+					if (data.status == 0) {
+						layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+							location.reload(); // 父页面刷新
+						});
+					}
+				},
+				error: function (err) {
+					console.log(err);
+					if (err.status == 1) {
+						layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+							//parent.location.reload(); // 父页面刷新
+						});
+					}
+				}
+			})
+		})
+	}
+
+	function onLogout() {
+		$.ajax({
+			url: 'logout',
+			type: 'GET',
+			success: function (data) {
+				if (data.status == 0) {
+					history.back(-1);
+				}
+			},
+			error: function (err) {
+				console.log(err);
+				if (err.status == 1) {
+					layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+						//parent.location.reload(); // 父页面刷新
+					});
+				}
+			}
+		})
+	}
 </script>
 </body>
 

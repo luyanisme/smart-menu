@@ -59,6 +59,16 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.STRING,
 				allowNull: false
 			},
+			/*店铺归属*/
+			shopId: {
+				field: 'shop_id',
+				type: Sequelize.BIGINT,
+				allowNull: true,
+				references: {
+					model: 'shop',
+					key: 'shop_id'
+				},
+			},
 			updateTime: {
 				field: 'update_time',
 				type: Sequelize.STRING,
@@ -92,9 +102,7 @@ exports.insert = function (Post, data, callBack, errBack) {
 
 exports.update = function (Post, condition, data, callBack, errBack) {
 	return Post.update(data, {
-		where: {
-			postId: condition
-		}
+		where: condition
 	}).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
@@ -103,18 +111,7 @@ exports.update = function (Post, condition, data, callBack, errBack) {
 	});
 }
 
-exports.findAll = function (Post, callBack, errBack) {
-	return Post.findAll().then(
-		function (result) {
-			callBack(result);
-		}
-	).catch(function (err) {
-		errBack(err);
-		console.log("发生错误：" + err);
-	});
-}
-
-exports.find = function (Post, condition, callBack, errBack) {
+exports.findAll = function (Post,condition, callBack, errBack) {
 	return Post.findAll({
 		where: condition
 	}).then(
@@ -129,9 +126,7 @@ exports.find = function (Post, condition, callBack, errBack) {
 
 exports.remove = function (Post, condition, callBack, errBack) {
 	return Post.destroy({
-		where: {
-			postId: condition
-		}
+		where: condition
 	}).then(
 		function (result) {
 			callBack(result);
@@ -144,9 +139,7 @@ exports.remove = function (Post, condition, callBack, errBack) {
 
 exports.findOne = function (Post, condition, callBack, errBack) {
 	return Post.findOne({
-		where: {
-			postId: condition
-		}
+		where: condition
 	}).then(
 		function (result) {
 			callBack(result);

@@ -59,9 +59,7 @@ exports.insert = function (authority, data, callBack, errBack) {
 
 exports.update = function (authority, condition, data, callBack, errBack) {
 	return authority.update(data, {
-		where: {
-			authorityId: condition
-		}
+		where: condition
 	}).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
@@ -83,9 +81,7 @@ exports.findAll = function (authority, condition, callBack, errBack) {
 
 exports.remove = function (authority, condition, callBack, errBack) {
 	return authority.destroy({
-		where: {
-			authorityId: condition
-		}
+		where: condition
 	}).then(
 		function (result) {
 			callBack(result);
@@ -98,9 +94,7 @@ exports.remove = function (authority, condition, callBack, errBack) {
 
 exports.findOne = function (authority, condition, callBack, errBack) {
 	return authority.findOne({
-		where: {
-			authorityId: condition
-		}
+		where: condition
 	}).then(
 		function (result) {
 			callBack(result);
