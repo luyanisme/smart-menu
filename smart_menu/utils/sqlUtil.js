@@ -11,8 +11,10 @@ var caseStandardModel = require('../models/CaseStandardModel.js');
 var casePropertyModel = require('../models/CasePropertyModel.js');
 var postModel = require('../models/PostModel.js');
 var userModel = require('../models/UserModel.js');
+var editionModel = require('../models/EditionModel.js');
 var authorityModel = require('../models/AuthorityModel.js');
 var shopModel = require('../models/ShopModel.js');
+var mobileModel = require('../models/MobileModel.js');
 
 var db = {
 	sequelize : new Sequelize(
@@ -55,10 +57,16 @@ db.post = postModel.onCreate(db.sequelize);
 /*用户*/
 db.user = userModel.onCreate(db.sequelize);
 
+/*版本*/
+db.edition = editionModel.onCreate(db.sequelize);
+
 /*权限*/
 db.authority = authorityModel.onCreate(db.sequelize);
 
 /*商店*/
 db.shop = shopModel.onCreate(db.sequelize);
+
+/*终端*/
+db.mobile = mobileModel.onCreate(db.sequelize);
 
 module.exports = db;

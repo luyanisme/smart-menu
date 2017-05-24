@@ -3,11 +3,16 @@
  */
 var UserModel = require('../models/UserModel.js');
 var AuthorityModel = require('../models/AuthorityModel.js');
+var EditionModel = require('../models/EditionModel.js');
 var ShopModel = require('../models/ShopModel.js');
 
 exports.onAddNewAccount = function (req, res) {
-	AuthorityModel.findAll(global.sql.authority, {}, function (result) {
-		res.render("account_new", {title: '添加账户', results: result});
+	AuthorityModel.findAll(global.sql.authority, {}, function (authorities) {
+		EditionModel.findAll(global.sql.edition, {}, function (editions) {
+			res.render("account_new", {title: '添加账户', authorities: authorities, editions: editions});
+		}, function (err) {
+			res.send({msg: err, status: 1});
+		})
 	}, function (err) {
 		res.send({msg: err, status: 1});
 	});
@@ -16,8 +21,12 @@ exports.onAddNewAccount = function (req, res) {
 exports.onShowDetailAccount = function (req, res) {
 	var userId = req.query.userId;
 	UserModel.findOne(global.sql.user, {userId: userId}, function (User) {
-		AuthorityModel.findAll(global.sql.authority, {}, function (result) {
-			res.render("account_detail", {title: '账户详情', results: result, User: User});
+		AuthorityModel.findAll(global.sql.authority, {}, function (authorities) {
+			EditionModel.findAll(global.sql.edition, {}, function (editions) {
+				res.render("account_detail", {title: '账户详情', authorities: authorities, editions: editions,User: User});
+			}, function (err) {
+				res.send({msg: err, status: 1});
+			})
 		}, function (err) {
 			res.send({msg: err, status: 1});
 		});
@@ -41,6 +50,8 @@ exports.onSaveAccount = function (req, res) {
 	var phoneNum = req.body.phoneNum;
 	var authorityId = req.body.authorityId;
 	var authority = req.body.authority;
+	var editionId = req.body.editionId;
+	var edition = req.body.edition;
 	var userId = req.body.userId;
 
 	var user = {
@@ -49,6 +60,8 @@ exports.onSaveAccount = function (req, res) {
 		password: password,
 		authorityId: authorityId,
 		authority: authority,
+		editionId:editionId,
+		edition:edition,
 		updateTime: global.date
 	}
 	if (userId) {
@@ -115,7 +128,5 @@ exports.onSaveFormWizard = function (req, res) {
 	}, function (err) {
 		res.send({msg: err, status: 1});
 	})
-
-
 
 };

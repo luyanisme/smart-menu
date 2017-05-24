@@ -22,6 +22,14 @@
         div.alert {
             display: none;
         }
+
+        .mask_checked {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            top: 5px;
+            left: 5px;
+        }
     </style>
 </head>
 
@@ -88,9 +96,12 @@
 	var html = '';
 	results.forEach(function (result) {
 		html += '<tr>' +
-			'<td>' +
-			(result.caseTypeSaling == true ? '<input type="checkbox" checked="" class="i-checks" name="input[]">' : '<input type="checkbox" class="i-checks" name="input[]">') +
-			'</td>' +
+			'<td style="position: relative">' +
+			(result.caseTypeSaling == true ?
+				'<input type="checkbox" checked class="i-checks" name="input[]">' :
+				'<input type="checkbox" class="i-checks" name="input[]">') +
+			'<div class="mask_checked"></div>' +
+			'</td>'+
 			'<td>' + result.caseTypeName + '</td>' +
 			'<td>' + result.caseNums + '</td>' +
 			'<td>' + result.caseOnNums + '</td>' +
@@ -116,12 +127,12 @@
 	}
 
 	function onModify(caseTypeId) {
-			layer.open({
-				title: '商品展示',
-				type: 2,
-				area: ['320px', '280px'], //宽高
-				content: 'caseTypeAmendForm?caseTypeId='+caseTypeId
-			});
+		layer.open({
+			title: '商品展示',
+			type: 2,
+			area: ['320px', '280px'], //宽高
+			content: 'caseTypeAmendForm?caseTypeId=' + caseTypeId
+		});
 	}
 
 	function onDelete(caseTypeId, caseTypeName) {
@@ -155,6 +166,77 @@
 			})
 		})
 	}
+
+	$(".mask_checked").on('click', function () {
+		var index = $(this).parent().parent().index();
+		var checkedState = $(this).parent().find(".i-checks").attr('checked');
+		if (checkedState == "checked") {
+			swal({
+				title: "您确定要将 " + results[index].caseTypeName + " 下架",
+				text: "请谨慎操作！",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "下架",
+				closeOnConfirm: false
+			}, function (isConfirm) {
+				if (isConfirm) {
+					$.ajax({
+						url: 'changeCaseTypeSaling?caseTypeId=' + results[index].caseTypeId + "&caseTypeSaling=false",
+						type: 'GET',
+						success: function (data) {
+							if (data.status == 0) {
+								layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+									parent.location.reload(); // 父页面刷新
+								});
+							}
+						},
+						error: function (err) {
+							console.log(err);
+							if (err.status == 1) {
+								layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+									//parent.location.reload(); // 父页面刷新
+								});
+							}
+						}
+					})
+				}
+			})
+		} else {
+			swal({
+				title: "您确定要将 " + results[index].caseTypeName + " 上架",
+				text: "请谨慎操作！",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "上架",
+				closeOnConfirm: false,
+			}, function (isConfirm) {
+				if (isConfirm) {
+					$.ajax({
+						url: 'changeCaseTypeSaling?caseTypeId=' + results[index].caseTypeId + "&caseTypeSaling=true",
+						type: 'GET',
+						success: function (data) {
+							if (data.status == 0) {
+								layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+									parent.location.reload(); // 父页面刷新
+								});
+							}
+						},
+						error: function (err) {
+							console.log(err);
+							if (err.status == 1) {
+								layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+									//parent.location.reload(); // 父页面刷新
+								});
+							}
+						}
+					})
+				}
+			})
+
+		}
+	});
 </script>
 </body>
 

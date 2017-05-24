@@ -15,6 +15,7 @@ var webUploadCtrl = require('../controllers/WebUploadCtrl.js');
 var postCtrl = require('../controllers/PostCtrl.js');
 var loginCtrl = require('../controllers/LoginCtrl.js');
 var accountCtrl = require('../controllers/AccountCtrl.js');
+var mobileCtrl = require('../controllers/MobileCtrl.js');
 
 router.route('/addNewAccount').get(accountCtrl.onAddNewAccount).post(accountCtrl.onSaveAccount);/*添加账户*/
 router.route('/accountDetail').get(accountCtrl.onShowDetailAccount)/*账户详情*/
@@ -49,6 +50,7 @@ router.route('/caseDetailProperty').get(caseCtrl.onShowCaseDetailProperty);/*商
 router.route('/removeCaseProperty').get(caseCtrl.onDeleteCaseProperty);/*删除商品属性*/
 
 router.route('/changeCaseSaling').get(caseCtrl.onChangeCaseSaling);/*修改商品上架*/
+router.route('/changeCaseTypeSaling').get(caseTypeCtrl.onChangeCaseTypeSaling);/*修改商品分类上架*/
 
 router.route('/removeCase').get(caseCtrl.onRemoveCase);/*删除商品*/
 router.route('/webUpLoad').get(webUploadCtrl.onShowWebUpload);/*上传*/
@@ -64,6 +66,11 @@ router.route('/choosePost').get(postCtrl.onChoosePost);/*海报添加*/
 router.route('/removePost').get(postCtrl.onRemovePost);/*移除海报*/
 
 router.route('/showOrders').get(ordersCtrl.onShowOrderList);/*订单详情*/
+
+router.route('/showMobiles').get(mobileCtrl.onShowMobileList);/*终端列表*/
+router.route('/newMobile').get(mobileCtrl.onShowNewMobile).post(mobileCtrl.onSaveNewMobile);/*添加设备*/
+router.route('/removeMobile').get(mobileCtrl.onRemoveMobile);/*添加设备*/
+router.route('/detailMobile').get(mobileCtrl.onShowDetailMobile);/*展示设备详情*/
 
 /*interface*/
 var Api = require('../api/Api.js');

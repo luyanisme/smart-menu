@@ -64,6 +64,16 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.STRING,
 				allowNull: true
 			},
+			editionId: {
+				field: 'edition_id',
+				type: Sequelize.BIGINT,
+				allowNull: false
+			},
+			edition: {
+				field: 'edition',
+				type: Sequelize.STRING,
+				allowNull: true
+			},
 			updateTime: {
 				field: 'update_time',
 				type: Sequelize.STRING,

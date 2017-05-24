@@ -82,11 +82,25 @@
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">软件版本</label>
+
+                            <div class="col-sm-10">
+                                <select id="edition_select" class="form-control m-b">
+                                    <%editions.forEach(function(result){%>
+                                    <option value="<%=result.dataValues.editionId%>">
+                                        <%=result.dataValues.editionName%>
+                                    </option>
+                                    <%})%>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">用户权限</label>
 
                             <div class="col-sm-10">
                                 <select id="authority_select" class="form-control m-b">
-                                    <%results.forEach(function(result){%>
+                                    <%authorities.forEach(function(result){%>
                                     <option value="<%=result.dataValues.authorityId%>">
                                         <%=result.dataValues.authorityName%>
                                     </option>
@@ -133,6 +147,7 @@
 
 	//	$("#authority_select option:eq(" + "<%=User.dataValues.authorityId%>" + ")").prop('selected', true);
 	$("#authority_select").val("<%=User.dataValues.authorityId%>");
+	$("#edition_select").val("<%=User.dataValues.editionId%>");
 
 	$(".close").click(function () {
 		history.back(-1);
@@ -148,6 +163,8 @@
 		var phoneNum = $("#phoneNum").val();
 		var authorityId = $("#authority_select ").get(0).selectedIndex;
 		var authority = $('#authority_select option:selected').text();
+		var editionId = $('#edition_select option:selected').val();
+		var edition = $('#edition_select option:selected').text();
 		var userId = parseInt("<%=User.dataValues.userId%>");
 
 		if (userName == "") {
@@ -174,7 +191,9 @@
 			phoneNum: phoneNum,
 			authorityId: authorityId,
 			authority: authority,
-			userId: userId
+			userId: userId,
+			editionId: editionId,
+			edition: edition,
 		}
 		$.ajax({
 			url: 'addNewAccount',//后台文件上传接口

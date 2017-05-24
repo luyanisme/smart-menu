@@ -33,8 +33,8 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element">
                         <span><img alt="image" class="img-circle" src="img/profile_small.jpg"/></span>
-                                <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold"><%=user.userName%></strong></span>
+                        <span class="clear">
+                               <span class="block m-t-xs"><strong class="font-bold" style="color: #ffffff"><%=user.userName%></strong></span>
                                 <span class="text-muted text-xs block"><%=user.authority%></span>
                                 </span>
                     </div>
@@ -71,7 +71,6 @@
                             <a class="J_menuItem" href="caseProperty">商品属性</a>
                         </li>
                     </ul>
-
                 </li>
                 <li>
                     <a href="#">
@@ -92,6 +91,11 @@
                 <li>
                     <a class="J_menuItem" href="showOrders"><i class="fa fa-shopping-cart"></i> <span class="nav-label">订单管理</span></a>
                 </li>
+                <% if(user.editionId == 1) {%>
+                <li>
+                    <a class="J_menuItem" href="showMobiles"><i class="fa fa-desktop"></i> <span class="nav-label">终端设备</span></a>
+                </li>
+                <%}%>
             </ul>
         </div>
     </nav>

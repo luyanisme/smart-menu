@@ -6,7 +6,7 @@ var userModel = require('../models/UserModel.js');
 
 exports.doLoad = function (req, res) {
 	var shopId = req.session.user.shopId;
-	caseTypeModel.findAll(global.sql.caseType, {shopId:shopId}, function (result) {
+	caseTypeModel.findAll(global.sql.caseType, {shopId:shopId, caseTypeSaling:true}, function (result) {
 		res.render("index", {title: '智慧菜单', results: result, user: req.session.user});
 	},function (err) {
 		res.send({msg: err, status: 1});

@@ -115,6 +115,7 @@
                                             <th>id</th>
                                             <th>用户名</th>
                                             <th>手机号</th>
+                                            <th>版本</th>
                                             <th>权限</th>
                                             <th>添加时间</th>
                                             <th>操作</th>
@@ -126,7 +127,8 @@
                                             <td><%= result.dataValues.userId%></td>
                                             <td><%= result.dataValues.userName%></td>
                                             <td><%= result.dataValues.phoneNum%></td>
-                                            <th><%= result.dataValues.authority%></th>
+                                            <td><%= result.dataValues.edition%></td>
+                                            <td><%= result.dataValues.authority%></td>
                                             <td><%= result.dataValues.updateTime%></td>
                                             <td>
                                                 <a class="btn btn-primary btn-xs"
@@ -201,7 +203,7 @@
 			type: 'GET',
 			success: function (data) {
 				if (data.status == 0) {
-					history.back(-1);
+					location.href = 'login';
 				}
 			},
 			error: function (err) {

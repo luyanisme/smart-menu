@@ -1,11 +1,11 @@
 /**
  * Created by luyan on 2/16/17.
  */
-var caseTypeModel = require('../models/CaseTypeModel.js');
+var CaseTypeModel = require('../models/CaseTypeModel.js');
 
 exports.onShowCaseTypes = function (req, res) {
 	var shopId = req.session.user.shopId;
-	caseTypeModel.findAll(global.sql.caseType, {shopId:shopId},function (result) {
+	CaseTypeModel.findAll(global.sql.caseType, {shopId:shopId},function (result) {
 		res.render("case_type_list", {title: '商品分类', results: result});
 	},function (err) {
 		res.send({msg: err, status: 1});
@@ -14,7 +14,7 @@ exports.onShowCaseTypes = function (req, res) {
 
 exports.onRemoveCaseType = function (req, res) {
 	var caseTypeId = req.query.caseTypeId;
-	caseTypeModel.remove(global.sql.caseType,caseTypeId,function(){
+	CaseTypeModel.remove(global.sql.caseType,caseTypeId,function(){
 		res.send({msg: '删除成功!', status: 0});
 	},function (err) {
 		res.send({msg: err, status: 1});
@@ -27,7 +27,7 @@ exports.onShowCaseTypesForm = function (req, res) {
 
 exports.onShowCaseAmendTypesForm = function (req, res) {
 	var caseTypeId = req.query.caseTypeId;
-	caseTypeModel.findOne(global.sql.caseType,caseTypeId,function (result) {
+	CaseTypeModel.findOne(global.sql.caseType,caseTypeId,function (result) {
 		res.render("case_type_amend_form", {title: '商品分类修改',result:result});
 	},function (err) {
 		res.send({msg: err, status: 1});
@@ -47,17 +47,33 @@ exports.onAddCaseType = function(req, res) {
 		updateTime: global.date
 	};
 	if (caseTypeId){
-		caseTypeModel.update(global.sql.caseType,caseTypeId, caseType, function(){
+		CaseTypeModel.update(global.sql.caseType,caseTypeId, caseType, function(){
 			res.send({msg: '保存成功!', status: 0});
 		},function (err) {
 			res.send({msg: err, status: 1});
 		});
 	} else {
-		caseTypeModel.insert(global.sql.caseType, caseType, function(){
+		CaseTypeModel.insert(global.sql.caseType, caseType, function(){
 			res.send({msg: '保存成功!', status: 0});
 		},function (err) {
 			res.send({msg: err, status: 1});
 		});
 	}
 
+};
+
+/*是否上架*/
+exports.onChangeCaseTypeSaling = function (req, res) {
+	var caseTypeId = req.query.caseTypeId;
+	var caseTypeSaling = req.query.caseTypeSaling;
+
+	var data = {
+		caseTypeSaling: caseTypeSaling == "true" ? true : false,
+	};
+
+	CaseTypeModel.update(global.sql.caseType, {caseTypeId: caseTypeId}, data, function (result) {
+		res.send({msg: '修改成功!', status: 0});
+	},function (err) {
+		res.send({msg: err, status: 1});
+	})
 };
