@@ -44,7 +44,7 @@
                 <div class="ibox-content">
                     <div class="panel-manager">
                         <div class="hr-line-dashed"></div>
-                        <button class="btn btn-primary btn-block" onclick="onAddCaseType()">添加分类</button>
+                        <button class="btn btn-primary btn-block" onclick="onAddDeskCate()">添加分类</button>
                         <div class="hr-line-dashed"></div>
                         <div class="clearfix"></div>
                     </div>
@@ -58,11 +58,10 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th>显示</th>
-                                <th>商品分类</th>
-                                <th>商品数量</th>
-                                <th>已上架</th>
-                                <th>未上架</th>
+                                <th>桌位分类</th>
+                                <th>桌位数量</th>
+                                <th>正在用餐</th>
+                                <th>空闲桌位</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -96,20 +95,14 @@
 	var html = '';
 	results.forEach(function (result) {
 		html += '<tr>' +
-			'<td style="position: relative">' +
-			(result.caseTypeSaling == true ?
-				'<input type="checkbox" checked class="i-checks" name="input[]">' :
-				'<input type="checkbox" class="i-checks" name="input[]">') +
-			'<div class="mask_checked"></div>' +
-			'</td>'+
-			'<td>' + result.caseTypeName + '</td>' +
-			'<td>' + result.caseNums + '</td>' +
-			'<td>' + result.caseOnNums + '</td>' +
-			'<td>' + result.caseOffNums + '</td>' +
+			'<td>' + result.deskCateName + '</td>' +
+			'<td>' + result.deskNum + '</td>' +
+			'<td>' + result.deskUsingNum + '</td>' +
+			'<td>' + result.deskRemainNum + '</td>' +
 			'<td>' +
-			'<button type="button" class="btn btn-primary btn-xs" onclick=onModify(' + result.caseTypeId + ')>修改</button>' +
+			'<button type="button" class="btn btn-primary btn-xs" onclick=onModify(' + result.deskCateId + ')>修改</button>' +
 			'<button type="button" style="margin-left: 5px" class="btn btn-primary btn-danger btn-xs"' +
-			'onclick=onDelete(' + result.caseTypeId + ',"' + result.caseTypeName + '")>' +
+			'onclick=onDelete(' + result.deskCateId + ',"' + result.deskCateName + '")>' +
 			'删除' +
 			'</button>' +
 			'</td>' +
@@ -117,27 +110,27 @@
 	})
 	$(".case_type_table").html(html);
 
-	function onAddCaseType() {
+	function onAddDeskCate() {
 		layer.open({
-			title: '商品分类',
+			title: '桌位分类',
 			type: 2,
 			area: ['320px', '280px'], //宽高
-			content: 'caseTypeForm'
+			content: 'deskCateForm'
 		});
 	}
 
-	function onModify(caseTypeId) {
+	function onModify(deskCateId) {
 		layer.open({
-			title: '商品分类',
+			title: '桌位分类',
 			type: 2,
 			area: ['320px', '280px'], //宽高
-			content: 'caseTypeAmendForm?caseTypeId=' + caseTypeId
+			content: 'deskCateAmendForm?deskCateId=' + deskCateId
 		});
 	}
 
-	function onDelete(caseTypeId, caseTypeName) {
+	function onDelete(deskCateId, deskCateName) {
 		swal({
-			title: "您确定要删除 " + caseTypeName + " ?",
+			title: "您确定要删除 " + deskCateName + " ?",
 			text: "删除后将无法恢复，请谨慎操作！",
 			type: "warning",
 			showCancelButton: true,
@@ -146,7 +139,7 @@
 			closeOnConfirm: false
 		}, function () {
 			$.ajax({
-				url: 'removeCaseType?caseTypeId=' + caseTypeId,
+				url: 'removeDeskCate?deskCateId=' + deskCateId,
 				type: 'GET',
 				success: function (data) {
 					if (data.status == 0) {
@@ -166,77 +159,6 @@
 			})
 		})
 	}
-
-	$(".mask_checked").on('click', function () {
-		var index = $(this).parent().parent().index();
-		var checkedState = $(this).parent().find(".i-checks").attr('checked');
-		if (checkedState == "checked") {
-			swal({
-				title: "您确定要将 " + results[index].caseTypeName + " 下架",
-				text: "请谨慎操作！",
-				type: "warning",
-				showCancelButton: true,
-				confirmButtonColor: "#DD6B55",
-				confirmButtonText: "下架",
-				closeOnConfirm: false
-			}, function (isConfirm) {
-				if (isConfirm) {
-					$.ajax({
-						url: 'changeCaseTypeSaling?caseTypeId=' + results[index].caseTypeId + "&caseTypeSaling=false",
-						type: 'GET',
-						success: function (data) {
-							if (data.status == 0) {
-								layer.msg(data.msg, {time: 1000, icon: 1}, function () {
-									parent.location.reload(); // 父页面刷新
-								});
-							}
-						},
-						error: function (err) {
-							console.log(err);
-							if (err.status == 1) {
-								layer.msg(err.msg, {time: 1000, icon: 1}, function () {
-									//parent.location.reload(); // 父页面刷新
-								});
-							}
-						}
-					})
-				}
-			})
-		} else {
-			swal({
-				title: "您确定要将 " + results[index].caseTypeName + " 上架",
-				text: "请谨慎操作！",
-				type: "warning",
-				showCancelButton: true,
-				confirmButtonColor: "#DD6B55",
-				confirmButtonText: "上架",
-				closeOnConfirm: false,
-			}, function (isConfirm) {
-				if (isConfirm) {
-					$.ajax({
-						url: 'changeCaseTypeSaling?caseTypeId=' + results[index].caseTypeId + "&caseTypeSaling=true",
-						type: 'GET',
-						success: function (data) {
-							if (data.status == 0) {
-								layer.msg(data.msg, {time: 1000, icon: 1}, function () {
-									parent.location.reload(); // 父页面刷新
-								});
-							}
-						},
-						error: function (err) {
-							console.log(err);
-							if (err.status == 1) {
-								layer.msg(err.msg, {time: 1000, icon: 1}, function () {
-									//parent.location.reload(); // 父页面刷新
-								});
-							}
-						}
-					})
-				}
-			})
-
-		}
-	});
 </script>
 </body>
 

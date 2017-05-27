@@ -14,7 +14,7 @@ exports.onShowCaseTypes = function (req, res) {
 
 exports.onRemoveCaseType = function (req, res) {
 	var caseTypeId = req.query.caseTypeId;
-	CaseTypeModel.remove(global.sql.caseType,caseTypeId,function(){
+	CaseTypeModel.remove(global.sql.caseType,{caseTypeId:caseTypeId},function(){
 		res.send({msg: '删除成功!', status: 0});
 	},function (err) {
 		res.send({msg: err, status: 1});
@@ -27,7 +27,7 @@ exports.onShowCaseTypesForm = function (req, res) {
 
 exports.onShowCaseAmendTypesForm = function (req, res) {
 	var caseTypeId = req.query.caseTypeId;
-	CaseTypeModel.findOne(global.sql.caseType,caseTypeId,function (result) {
+	CaseTypeModel.findOne(global.sql.caseType,{caseTypeId:caseTypeId},function (result) {
 		res.render("case_type_amend_form", {title: '商品分类修改',result:result});
 	},function (err) {
 		res.send({msg: err, status: 1});
@@ -47,7 +47,7 @@ exports.onAddCaseType = function(req, res) {
 		updateTime: global.date
 	};
 	if (caseTypeId){
-		CaseTypeModel.update(global.sql.caseType,caseTypeId, caseType, function(){
+		CaseTypeModel.update(global.sql.caseType,{caseTypeId:caseTypeId}, caseType, function(){
 			res.send({msg: '保存成功!', status: 0});
 		},function (err) {
 			res.send({msg: err, status: 1});

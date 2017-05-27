@@ -14,6 +14,8 @@ var userModel = require('../models/UserModel.js');
 var editionModel = require('../models/EditionModel.js');
 var authorityModel = require('../models/AuthorityModel.js');
 var shopModel = require('../models/ShopModel.js');
+var deskCateModel = require('../models/DeskCateModel.js');
+var deskModel = require('../models/DeskModel.js');
 var mobileModel = require('../models/MobileModel.js');
 
 var db = {
@@ -65,6 +67,12 @@ db.authority = authorityModel.onCreate(db.sequelize);
 
 /*商店*/
 db.shop = shopModel.onCreate(db.sequelize);
+
+/*桌位分类*/
+db.deskCate = deskCateModel.onCreate(db.sequelize);
+
+/*桌位*/
+db.desk = deskModel.onCreate(db.sequelize);
 
 /*终端*/
 db.mobile = mobileModel.onCreate(db.sequelize);

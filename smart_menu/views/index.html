@@ -48,10 +48,10 @@
                         <span class="fa arrow"></span>
                     </a>
                     <ul class="nav nav-second-level">
-                        <%results.forEach(function(result){%>
+                        <%caseTypes.forEach(function(caseType){%>
                         <li>
-                            <a class="J_menuItem" href="caseShowList?caseTypeId=<%= result.dataValues.caseTypeId%>"><%=
-                                result.dataValues.caseTypeName%></a>
+                            <a class="J_menuItem" href="caseShowList?caseTypeId=<%= caseType.dataValues.caseTypeId%>"><%=
+                                caseType.dataValues.caseTypeName%></a>
                         </li>
                         <%})%>
                     </ul>
@@ -85,6 +85,22 @@
                         <li>
                             <a class="J_menuItem" href="postMaterial">海报素材</a>
                         </li>
+                    </ul>
+
+                </li>
+                <li>
+                    <a href="deskCate">
+                        <i class="fa fa-columns"></i>
+                        <span class="nav-label">桌位管理</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <%deskCates.forEach(function(deskCate){%>
+                        <li>
+                            <a class="J_menuItem" href="caseShowList?deskCateId=<%= deskCate.dataValues.deskCateId%>"><%=
+                                deskCate.dataValues.deskCateName%></a>
+                        </li>
+                        <%})%>
                     </ul>
 
                 </li>

@@ -5,6 +5,7 @@ var UserModel = require('../models/UserModel.js');
 var AuthorityModel = require('../models/AuthorityModel.js');
 var EditionModel = require('../models/EditionModel.js');
 var ShopModel = require('../models/ShopModel.js');
+var DeskCateModel = require('../models/DeskCateModel.js');
 
 exports.onAddNewAccount = function (req, res) {
 	AuthorityModel.findAll(global.sql.authority, {}, function (authorities) {
@@ -118,10 +119,34 @@ exports.onSaveFormWizard = function (req, res) {
 		shopAddress: shopAddress,
 		shopPhoneNum: shopPhoneNum,
 	}
+
+	var deskCate1 = {
+		deskCateName:'大厅',
+		deskNum:0,
+		deskUsingNum:0,
+		deskRemainNum:0,
+		updateTime: global.date
+	};
+
+	var deskCate2 = {
+		deskCateName:'包厢',
+		deskNum:0,
+		deskUsingNum:0,
+		deskRemainNum:0,
+		updateTime: global.date
+	};
+
 	ShopModel.insert(global.sql.shop,shop,function (result) {
 		user.shopId = result.dataValues.shopId;
+		req.session.user = user;
+		deskCate1.shopId = result.dataValues.shopId;
+		deskCate2.shopId = result.dataValues.shopId;
 		UserModel.update(global.sql.user, {userId: userId}, user, function (result) {
-			res.send({msg: "保存成功", status: 0});
+			DeskCateModel.inserts(global.sql.deskCate,[deskCate1,deskCate2],function (result) {
+				res.send({msg: "保存成功", status: 0});
+			},function (err) {
+				res.send({msg: err, status: 1});
+			})
 		}, function (err) {
 			res.send({msg: err, status: 1});
 		})

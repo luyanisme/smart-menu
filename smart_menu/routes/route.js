@@ -10,6 +10,7 @@ var MENU_PATH = "/getMenu";
 var indexCtrl = require('../controllers/IndexCtrl.js');
 var caseCtrl = require('../controllers/CaseCtrl.js');
 var caseTypeCtrl = require('../controllers/CaseTypeCtrl.js');
+var deskCateCtrl = require('../controllers/DeskCateCtrl.js');
 var ordersCtrl = require('../controllers/OrdersCtrl.js');
 var webUploadCtrl = require('../controllers/WebUploadCtrl.js');
 var postCtrl = require('../controllers/PostCtrl.js');
@@ -64,6 +65,12 @@ router.route('/addPost').get(postCtrl.onAddPost);/*添加海报*/
 router.route('/choosePostForm').get(postCtrl.onShowPostChooseForm);/*海报选择*/
 router.route('/choosePost').get(postCtrl.onChoosePost);/*海报添加*/
 router.route('/removePost').get(postCtrl.onRemovePost);/*移除海报*/
+
+router.route('/deskCate').get(deskCateCtrl.onShowDeskCate);/*桌位分类*/
+router.route('/deskCateForm').get(deskCateCtrl.onShowDeskCateForm);/*桌位分类添加*/
+router.route('/deskCateAmendForm').get(deskCateCtrl.onShowDeskAmendCateForm);/*桌位分类修改*/
+router.route('/removeDeskCate').get(deskCateCtrl.onRemoveDeskCate);/*删除桌位分类*/
+router.route('/addDeskCateForm').get(deskCateCtrl.onAddDeskCate);/*商品分类添加*/
 
 router.route('/showOrders').get(ordersCtrl.onShowOrderList);/*订单详情*/
 
