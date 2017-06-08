@@ -4,13 +4,12 @@
 var express = require('express');
 var router = express.Router();
 
-var MENU_PATH = "/getMenu";
-
 /*view*/
 var indexCtrl = require('../controllers/IndexCtrl.js');
 var caseCtrl = require('../controllers/CaseCtrl.js');
 var caseTypeCtrl = require('../controllers/CaseTypeCtrl.js');
 var deskCateCtrl = require('../controllers/DeskCateCtrl.js');
+var deskCtrl = require('../controllers/DeskCtrl.js');
 var ordersCtrl = require('../controllers/OrdersCtrl.js');
 var webUploadCtrl = require('../controllers/WebUploadCtrl.js');
 var postCtrl = require('../controllers/PostCtrl.js');
@@ -21,6 +20,8 @@ var mobileCtrl = require('../controllers/MobileCtrl.js');
 router.route('/addNewAccount').get(accountCtrl.onAddNewAccount).post(accountCtrl.onSaveAccount);/*添加账户*/
 router.route('/accountDetail').get(accountCtrl.onShowDetailAccount)/*账户详情*/
 router.route('/removeAccount').get(accountCtrl.onRemoveAccount)/*删除账户*/
+router.route('/forbidAccount').get(accountCtrl.onForbidAccount)/*停用账户*/
+router.route('/startUseAccount').get(accountCtrl.onStartUseAccount)/*启用账户*/
 
 router.route('/login').get(loginCtrl.onShowLogin).post(loginCtrl.routeToView);/*登录*/
 router.route('/logout').get(loginCtrl.onLogout);/*登出*/
@@ -70,7 +71,11 @@ router.route('/deskCate').get(deskCateCtrl.onShowDeskCate);/*桌位分类*/
 router.route('/deskCateForm').get(deskCateCtrl.onShowDeskCateForm);/*桌位分类添加*/
 router.route('/deskCateAmendForm').get(deskCateCtrl.onShowDeskAmendCateForm);/*桌位分类修改*/
 router.route('/removeDeskCate').get(deskCateCtrl.onRemoveDeskCate);/*删除桌位分类*/
-router.route('/addDeskCateForm').get(deskCateCtrl.onAddDeskCate);/*商品分类添加*/
+router.route('/addDeskCateForm').get(deskCateCtrl.onAddDeskCate);/*桌位分类添加*/
+
+router.route('/onShowDesks').get(deskCtrl.onShowDesks);/*桌位展示*/
+router.route('/addNewDesk').get(deskCtrl.onShowNewDesk).post(deskCtrl.onSaveNewDesk);/*桌位添加*/
+router.route('/detailDesk').get(deskCtrl.onShowDeskDetail);/*展示桌位详情*/
 
 router.route('/showOrders').get(ordersCtrl.onShowOrderList);/*订单详情*/
 
@@ -79,9 +84,12 @@ router.route('/newMobile').get(mobileCtrl.onShowNewMobile).post(mobileCtrl.onSav
 router.route('/removeMobile').get(mobileCtrl.onRemoveMobile);/*添加设备*/
 router.route('/detailMobile').get(mobileCtrl.onShowDetailMobile);/*展示设备详情*/
 
-/*interface*/
+/********************************************接口********************************************/
 var Api = require('../api/Api.js');
-router.route(MENU_PATH).get(Api.getMenuList);
+var API = '/Api';
+router.route(API+'/getMenu').get(Api.getMenuList);/*获取菜单*/
+router.route(API+'/insertNotice').get(Api.insertNotice);/*插入新的消息*/
+router.route(API+'/getNotices').get(Api.getNotices);/*获取消息列表*/
 
 const WebSocket = require('ws');
 
@@ -105,11 +113,19 @@ wss.broadcast = function broadcast(s,ws) {
 
 wss.on('connection', function connection(ws) {
 	ws.on('message', function incoming(message) {
-		console.log('received: %s', message);
+		if(message){
+			// Api.insertNotice(JSON.parse(message),function (result) {
+			//
+			// }, function (err) {
+			//
+			// })
+		}
+
+		console.log('received: %s', JSON.stringify(message));
 		wss.clients.forEach(function each(client) {
 			/*判断当前客户端是否为本身*/
 			if (client !== ws && client.readyState === WebSocket.OPEN) {
-				client.send('something');
+				client.send(message);
 			}
 		});
 	});

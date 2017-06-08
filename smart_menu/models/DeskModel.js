@@ -15,20 +15,20 @@ exports.onCreate = function (sequelize) {
 				allowNull: false,
 				unique: true
 			},
-			deskTag: {
-				field: 'desk_tag',
+			deskName: {
+				field: 'desk_name',
+				type: Sequelize.STRING,
+				allowNull: false
+			},
+			/*桌位状态*/
+			deskStatue: {
+				field: 'desk_statue',
 				type: Sequelize.BIGINT,
 				allowNull: false
 			},
-			/*正在用餐*/
-			deskIsUsing: {
-				field: 'desk_is_using',
-				type: Sequelize.BOOLEAN,
-				allowNull: false
-			},
 			/*桌位人数*/
-			deskPersonNum: {
-				field: 'desk_person_num',
+			deskCapacity: {
+				field: 'desk_capacity',
 				type: Sequelize.BIGINT,
 				allowNull: false
 			},

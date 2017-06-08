@@ -40,7 +40,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.all('/*', function(req,res,next){
-	if (!req.session.user && req.url != "/login"){
+	if (!req.session.user && req.url != "/login" && req.url.indexOf("Api")==-1){
 		res.redirect('/login');
 	}else {
 		next();

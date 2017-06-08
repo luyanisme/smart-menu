@@ -82,7 +82,7 @@
                                     <!--<a href="case_show_list.html#" class="panel-control">列表排列</a>-->
 
                                     <div class="hr-line-dashed"></div>
-                                    <button class="btn btn-primary btn-block" onclick="onAddCaseStandard()">添加账户
+                                    <button class="btn btn-primary btn-block" onclick="onAddNewAcount()">添加账户
                                     </button>
                                     <div class="hr-line-dashed"></div>
                                     <div class="clearfix"></div>
@@ -131,12 +131,25 @@
                                             <td><%= result.dataValues.authority%></td>
                                             <td><%= result.dataValues.updateTime%></td>
                                             <td>
+                                                <% if(result.dataValues.authorityId != 2){%>
                                                 <a class="btn btn-primary btn-xs"
                                                    href="accountDetail?userId=<%= result.dataValues.userId%>">详情</a>
+                                                <% if(result.dataValues.isUsed == true){%>
+                                                <button type="button" class="btn btn-primary btn-default btn-xs"
+                                                        onclick="onForbid('<%= result.dataValues.userId%>')">
+                                                    停用
+                                                </button>
+                                                <%} else {%>
+                                                <button type="button" class="btn btn-primary btn-warning btn-xs"
+                                                        onclick="onStartUsing('<%= result.dataValues.userId%>')">
+                                                    启用
+                                                </button>
+                                                <%}%>
                                                 <button type="button" class="btn btn-primary btn-danger btn-xs"
                                                         onclick="onRemove('<%= result.dataValues.userId%>')">
                                                     删除
                                                 </button>
+                                                <%}%>
                                             </td>
                                         </tr>
                                         <%})%>
@@ -161,7 +174,7 @@
 <script src="js/plugins/layer/layer.min.js"></script>
 
 <script>
-	function onAddCaseStandard() {
+	function onAddNewAcount() {
 		location.href = 'addNewAccount'
 	}
 
@@ -177,6 +190,70 @@
 		}, function () {
 			$.ajax({
 				url: 'removeAccount?userId=' + userId,
+				type: 'GET',
+				success: function (data) {
+					if (data.status == 0) {
+						layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+							location.reload(); // 父页面刷新
+						});
+					}
+				},
+				error: function (err) {
+					console.log(err);
+					if (err.status == 1) {
+						layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+							//parent.location.reload(); // 父页面刷新
+						});
+					}
+				}
+			})
+		})
+	}
+
+	function onForbid(userId) {
+		swal({
+			title: "您确定要停用?",
+			text: "停用后该账号无法使用，请谨慎操作！",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "停用",
+			closeOnConfirm: false
+		}, function () {
+			$.ajax({
+				url: 'forbidAccount?userId=' + userId,
+				type: 'GET',
+				success: function (data) {
+					if (data.status == 0) {
+						layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+							location.reload(); // 父页面刷新
+						});
+					}
+				},
+				error: function (err) {
+					console.log(err);
+					if (err.status == 1) {
+						layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+							//parent.location.reload(); // 父页面刷新
+						});
+					}
+				}
+			})
+		})
+	}
+
+	function onStartUsing(userId) {
+		swal({
+			title: "您确定要启用?",
+			text: "请谨慎操作！",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "启用",
+			closeOnConfirm: false
+		}, function () {
+			$.ajax({
+				url: 'startUseAccount?userId=' + userId,
 				type: 'GET',
 				success: function (data) {
 					if (data.status == 0) {

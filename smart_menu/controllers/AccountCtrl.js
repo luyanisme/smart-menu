@@ -38,8 +38,26 @@ exports.onShowDetailAccount = function (req, res) {
 
 exports.onRemoveAccount = function (req, res) {
 	var userId = req.query.userId;
-	UserModel.remove(global.sql.user, {userId:userId}, function (result) {
+	UserModel.remove(global.sql.user, {userId:userId},function (result) {
 		res.send({msg: '账户删除成功', status: 0});
+	}, function (err) {
+		res.send({msg: err, status: 1});
+	})
+};
+
+exports.onForbidAccount = function (req, res) {
+	var userId = req.query.userId;
+	UserModel.update(global.sql.user, {userId:userId},{isUsed:false},function (result) {
+		res.send({msg: '账户停用成功', status: 0});
+	}, function (err) {
+		res.send({msg: err, status: 1});
+	})
+};
+
+exports.onStartUseAccount = function (req, res) {
+	var userId = req.query.userId;
+	UserModel.update(global.sql.user, {userId:userId},{isUsed:true},function (result) {
+		res.send({msg: '账户启用成功', status: 0});
 	}, function (err) {
 		res.send({msg: err, status: 1});
 	})

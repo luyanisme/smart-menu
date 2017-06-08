@@ -74,6 +74,11 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.STRING,
 				allowNull: true
 			},
+			isUsed:{
+				field: 'is_used',
+				type: Sequelize.BOOLEAN,
+				allowNull: true
+			},
 			updateTime: {
 				field: 'update_time',
 				type: Sequelize.STRING,

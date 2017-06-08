@@ -18,8 +18,12 @@ exports.routeToView = function (req, res) {
 			result;
 		}
 		if (password == result.dataValues.password){
-			req.session.user = result;
-			res.send({msg: '登录成功', status: 0, user: result});
+			if (!result.dataValues.isUsed && result.dataValues.authorityId != 2){
+				res.send({msg: '该账户已被停用', status: 1});
+			} else {
+				req.session.user = result;
+				res.send({msg: '登录成功', status: 0, user: result});
+			}
 		} else {
 			res.send({msg: '密码或用户名错误', status: 1});
 		}

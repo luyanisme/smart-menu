@@ -22,6 +22,7 @@ exports.onSaveNewMobile = function (req, res) {
 	var mobilePhoneNum = req.body.phoneNum;
 	var mobileName = req.body.mobileName;
 	var password = req.body.password;
+	var mobileId = req.body.mobileId;
 
 	var moblie = {
 		mobilePhoneNum: mobilePhoneNum,
@@ -30,11 +31,20 @@ exports.onSaveNewMobile = function (req, res) {
 		shopId: shopId
 	};
 
-	MobileModel.insert(global.sql.mobile, moblie, function (result) {
-		res.send({msg: "设备添加成功", status: 0});
-	}, function (err) {
-		res.send({msg: err, status: 1});
-	})
+	if (mobileId) {
+		MobileModel.update(global.sql.mobile, {mobileId:mobileId}, moblie, function (result) {
+			res.send({msg: '设备更新成功', status: 0});
+		}, function (err) {
+			res.send({msg: err, status: 1});
+		})
+	} else {
+		MobileModel.insert(global.sql.mobile, moblie, function (result) {
+			res.send({msg: "设备添加成功", status: 0});
+		}, function (err) {
+			res.send({msg: err, status: 1});
+		})
+	}
+
 };
 
 exports.onShowDetailMobile = function (req, res) {
