@@ -50,12 +50,10 @@ exports.onSaveNewDesk = function (req, res) {
 			res.send({msg: err, status: 1});
 		})
 	}
-
 };
 
 exports.onRemoveDesk = function (req, res) {
 	var deskId = req.query.deskId;
-
 	DeskModel.remove(global.sql.desk, {deskId:deskId}, function (result) {
 		res.send({msg: "桌位删除成功", status: 0});
 	}, function (err) {

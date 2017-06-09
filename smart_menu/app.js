@@ -8,17 +8,19 @@ var session = require('express-session');
 
 var routeHelper = require("./routes/route.js");
 var dateUtil = require('./utils/dateUtil.js');
+var config = require('./Config.js');
 
+/*全局变量*/
 global.sql = require('./utils/sqlUtil.js');
 global.date = dateUtil.getDate();
-global.uploadFloder = 'DATAS/';
+global.uploadFloder = config.imagePath;
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'DATAS')));
+app.use(express.static(path.join(config.imagePath)));
 var ejs = require('ejs');
 app.engine('html',ejs.__express);
 app.set('view engine', 'html');
