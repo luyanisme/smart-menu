@@ -17,7 +17,7 @@ exports.onCreate = function (sequelize) {
 			},
 			casePrice: {
 				field: 'case_price',
-				type: Sequelize.STRING,
+				type: Sequelize.FLOAT,
 				allowNull: false
 			},
 			caseName: {

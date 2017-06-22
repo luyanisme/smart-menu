@@ -99,8 +99,8 @@
 			result = null;
 			return;
 		}
-		result.caseStandardId = caseStandardVals[caseStandardIndex].caseStandardId;
-		result.caseStandardName = caseStandardVals[caseStandardIndex].caseStandardName;
+		result.ruleId = caseStandardVals[caseStandardIndex].caseStandardId;
+		result.ruleName = caseStandardVals[caseStandardIndex].caseStandardName;
 
 		var html = '<select data-placeholder="选择规格名称..." class="form-control chosen-select-2" style="width:240px;" tabindex="2">' +
 			'<option value="">请选择规格名称</option>';
@@ -114,12 +114,12 @@
 		$(".chosen-select-2").on('change', function () {
 			var caseStandardValIndex = $('option:selected', '.chosen-select-2').index() - 1;
 			if (caseStandardValIndex < 0) {
-				result.caseStandardValId = null;
-				result.caseStandardValue = null;
+				result.id = null;
+				result.value = null;
 				return;
 			}
-			result.caseStandardValId = caseStandardVals[caseStandardIndex].standardVals[caseStandardValIndex].id;
-			result.caseStandardValue = caseStandardVals[caseStandardIndex].standardVals[caseStandardValIndex].value;
+			result.id = caseStandardVals[caseStandardIndex].standardVals[caseStandardValIndex].id;
+			result.value = caseStandardVals[caseStandardIndex].standardVals[caseStandardValIndex].value;
 		});
 	});
 

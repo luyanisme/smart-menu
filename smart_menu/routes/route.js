@@ -84,12 +84,17 @@ router.route('/newMobile').get(mobileCtrl.onShowNewMobile).post(mobileCtrl.onSav
 router.route('/removeMobile').get(mobileCtrl.onRemoveMobile);/*添加设备*/
 router.route('/detailMobile').get(mobileCtrl.onShowDetailMobile);/*展示设备详情*/
 
-/********************************************接口********************************************/
 var Api = require('../api/Api.js');
 var API = '/Api';
+/********************************************移动端接口********************************************/
 router.route(API+'/getMenu').get(Api.getMenuList);/*获取菜单*/
 router.route(API+'/insertNotice').get(Api.insertNotice);/*插入新的消息*/
 router.route(API+'/getNotices').get(Api.getNotices);/*获取消息列表*/
+router.route(API+'/postOrderedList').post(Api.postOrderedList);/*获取已点商品*/
+
+/********************************************微信小程序接口********************************************/
+var WECHAT = '/Api/Wechat';
+router.route(WECHAT+'/getMenu').get(Api.getWeChatMenuList);/*获取菜单*/
 
 const WebSocket = require('ws');
 

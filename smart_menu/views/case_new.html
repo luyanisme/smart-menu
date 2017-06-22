@@ -253,14 +253,14 @@
 			btn: ['确定', '关闭'],
 			yes: function (index, layero) {
 				var result = $(layero).find("iframe")[0].contentWindow.resultData();//获取layer层的数据
-				if (result.caseStandardValue == null) {
+				if (result.value == null) {
 					layer.msg('请选择规格值', {time: 1000}, function () {
 						//parent.location.reload(); // 父页面刷新
 					});
 					return;
 				}
 				for (var i = 0; i < standardVals.length; i++) {
-					if (standardVals[i].caseStandardValId == result.caseStandardValId) {
+					if (standardVals[i].id == result.id) {
 						layer.msg('改规格值已选', {time: 1000}, function () {
 
 						});
@@ -270,16 +270,16 @@
 				standardVals.push(result);
 				layer.close(index);
 				var html = '<li class="form-inline">' +
-					'<label class="form-control standval">' + result.caseStandardValue + '</label>' +
+					'<label class="form-control standval">' + result.value + '</label>' +
 					'<label style="padding-left: 5px;padding-right: 5px;">-</label>' +
-					'<input id="casePrice_' + result.caseStandardValId + '"' + ' name="casePrice" type="number" class="form-control" placeholder="请输入价格" required="required">' +
+					'<input id="casePrice_' + result.id + '"' + ' name="casePrice" type="number" class="form-control" placeholder="请输入价格" required="required">' +
 					'<label class="form-control standval">.00￥</label>' +
 					'<label class="remove_icon">-</label>' +
 					'</li>'
 				$(".standard").append(html);
 
-				$("#casePrice_" + result.caseStandardValId).blur(function () {
-					result.casePrice = $("#casePrice_" + result.caseStandardValId).val();
+				$("#casePrice_" + result.id).blur(function () {
+					result.casePrice = parseFloat($("#casePrice_" + result.id).val());
 				});
 			}
 
@@ -298,14 +298,14 @@
 			btn: ['确定', '关闭'],
 			yes: function (index, layero) {
 				var result = $(layero).find("iframe")[0].contentWindow.resultData();//获取layer层的数据
-				if (result.casePropertyValue == null) {
+				if (result.value == null) {
 					layer.msg('请选择属性值', {time: 1000}, function () {
 					});
 					return;
 				}
 
 				for (var i = 0; i < propertyVals.length; i++) {
-					if (propertyVals[i].casePropertyValId == result.casePropertyValId) {
+					if (propertyVals[i].id == result.id) {
 						layer.msg('改属性值已选', {time: 1000}, function () {
 
 						});
@@ -315,7 +315,7 @@
 				propertyVals.push(result);
 				layer.close(index);
 				var html = '<li class="form-inline">' +
-					'<label class="form-control standval">' + result.casePropertyValue + '</label>' +
+					'<label class="form-control standval">' + result.value + '</label>' +
 					'<label class="remove_icon">-</label>' +
 					'</li>'
 				$(".property").append(html);
