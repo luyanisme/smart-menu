@@ -43,18 +43,17 @@
                         <li class="active">
                             <a aria-expanded="false" role="button" href=""> 返回首页</a>
                         </li>
+                        <li>
+                            <a aria-expanded="false" role="button" href="showFuncModule"> 功能模块</a>
+                        </li>
                         <li class="dropdown">
                             <a aria-expanded="false" role="button" href="#" class="dropdown-toggle"
-                               data-toggle="dropdown"> 菜单 <span class="caret"></span></a>
+                               data-toggle="dropdown">软件功能<span class="caret"></span></a>
                             <ul role="menu" class="dropdown-menu">
-                                <li><a href="#">菜单列表</a>
+                                <%editions.forEach(function(edition){%>
+                                <li><a href="onShowEdition?editionId=<%=edition.dataValues.editionId%>"><%= edition.dataValues.editionName%></a>
                                 </li>
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                                <li><a href="#">菜单列表</a>
-                                </li>
+                                <%})%>
                             </ul>
                         </li>
 
@@ -122,31 +121,31 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <%results.forEach(function(result){%>
+                                        <%users.forEach(function(user){%>
                                         <tr>
-                                            <td><%= result.dataValues.userId%></td>
-                                            <td><%= result.dataValues.userName%></td>
-                                            <td><%= result.dataValues.phoneNum%></td>
-                                            <td><%= result.dataValues.edition%></td>
-                                            <td><%= result.dataValues.authority%></td>
-                                            <td><%= result.dataValues.updateTime%></td>
+                                            <td><%= user.dataValues.userId%></td>
+                                            <td><%= user.dataValues.userName%></td>
+                                            <td><%= user.dataValues.phoneNum%></td>
+                                            <td><%= user.dataValues.edition%></td>
+                                            <td><%= user.dataValues.authority%></td>
+                                            <td><%= user.dataValues.updateTime%></td>
                                             <td>
-                                                <% if(result.dataValues.authorityId != 2){%>
+                                                <% if(user.dataValues.authorityId != 2){%>
                                                 <a class="btn btn-primary btn-xs"
-                                                   href="accountDetail?userId=<%= result.dataValues.userId%>">详情</a>
-                                                <% if(result.dataValues.isUsed == true){%>
+                                                   href="accountDetail?userId=<%= user.dataValues.userId%>">详情</a>
+                                                <% if(user.dataValues.isUsed == true){%>
                                                 <button type="button" class="btn btn-primary btn-default btn-xs"
-                                                        onclick="onForbid('<%= result.dataValues.userId%>')">
+                                                        onclick="onForbid('<%= user.dataValues.userId%>')">
                                                     停用
                                                 </button>
                                                 <%} else {%>
                                                 <button type="button" class="btn btn-primary btn-warning btn-xs"
-                                                        onclick="onStartUsing('<%= result.dataValues.userId%>')">
+                                                        onclick="onStartUsing('<%= user.dataValues.userId%>')">
                                                     启用
                                                 </button>
                                                 <%}%>
                                                 <button type="button" class="btn btn-primary btn-danger btn-xs"
-                                                        onclick="onRemove('<%= result.dataValues.userId%>')">
+                                                        onclick="onRemove('<%= user.dataValues.userId%>')">
                                                     删除
                                                 </button>
                                                 <%}%>

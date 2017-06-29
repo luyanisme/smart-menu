@@ -166,10 +166,15 @@ var validateUtil = {
 		}
 	},
 
-	checkChinaName: function(name) {
-	var pattern = /^[\u4E00-\u9FA5]{1,6}$/;
-	return pattern.test(name);
-}
+	checkChinaName: function (name) {
+		var pattern = /^[\u4E00-\u9FA5]{1,6}$/;
+		return pattern.test(name);
+	},
+
+	checkEnglishField: function (field) {
+		var pattern = /^[A-Za-z]+$/;
+		return pattern.test(field);
+	}
 };
 //验证护照是否正确
 function checknumber(number) {

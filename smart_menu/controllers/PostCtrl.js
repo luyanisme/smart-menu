@@ -104,7 +104,7 @@ exports.onUpload = function (req, res) {
 			};
 		}
 
-		/*如果是修改商品信息*/
+		/*如果是修改海报信息*/
 		if (fields.postId) {
 			if (post.caseImagePath != null) {
 				PostModel.findOne(global.sql.post, {postId:fields.postId}, function (result) {

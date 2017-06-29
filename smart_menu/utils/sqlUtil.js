@@ -18,6 +18,7 @@ var deskCateModel = require('../models/DeskCateModel.js');
 var deskModel = require('../models/DeskModel.js');
 var mobileModel = require('../models/MobileModel.js');
 var noticeModel = require('../models/NoticeModel.js');
+var funcModel = require('../models/FuncModel.js');
 
 var db = {
 	sequelize : new Sequelize(
@@ -80,5 +81,8 @@ db.mobile = mobileModel.onCreate(db.sequelize);
 
 /*消息*/
 db.notice = noticeModel.onCreate(db.sequelize);
+
+/*功能模块*/
+db.func = funcModel.onCreate(db.sequelize);
 
 module.exports = db;

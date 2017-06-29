@@ -19,7 +19,7 @@ exports.getMenuList = function (req, res) {
 				casecates[i].cases[j].casePropertyVals = JSON.parse(casecates[i].cases[j].casePropertyVals);
 			}
 		}
-		res.send(casecates);
+		res.send({msg:'请求成功', statue:0,data:casecates});
 	});
 };
 
@@ -46,7 +46,7 @@ exports.getWeChatMenuList = function (req, res) {
 				}
 			}
 		}
-		res.send(casecates);
+		res.send({msg:'请求成功', statue:0,data:casecates});
 	});
 };
 

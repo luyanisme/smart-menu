@@ -14,6 +14,7 @@ var config = require('./Config.js');
 global.sql = require('./utils/sqlUtil.js');
 global.date = dateUtil.getDate();
 global.uploadFloder = config.imagePath;
+global.iconFloder = config.iconPath;
 
 var app = express();
 
@@ -21,6 +22,8 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(config.imagePath)));
+app.use(express.static(path.join(config.iconPath)));
+
 var ejs = require('ejs');
 app.engine('html',ejs.__express);
 app.set('view engine', 'html');

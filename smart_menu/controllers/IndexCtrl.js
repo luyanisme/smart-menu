@@ -4,6 +4,7 @@
 var CaseTypeModel = require('../models/CaseTypeModel.js');
 var DeskCateModel = require('../models/DeskCateModel.js');
 var UserModel = require('../models/UserModel.js');
+var EditionModel = require('../models/EditionModel.js');
 
 exports.doLoad = function (req, res) {
 	var shopId = req.session.user.shopId;
@@ -19,8 +20,12 @@ exports.doLoad = function (req, res) {
 };
 
 exports.doLoadV1 = function (req, res) {
-	UserModel.findAll(global.sql.user,{},function (result) {
-		res.render("index_v1", {title: '账号添加',results: result});
+	UserModel.findAll(global.sql.user,{},function (users) {
+		EditionModel.findAll(global.sql.edition,{},function (editions) {
+			res.render("index_v1", {title: '账号添加',users: users,editions:editions});
+		},function (err) {
+			res.send({msg: err, status: 1});
+		})
 	},function (err) {
 		res.send({msg: err, status: 1});
 	})

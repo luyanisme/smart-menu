@@ -15,13 +15,17 @@ var webUploadCtrl = require('../controllers/WebUploadCtrl.js');
 var postCtrl = require('../controllers/PostCtrl.js');
 var loginCtrl = require('../controllers/LoginCtrl.js');
 var accountCtrl = require('../controllers/AccountCtrl.js');
+var editionCtrl = require('../controllers/EditionCtrl.js');
 var mobileCtrl = require('../controllers/MobileCtrl.js');
+var funcModuleCtrl = require('../controllers/FuncModuleCtrl.js');
 
 router.route('/addNewAccount').get(accountCtrl.onAddNewAccount).post(accountCtrl.onSaveAccount);/*添加账户*/
 router.route('/accountDetail').get(accountCtrl.onShowDetailAccount)/*账户详情*/
 router.route('/removeAccount').get(accountCtrl.onRemoveAccount)/*删除账户*/
 router.route('/forbidAccount').get(accountCtrl.onForbidAccount)/*停用账户*/
 router.route('/startUseAccount').get(accountCtrl.onStartUseAccount)/*启用账户*/
+
+router.route('/onShowEdition').get(editionCtrl.onShowEdtion)/*启用账户*/
 
 router.route('/login').get(loginCtrl.onShowLogin).post(loginCtrl.routeToView);/*登录*/
 router.route('/logout').get(loginCtrl.onLogout);/*登出*/
@@ -83,6 +87,11 @@ router.route('/showMobiles').get(mobileCtrl.onShowMobileList);/*终端列表*/
 router.route('/newMobile').get(mobileCtrl.onShowNewMobile).post(mobileCtrl.onSaveNewMobile);/*添加设备*/
 router.route('/removeMobile').get(mobileCtrl.onRemoveMobile);/*添加设备*/
 router.route('/detailMobile').get(mobileCtrl.onShowDetailMobile);/*展示设备详情*/
+
+router.route('/showFuncModule').get(funcModuleCtrl.onShowFuncModule);/*展示模块列表*/
+router.route('/addFuncModule').get(funcModuleCtrl.onAddFuncModule).post(funcModuleCtrl.onUpload);/*添加新模块*/
+router.route('/showDetailModule').get(funcModuleCtrl.onShowDetailFuncModule).post(funcModuleCtrl.onUpload);/*添加新模块*/
+router.route('/removeModule').get(funcModuleCtrl.onRemoveFuncModule);/*添加新模块*/
 
 var Api = require('../api/Api.js');
 var API = '/Api';
