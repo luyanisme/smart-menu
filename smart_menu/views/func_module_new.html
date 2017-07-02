@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div id="container" class="ibox-content">
-                    <form id="module_form" method="post" action="addFuncModule" class="form-horizontal">
+                    <form id="module_form" enctype="multipart/form-data" method="post" action="addFuncModule" class="form-horizontal">
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <% if (locals.success) { %>
@@ -86,7 +86,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <input value="<%=func == null ? '' : func.dataValues.funcId%>" name="funcId" type="number" class="form-control"
+                            <input value="<%=func == null ? '' : func.dataValues.funcId%>" name="funcId" type="number"
+                                   class="form-control"
                                    required="required" style="display: none">
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
@@ -95,7 +96,7 @@
                                 <div class="col-sm-10">
                                     <input id="moduleName" name="moduleName" type="text" class="form-control"
                                            placeholder="请输入模块名称" required="required"
-                                    value="<%= func == null ? '' : func.dataValues.funcName%>">
+                                           value="<%= func == null ? '' : func.dataValues.funcName%>">
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -155,10 +156,10 @@
 
 	var imageName = "<%= func == null ? '' : func.dataValues.funcIconPath%>";
 	if (imageName) {
-			$(".btns_container").css('display', 'block');
-			$("#fileImage").attr('src', imageName);
-			$(".upload").css('display', 'none');
-			$(".fileImage").css('display', 'block');
+		$(".btns_container").css('display', 'block');
+		$("#fileImage").attr('src', imageName);
+		$(".upload").css('display', 'none');
+		$(".fileImage").css('display', 'block');
 	} else {
 		$(".btns_container").css('display', 'block');
 	}
@@ -238,6 +239,7 @@
 			}
 		};
 		$('#module_form').ajaxSubmit(options);
+		return false;//阻止自动提交
 	});
 </script>
 </body>

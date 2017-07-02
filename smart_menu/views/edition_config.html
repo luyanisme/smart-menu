@@ -9,6 +9,7 @@
     <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
     <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
 
     <style type="text/css">
 
@@ -16,6 +17,43 @@
             color: #000;
         }
 
+        .func-wrapper {
+            position: relative;
+            margin-left: 5px;
+            float: left;
+            width: 45px;
+            height: 45px;
+            background-color: #D8D8D8
+        }
+
+        .func-title {
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            width: 100%;
+            height: 15px;
+            background-color: #676A6C;
+            position: absolute;
+            bottom: 0px
+        }
+
+        .func-title h {
+            width: auto;
+            height: auto;
+            color: #ffffff;
+            font-size: 11px;
+        }
+
+        .delete-shadow {
+            background-color: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            bottom: 0px;
+            width: 100%;
+            height: 0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 
 </head>
@@ -54,18 +92,10 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">版本描述</label>
                             <div class="col-sm-10">
-                                <textarea id="funcDesc" name="funcDesc" class="form-control" required="" aria-required="true" style=" height: 118px;">
+                                <textarea id="funcDesc" name="funcDesc" class="form-control" required=""
+                                          aria-required="true" style=" height: 118px;">
                                     <%= edition.dataValues.editionDesc%>
                                 </textarea>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">功能添加</label>
-
-                            <div class="col-sm-10">
-                                <input id="password" name="password" type="text" class="form-control"
-                                       placeholder="请输入用户密码" required="required">
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -75,6 +105,36 @@
                             <div class="col-sm-10">
                                 <input id="phoneNum" name="phoneNum" type="number" class="form-control"
                                        placeholder="请输入联系电话" required="required">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">功能添加</label>
+
+                            <div class="col-sm-10">
+                                <!--<button class="btn btn-primary shop-detail" type="button">&nbsp;模块添加-->
+                                <!--</button>-->
+                                <div class="func-wrapper" onmouseover="omover()" onmouseout="omout()">
+                                    <img style="width: 100%;height: 100%;" src="d0395fd7c45459b6896837a756934758.png">
+                                    <div class="func-title">
+                                        <h>点单</h>
+                                    </div>
+                                    <div class="delete-shadow">
+                                        <img src="images/delete_icon.png" style="width: 25px;height: 55.5%;">
+                                    </div>
+                                </div>
+                                <div class="func-wrapper" onmouseover="omover()" onmouseout="omout()">
+                                    <img style="width: 100%;height: 100%;" src="d0395fd7c45459b6896837a756934758.png">
+                                    <div class="func-title">
+                                        <h>点单</h>
+                                    </div>
+                                    <div class="delete-shadow">
+                                        <img src="images/delete_icon.png" style="width: 25px;height: 55.5%;">
+                                    </div>
+                                </div>
+                                <div style="margin-left:5px;float: left; width: 45px;height: 45px;">
+                                    <img style="width: 100%;height: 100%;" src="images/add_icon.png">
+                                </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -97,10 +157,17 @@
 <script src="js/plugins/layer/layer.min.js"></script>
 
 <!-- 自定义js -->
-<script src="js/plugins/layer/layer.min.js"></script>
 <script src="js/regex/regex.js"></script>
 
+
 <script type="text/javascript">
+
+	$(".func-wrapper").hover(function () {
+			$(this).find('.delete-shadow').animate({height: "100%"}, "fast");
+		},
+		function () {
+			$(this).find('.delete-shadow').animate({height: "0px"}, "fast");
+		})
 
 	$(".close").click(function () {
 		history.back(-1);

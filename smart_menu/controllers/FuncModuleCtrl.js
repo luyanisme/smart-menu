@@ -115,7 +115,7 @@ exports.onUpload = function (req, res) {
 					res.send({msg: err, status: 1});
 				})
 			} else {
-				FuncModel.update(global.sql.post, {postId:fields.postId}, post, function (result) {
+				FuncModel.update(global.sql.func, {funcId:fields.funcId}, func, function (result) {
 					res.send({msg: '保存成功!', status: 0});
 				},function (err) {
 					res.send({msg: err, status: 1});

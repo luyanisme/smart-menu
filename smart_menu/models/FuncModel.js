@@ -43,6 +43,12 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.BIGINT,
 				allowNull: true
 			},
+			/*是否启用*/
+			isUsing: {
+				field: 'is_using',
+				type: Sequelize.BOOLEAN,
+				allowNull: false
+			},
 		},
 		{
 			tableName: 'func',
