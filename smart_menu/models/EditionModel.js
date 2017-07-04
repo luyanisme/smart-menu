@@ -25,6 +25,11 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.STRING,
 				allowNull: true
 			},
+			editionModule: {
+				field: 'edition_module',
+				type: Sequelize.TEXT,
+				allowNull: false
+			},
 			editionOperate: {
 				field: 'edition_operate',
 				type: Sequelize.BIGINT,

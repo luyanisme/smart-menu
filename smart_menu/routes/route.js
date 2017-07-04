@@ -25,7 +25,8 @@ router.route('/removeAccount').get(accountCtrl.onRemoveAccount)/*删除账户*/
 router.route('/forbidAccount').get(accountCtrl.onForbidAccount)/*停用账户*/
 router.route('/startUseAccount').get(accountCtrl.onStartUseAccount)/*启用账户*/
 
-router.route('/onShowEdition').get(editionCtrl.onShowEdtion)/*启用账户*/
+router.route('/onShowEdition').get(editionCtrl.onShowEdtion).post(editionCtrl.onSaveEdition)/*启用账户*/
+router.route('/addModuleForm').get(editionCtrl.onAddModule)/*添加新模块*/
 
 router.route('/login').get(loginCtrl.onShowLogin).post(loginCtrl.routeToView);/*登录*/
 router.route('/logout').get(loginCtrl.onLogout);/*登出*/

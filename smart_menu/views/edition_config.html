@@ -23,7 +23,8 @@
             float: left;
             width: 45px;
             height: 45px;
-            background-color: #D8D8D8
+            background-color: #D8D8D8;
+            list-style-type: none;
         }
 
         .func-title {
@@ -74,37 +75,13 @@
                 <div id="container" class="ibox-content">
 
                     <div class="form-horizontal">
-                        <div class="form-group">
-                            <% if (locals.success) { %>
-                            <div id="alt_sucess" class="alert alert-success">
-                                <%- success %>
-                            </div>
-                            <% } %>
-
-                            <% if (locals.error) { %>
-                            <div id="alt_warning" class="alert alert-warning">
-                                <%= error %>
-                            </div>
-                            <% } %>
-                        </div>
-
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">版本描述</label>
                             <div class="col-sm-10">
-                                <textarea id="funcDesc" name="funcDesc" class="form-control" required=""
-                                          aria-required="true" style=" height: 118px;">
-                                    <%= edition.dataValues.editionDesc%>
-                                </textarea>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">联系电话</label>
-
-                            <div class="col-sm-10">
-                                <input id="phoneNum" name="phoneNum" type="number" class="form-control"
-                                       placeholder="请输入联系电话" required="required">
+                                <input id="editionDesc" name="editionDesc" class="form-control" required=""
+                                       aria-required="true" value="<%= edition.dataValues.editionDesc%>">
+                                </input>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -112,27 +89,21 @@
                             <label class="col-sm-2 control-label">功能添加</label>
 
                             <div class="col-sm-10">
-                                <!--<button class="btn btn-primary shop-detail" type="button">&nbsp;模块添加-->
-                                <!--</button>-->
-                                <div class="func-wrapper" onmouseover="omover()" onmouseout="omout()">
-                                    <img style="width: 100%;height: 100%;" src="d0395fd7c45459b6896837a756934758.png">
-                                    <div class="func-title">
-                                        <h>点单</h>
-                                    </div>
-                                    <div class="delete-shadow">
-                                        <img src="images/delete_icon.png" style="width: 25px;height: 55.5%;">
-                                    </div>
-                                </div>
-                                <div class="func-wrapper" onmouseover="omover()" onmouseout="omout()">
-                                    <img style="width: 100%;height: 100%;" src="d0395fd7c45459b6896837a756934758.png">
-                                    <div class="func-title">
-                                        <h>点单</h>
-                                    </div>
-                                    <div class="delete-shadow">
-                                        <img src="images/delete_icon.png" style="width: 25px;height: 55.5%;">
-                                    </div>
-                                </div>
-                                <div style="margin-left:5px;float: left; width: 45px;height: 45px;">
+                                <ul class="list-group" style="margin-bottom: 0px">
+                                    <%edition.editionModule.forEach(function(module){%>
+                                    <li class="func-wrapper">
+                                        <img style="width: 100%;height: 100%;"
+                                             src="<%=module.funcIconPath%>">
+                                        <div class="func-title">
+                                            <h><%=module.funcName%></h>
+                                        </div>
+                                        <div class="delete-shadow">
+                                            <img src="images/delete_icon.png" style="width: 25px;height: 55.5%;">
+                                        </div>
+                                    </li>
+                                    <%})%>
+                                </ul>
+                                <div class="add-func" style="margin-left:5px;float: left; width: 45px;height: 45px;">
                                     <img style="width: 100%;height: 100%;" src="images/add_icon.png">
                                 </div>
                             </div>
@@ -161,13 +132,69 @@
 
 
 <script type="text/javascript">
+	var edition = JSON.parse('<%=JSON.stringify(edition) %>'.replace(/&#34;/g, '"'));
+	var modules = [];
+	edition.editionModule.forEach(function (module) {
+		modules.push(module);
+	});
+	initHover();
+	$('.add-func').on('click', function () {
+		layer.open({
+			title: '添加属性',
+			type: 2,
+			area: ['320px', '50%'], //宽高
+			content: 'addModuleForm',
+			btn: ['确定', '关闭'],
+			yes: function (index, layero) {
+				var result = $(layero).find("iframe")[0].contentWindow.resultData();//获取layer层的数据
+				if (result == null) {
+					layer.msg('请选择模块', {time: 1000}, function () {
+					});
+					return;
+				}
 
-	$(".func-wrapper").hover(function () {
-			$(this).find('.delete-shadow').animate({height: "100%"}, "fast");
-		},
-		function () {
-			$(this).find('.delete-shadow').animate({height: "0px"}, "fast");
-		})
+				for (var i = 0; i < modules.length; i++) {
+					if (modules[i].funcId == result.funcId) {
+						layer.msg('改模块已选', {time: 1000}, function () {
+
+						});
+						return;
+					}
+				}
+				modules.push(result);
+				layer.close(index);
+
+				var html = '<li class="func-wrapper">' +
+					'<img style="width: 100%;height: 100%;" src="' + result.funcIconPath + '">' +
+					'<div class="func-title">' +
+					'<h>' + result.funcName + '</h>' +
+					'</div>' +
+					'<div class="delete-shadow">' +
+					'<img src="images/delete_icon.png" style="width: 25px;height: 55.5%;">' +
+					'</div>' +
+					'</li>'
+				$('.list-group').append(html);
+				initHover();
+			}
+
+		});
+
+	});
+
+	function initHover() {
+		$(".func-wrapper").hover(function () {
+				$(this).find('.delete-shadow').animate({height: "100%"}, "fast");
+			},
+			function () {
+				$(this).find('.delete-shadow').animate({height: "0px"}, "fast");
+			})
+	}
+
+	$(".list-group").on('click', '.func-wrapper', function () {
+		var li = $(this);
+		modules.splice(li.index(), 1);
+		li.remove();
+	});
 
 	$(".close").click(function () {
 		history.back(-1);
@@ -178,49 +205,28 @@
 	});
 
 	$("#save").click(function () {
-		var userName = $("#userName").val();
-		var password = $("#password").val();
-		var phoneNum = $("#phoneNum").val();
-		var authorityId = $('#authority_select option:selected').val();
-		var authority = $('#authority_select option:selected').text();
-		var editionId = $('#edition_select option:selected').val();
-		var edition = $('#edition_select option:selected').text();
+		var editionDesc = $("#editionDesc").val();
 
-		if (userName == "") {
-			layer.msg('请输入账号名称', {time: 1000}, function () {
-			});
-			return;
-		}
-
-		if (password == "") {
-			layer.msg('请输入用户密码', {time: 1000}, function () {
-			});
-			return;
-		}
-
-		if (phoneNum == "") {
-			layer.msg('请输入联系电话', {time: 1000}, function () {
+		if (editionDesc == "") {
+			layer.msg('请输入版本描述', {time: 1000}, function () {
 			});
 			return;
 		}
 
 		var data = {
-			userName: userName,
-			password: password,
-			phoneNum: phoneNum,
-			authorityId: authorityId,
-			authority: authority,
-			editionId: editionId,
-			edition: edition,
+			editionId: edition.editionId,
+			editionDesc: editionDesc,
+			editionModule: JSON.stringify(modules)
 		}
 		$.ajax({
-			url: 'addNewAccount',//后台文件上传接口
+			url: 'onShowEdition',//后台文件上传接口
 			type: 'POST',
 			data: data,
 			success: function (data) {
 				if (data.status == 0) {
 					layer.msg(data.msg, {time: 1000, icon: 1}, function () {
 						self.location = document.referrer;
+//						self.location.reload();
 					});
 				}
 

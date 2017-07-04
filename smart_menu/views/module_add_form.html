@@ -34,23 +34,20 @@
 
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">添加属性</label>
+                            <label class="col-sm-2 control-label"><%= title%></label>
 
                             <div class="col-sm-10">
-                                <div class="input-group property_1">
-                                    <select data-placeholder="选择属性名称..." class="chosen-select chosen-select-1"
+                                <div class="input-group module">
+                                    <select data-placeholder="选择模块名称..." class="chosen-select"
                                             style="width:240px;"
                                             tabindex="2">
-                                        <option value="">请选择属性值</option>
-                                        <%results.forEach(function(result){%>
-                                        <option value="<%= result.dataValues.casePropertyId%>" hassubinfo="true"><%=
-                                            result.dataValues.casePropertyName%>
+                                        <option value="">请选择模块</option>
+                                        <%funcs.forEach(function(func){%>
+                                        <option value="<%= func.dataValues.funcId%>" hassubinfo="true"><%=
+                                            func.dataValues.funcName%>
                                         </option>
                                         <%})%>
                                     </select>
-                                </div>
-                                <div class="input-group property_2" style="margin-top: 5px">
-
                                 </div>
                             </div>
                         </div>
@@ -74,39 +71,12 @@
 
 <script type="text/javascript">
 
-	var casePropertyVals = JSON.parse('<%=JSON.stringify(results) %>'.replace(/&#34;/g, '"'));
-	var result = {};
+	var funcs = JSON.parse('<%=JSON.stringify(funcs) %>'.replace(/&#34;/g, '"'));
+	var result = null;
 
-	$(".chosen-select-1").on('change', function () {
-
-		var casePropertyIndex = $('option:selected', '.chosen-select-1').index() - 1;
-		if (casePropertyIndex < 0) {
-			$(".property_2").html("");
-			result = null;
-			return;
-		}
-		result.ruleId = casePropertyVals[casePropertyIndex].casePropertyId;
-		result.ruleName = casePropertyVals[casePropertyIndex].casePropertyName;
-
-		var html = '<select data-placeholder="选择属性名称..." class="form-control chosen-select-2" style="width:240px;" tabindex="2">' +
-			'<option value="">请选择属性名称</option>';
-		casePropertyVals[casePropertyIndex].propertyVals.forEach(function (casePropertyVal) {
-			html += '<option value="1">' +
-				casePropertyVal.value +
-				'</option>';
-		});
-		html += '</select>';
-		$(".property_2").html(html);
-		$(".chosen-select-2").on('change', function () {
-			var casePropertyValIndex = $('option:selected', '.chosen-select-2').index() - 1;
-			if (casePropertyValIndex < 0) {
-				result.id = null;
-				result.value = null;
-				return;
-			}
-			result.id = casePropertyVals[casePropertyIndex].propertyVals[casePropertyValIndex].id;
-			result.value = casePropertyVals[casePropertyIndex].propertyVals[casePropertyValIndex].value;
-		});
+	$(".chosen-select").on('change', function () {
+		var funcModuleIndex = $('option:selected', '.chosen-select').index() - 1;
+        result = funcs[funcModuleIndex];
 	});
 
 	$("#cancel").click(function () {
@@ -115,12 +85,12 @@
 	});
 
 	$('#save').on('click', function () {
-		if (caseTypeName == "") {
-			layer.msg('您还未输入菜类名称', {time: 1000}, function () {
-				//parent.location.reload(); // 父页面刷新
-			});
-			return;
-		}
+//		if (result == "") {
+//			layer.msg('您还未输入菜类名称', {time: 1000}, function () {
+//				//parent.location.reload(); // 父页面刷新
+//			});
+//			return;
+//		}
 	});
 
 	var resultData = function () {

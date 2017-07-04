@@ -87,6 +87,7 @@ exports.onUpload = function (req, res) {
 				funcDesc: moduleDesc,
 				funcIconPath: iconName,
 				funcField: moduleField,
+				isUsing:true,
 				updateTime: global.date
 			};
 		} else {
@@ -94,6 +95,7 @@ exports.onUpload = function (req, res) {
 				funcName: moduleName,
 				funcDesc: moduleDesc,
 				funcField: moduleField,
+				isUsing:true,
 				updateTime: global.date
 			};
 		}
