@@ -9,7 +9,11 @@ exports.onShowEdtion = function (req, res) {
 	var editionId = req.query.editionId;
 	EditionModel.findOne(global.sql.edition, {editionId: editionId}, function (edition) {
 		edition.editionModuleIds = JSON.parse(edition.editionModuleIds);
-		FuncModel.findAll(global.sql.func,{funcId:edition.editionModuleIds},function (funcs) {
+		var funcIds = [];
+		edition.editionModuleIds.forEach(function (func) {
+			funcIds.push(func.funcId);
+		})
+		FuncModel.findAll(global.sql.func,{funcId:funcIds},function (funcs) {
 			res.render("edition_config", {title: edition.dataValues.editionName, edition: edition.toJSON(), funcs:funcs});
 		}, function (err) {
 			res.send({msg: err, status: 1});
@@ -42,9 +46,9 @@ exports.onSaveEdition = function (req, res) {
 			shops.forEach(function (shop) {
 				if (shop.shopEditionId == editionId){
 					shop.shopModuleIds = JSON.parse(shop.shopModuleIds);
-					editionModuleIds = JSON.parse(editionModuleIds);
-					if (editionModuleIds.length > shop.shopModuleIds.length) {
-						var diffs = editionModuleIds.diff(shop.shopModuleIds);
+					var funcModuleIds = JSON.parse(editionModuleIds);
+					if (funcModuleIds.length > shop.shopModuleIds.length) {
+						var diffs = funcModuleIds.diff(shop.shopModuleIds);
 						diffs.forEach(function (diff) {
 							shop.shopModuleIds.push(diff);
 						})
@@ -75,7 +79,7 @@ Array.prototype.diff = function (a) {
 
 function isContain(moduleIds, id) {
 	for (var i = 0; i < moduleIds.length; i++) {
-		if (moduleIds[i] == id) {
+		if (moduleIds[i].funcId == id) {
 			return true;
 		}
 	}

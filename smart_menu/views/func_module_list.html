@@ -52,10 +52,18 @@
                                     <div>
                                         <a class="btn btn-primary btn-xs"
                                            href="">编辑</a>
+                                        <%if(func.isWorking){%>
                                         <button type="button" class="btn btn-primary btn-danger btn-xs"
-                                                onclick="onRemove()">
+                                                onclick="onStop('<%= func.funcId%>')">
                                             停用
                                         </button>
+                                        <%} else {%>
+                                        <button type="button" class="btn btn-primary btn-default btn-xs"
+                                                onclick="onStart('<%= func.funcId%>')">
+                                            启用
+                                        </button>
+                                        <%}%>
+
                                     </div>
                                     <%}%>
                                 </td>
@@ -84,18 +92,18 @@
 
 <script>
 
-	function onRemove(deskId) {
+	function onStop(funcId) {
 		swal({
-			title: "您确定要删除?",
-			text: "删除后将无法恢复，请谨慎操作！",
+			title: "您确定要停用该模块?",
+			text: "请谨慎操作！",
 			type: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#DD6B55",
-			confirmButtonText: "删除",
+			confirmButtonText: "停用",
 			closeOnConfirm: false
 		}, function () {
 			$.ajax({
-				url: 'removeDesk?deskId=' + deskId,
+				url: 'onStopOrStartModule?funcId=' + funcId,
 				type: 'GET',
 				success: function (data) {
 					if (data.status == 0) {
@@ -115,6 +123,38 @@
 			})
 		})
 	}
+
+		function onStart(funcId) {
+			swal({
+				title: "您确定要启用该模块?",
+				text: "请谨慎操作！",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "启用",
+				closeOnConfirm: false
+			}, function () {
+				$.ajax({
+					url: 'onStopOrStartModule?funcId=' + funcId,
+					type: 'GET',
+					success: function (data) {
+						if (data.status == 0) {
+							layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+								location.reload(); // 父页面刷新
+							});
+						}
+					},
+					error: function (err) {
+						console.log(err);
+						if (err.status == 1) {
+							layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+								//parent.location.reload(); // 父页面刷新
+							});
+						}
+					}
+				})
+			})
+		}
 </script>
 
 <script src="js/plugins/layer/layer.min.js"></script>

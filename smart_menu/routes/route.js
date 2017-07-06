@@ -28,6 +28,7 @@ router.route('/startUseAccount').get(accountCtrl.onStartUseAccount)/*启用账�
 
 router.route('/shopDetail').get(shopCtrl.onShowShopDetail).post(shopCtrl.onSaveShopInfo)/*展示店铺详情*/
 router.route('/shopFuncModules').get(shopCtrl.onShowModuleList)/*展示店铺功能*/
+router.route('/onStopOrStartModule').get(shopCtrl.onStopOrStartModule)/*停用启用模块功能*/
 
 router.route('/onShowEdition').get(editionCtrl.onShowEdtion).post(editionCtrl.onSaveEdition)/*启用账户*/
 router.route('/addModuleForm').get(editionCtrl.onAddModule)/*添加新模块*/

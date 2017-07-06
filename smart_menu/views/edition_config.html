@@ -134,8 +134,8 @@
 <script type="text/javascript">
 	var edition = JSON.parse('<%=JSON.stringify(edition) %>'.replace(/&#34;/g, '"'));
 	var modules = [];
-	edition.editionModuleIds.forEach(function (funcId) {
-		modules.push(funcId);
+	edition.editionModuleIds.forEach(function (func) {
+		modules.push(func);
 	});
 	initHover();
 	$('.add-func').on('click', function () {
@@ -154,14 +154,18 @@
 				}
 
 				for (var i = 0; i < modules.length; i++) {
-					if (modules[i] == result.funcId) {
+					if (modules[i].funcId == result.funcId) {
 						layer.msg('改模块已选', {time: 1000}, function () {
 
 						});
 						return;
 					}
 				}
-				modules.push(result.funcId);
+				var func = {
+					funcId:result.funcId,
+                  isUsing:true
+                };
+				modules.push(func);
 				layer.close(index);
 
 				var html = '<li class="func-wrapper">' +

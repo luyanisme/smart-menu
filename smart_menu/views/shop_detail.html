@@ -158,8 +158,8 @@
 <script type="text/javascript">
 	var shop = JSON.parse('<%=JSON.stringify(shop) %>'.replace(/&#34;/g, '"'));
 	var modules = [];
-	shop.shopModuleIds.forEach(function (funcId) {
-		modules.push(funcId);
+	shop.shopModuleIds.forEach(function (func) {
+		modules.push(func);
 	});
 	$('#desk_form').validate({
 		errorPlacement: function (error, element) {
@@ -206,13 +206,17 @@
 				}
 
 				for (var i = 0; i < modules.length; i++) {
-					if (modules[i] == result.funcId) {
+					if (modules[i].funcId == result.funcId) {
 						layer.msg('改模块已选', {time: 1000}, function () {
 						});
 						return;
 					}
 				}
-				modules.push(result.funcId);
+				var func = {
+					funcId: result.funcId,
+					isUsing: true
+				};
+				modules.push(func);
 				layer.close(index);
 
 				var html = '<li class="func-wrapper">' +
@@ -259,7 +263,7 @@
 		var options = {
 			url: 'shopDetail',
 			type: 'post',
-			data:{shopModuleIds:JSON.stringify(modules),shopId:shop.shopId},
+			data: {shopModuleIds: JSON.stringify(modules), shopId: shop.shopId},
 			success: function (data) {    //成功执行的方法
 				if (data.status == 0) {
 					layer.msg(data.msg, {time: 1000, icon: 1}, function () {
