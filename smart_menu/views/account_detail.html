@@ -113,11 +113,11 @@
                             <label class="col-sm-2 control-label">店铺详情</label>
 
                             <div class="col-sm-10">
-                                <button class="btn btn-primary shop-detail" type="button">&nbsp;查看详情
-                                </button>
-                                <ul class="list-group property" style="width: 50%">
-
-                                </ul>
+                                <%if(User.dataValues.shopId != null){%>
+                                <button class="btn btn-primary shop-detail" type="button" onclick="onTapShopDetail('<%= User.dataValues.shopId%>')">&nbsp;查看详情</button>
+                                <%} else {%>
+                                <label class="control-label" style="color: #DE5245">尚未注册!</label>
+                                <%}%>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -148,6 +148,11 @@
 	//	$("#authority_select option:eq(" + "<%=User.dataValues.authorityId%>" + ")").prop('selected', true);
 	$("#authority_select").val("<%=User.dataValues.authorityId%>");
 	$("#edition_select").val("<%=User.dataValues.editionId%>");
+
+	/*点击店铺详情*/
+	function onTapShopDetail(shopId) {
+      location.href = "shopDetail?shopId=" + shopId;
+    }
 
 	$(".close").click(function () {
 		history.back(-1);

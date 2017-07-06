@@ -49,6 +49,12 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.BOOLEAN,
 				allowNull: false
 			},
+			/*是否可以操作*/
+			isOperating: {
+				field: 'is_operating',
+				type: Sequelize.BOOLEAN,
+				allowNull: false
+			},
 		},
 		{
 			tableName: 'func',
@@ -88,7 +94,9 @@ exports.update = function (func, condition, data, callBack, errBack) {
 }
 
 exports.findAll = function (func, condition, callBack, errBack) {
-	return func.findAll(condition).then(
+	return func.findAll({
+		where: condition
+	}).then(
 		function (result) {
 			callBack(result);
 		}

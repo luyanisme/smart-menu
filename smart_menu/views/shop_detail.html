@@ -9,7 +9,6 @@
     <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
     <link href="css/style.css?v=4.1.0" rel="stylesheet">
-    <link href="css/animate.min.css" rel="stylesheet">
 
     <style type="text/css">
 
@@ -55,6 +54,7 @@
             align-items: center;
             justify-content: center;
         }
+
     </style>
 
 </head>
@@ -73,15 +73,35 @@
                     </div>
                 </div>
                 <div id="container" class="ibox-content">
-
-                    <div class="form-horizontal">
+                    <form id="desk_form" method="post" action="shopDetail" class="form-horizontal">
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">版本描述</label>
+                            <label class="col-sm-2 control-label">店铺名称</label>
+
                             <div class="col-sm-10">
-                                <input id="editionDesc" name="editionDesc" class="form-control" required=""
-                                       aria-required="true" value="<%= edition.editionDesc%>">
-                                </input>
+                                <input value="<%= shop.dataValues.shopName%>" id="shopName" name="shopName"
+                                       class="form-control"
+                                       placeholder="请输入店铺名称" required="required">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">店铺电话</label>
+
+                            <div class="col-sm-10">
+                                <input value="<%= shop.dataValues.shopPhoneNum%>" id="shopPhoneNum" name="shopPhoneNum"
+                                       class="form-control"
+                                       placeholder="请输入店铺电话" required="required">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">店铺地址</label>
+
+                            <div class="col-sm-10">
+                                <input value="<%= shop.dataValues.shopAddress%>" id="shopAddress" name="shopAddress"
+                                       class="form-control"
+                                       placeholder="请输入店铺地址" required="required">
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -93,9 +113,9 @@
                                     <%funcs.forEach(function(func){%>
                                     <li class="func-wrapper">
                                         <img style="width: 100%;height: 100%;"
-                                             src="<%=func.dataValues.funcIconPath%>">
+                                             src="<%=func.funcIconPath%>">
                                         <div class="func-title">
-                                            <h><%=func.dataValues.funcName%></h>
+                                            <h><%=func.funcName%></h>
                                         </div>
                                         <div class="delete-shadow">
                                             <img src="images/delete_icon.png" style="width: 25px;height: 55.5%;">
@@ -111,11 +131,11 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
-                                <button class="btn btn-primary" type="submit" id="save">保存内容</button>
+                                <button class="btn btn-primary" type="button" id="save">保存内容</button>
                                 <button class="btn btn-white" type="button" id="cancel">取消</button>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -124,19 +144,51 @@
 <!-- Web Uploader -->
 <!-- 全局js -->
 <script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/jquery.form.js"></script>
 <script src="js/bootstrap.min.js?v=3.3.6"></script>
 <script src="js/plugins/layer/layer.min.js"></script>
 
 <!-- 自定义js -->
+<script src="js/plugins/layer/layer.min.js"></script>
 <script src="js/regex/regex.js"></script>
-
+<script src="js/plugins/validate/jquery.validate.min.js"></script>
+<script src="js/plugins/validate/messages_zh.min.js"></script>
+<script src="js/validate/validate.js"></script>
 
 <script type="text/javascript">
-	var edition = JSON.parse('<%=JSON.stringify(edition) %>'.replace(/&#34;/g, '"'));
+	var shop = JSON.parse('<%=JSON.stringify(shop) %>'.replace(/&#34;/g, '"'));
 	var modules = [];
-	edition.editionModuleIds.forEach(function (funcId) {
+	shop.shopModuleIds.forEach(function (funcId) {
 		modules.push(funcId);
 	});
+	$('#desk_form').validate({
+		errorPlacement: function (error, element) {
+			element.before(error)
+		},
+		rules: {
+			shopName: {
+				required: true,
+			},
+			shopPhoneNum: {
+				required: true,
+			},
+			shopAddress: {
+				required: true,
+			},
+		},
+		messages: {
+			shopName: {
+				required: "请输入店铺名称",
+			},
+			shopPhoneNum: {
+				required: "请输入店铺电话",
+			},
+			shopAddress: {
+				required: "请输入店铺地址",
+			},
+		},
+	});
+
 	initHover();
 	$('.add-func').on('click', function () {
 		layer.open({
@@ -156,7 +208,6 @@
 				for (var i = 0; i < modules.length; i++) {
 					if (modules[i] == result.funcId) {
 						layer.msg('改模块已选', {time: 1000}, function () {
-
 						});
 						return;
 					}
@@ -176,7 +227,6 @@
 				$('.list-group').append(html);
 				initHover();
 			}
-
 		});
 
 	});
@@ -205,33 +255,20 @@
 	});
 
 	$("#save").click(function () {
-		var editionDesc = $("#editionDesc").val();
 
-		if (editionDesc == "") {
-			layer.msg('请输入版本描述', {time: 1000}, function () {
-			});
-			return;
-		}
-
-		var data = {
-			editionId: edition.editionId,
-			editionDesc: editionDesc,
-			editionModuleIds: JSON.stringify(modules)
-		}
-		$.ajax({
-			url: 'onShowEdition',//后台文件上传接口
-			type: 'POST',
-			data: data,
-			success: function (data) {
+		var options = {
+			url: 'shopDetail',
+			type: 'post',
+			data:{shopModuleIds:JSON.stringify(modules),shopId:shop.shopId},
+			success: function (data) {    //成功执行的方法
 				if (data.status == 0) {
 					layer.msg(data.msg, {time: 1000, icon: 1}, function () {
 						self.location = document.referrer;
-//						self.location.reload();
 					});
 				}
-
 			}
-		});
+		};
+		$('#desk_form').ajaxSubmit(options);
 	});
 </script>
 </body>

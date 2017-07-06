@@ -81,6 +81,7 @@ exports.onSaveAccount = function (req, res) {
 		authority: authority,
 		editionId:editionId,
 		edition:edition,
+		isUsed:true,
 		updateTime: global.date
 	}
 	if (userId) {
@@ -112,6 +113,8 @@ exports.onShowFormWizard = function (req, res) {
 /*保存表单验证*/
 exports.onSaveFormWizard = function (req, res) {
 
+	var editionId = req.session.user.editionId;
+
 	var userId = req.body.userId;
 	var password = req.body.password;
 	var realName = req.body.realName;
@@ -122,6 +125,13 @@ exports.onSaveFormWizard = function (req, res) {
 	var shopName = req.body.shopName;
 	var shopAddress = req.body.shopAddress;
 	var shopPhoneNum = req.body.shopPhoneNum;
+
+	req.session.user.phoneNum = phoneNum;
+	req.session.user.password = password;
+	req.session.user.realName = realName;
+	req.session.user.email = email;
+	req.session.user.identity = identity;
+	req.session.user.updateTime = global.date;
 
 	var user = {
 		phoneNum:phoneNum,
@@ -154,22 +164,30 @@ exports.onSaveFormWizard = function (req, res) {
 		updateTime: global.date
 	};
 
-	ShopModel.insert(global.sql.shop,shop,function (result) {
-		user.shopId = result.dataValues.shopId;
-		req.session.user = user;
-		deskCate1.shopId = result.dataValues.shopId;
-		deskCate2.shopId = result.dataValues.shopId;
-		UserModel.update(global.sql.user, {userId: userId}, user, function (result) {
-			DeskCateModel.inserts(global.sql.deskCate,[deskCate1,deskCate2],function (result) {
-				res.send({msg: "保存成功", status: 0});
-			},function (err) {
+		EditionModel.findOne(global.sql.edition,{editionId: editionId},function (edition) {
+			shop.shopModuleIds = edition.editionModuleIds;
+			shop.shopEditionId = edition.editionId;
+			ShopModel.insert(global.sql.shop,shop,function (result) {
+				user.shopId = result.dataValues.shopId;
+				deskCate1.shopId = result.dataValues.shopId;
+				deskCate2.shopId = result.dataValues.shopId;
+				UserModel.update(global.sql.user, {userId: userId}, user, function (result) {
+					DeskCateModel.inserts(global.sql.deskCate,[deskCate1,deskCate2],function (result) {
+						res.send({msg: "保存成功", status: 0});
+					},function (err) {
+						res.send({msg: err, status: 1});
+					})
+				}, function (err) {
+					res.send({msg: err, status: 1});
+				})
+			}, function (err) {
 				res.send({msg: err, status: 1});
 			})
-		}, function (err) {
+		},function (err) {
 			res.send({msg: err, status: 1});
 		})
-	}, function (err) {
-		res.send({msg: err, status: 1});
-	})
+
+
+
 
 };

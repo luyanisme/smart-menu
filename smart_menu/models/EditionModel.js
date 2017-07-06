@@ -25,8 +25,8 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.STRING,
 				allowNull: true
 			},
-			editionModule: {
-				field: 'edition_module',
+			editionModuleIds: {
+				field: 'edition_module_ids',
 				type: Sequelize.TEXT,
 				allowNull: false
 			},

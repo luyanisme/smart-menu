@@ -18,12 +18,16 @@ var accountCtrl = require('../controllers/AccountCtrl.js');
 var editionCtrl = require('../controllers/EditionCtrl.js');
 var mobileCtrl = require('../controllers/MobileCtrl.js');
 var funcModuleCtrl = require('../controllers/FuncModuleCtrl.js');
+var shopCtrl = require('../controllers/ShopCtrl.js');
 
 router.route('/addNewAccount').get(accountCtrl.onAddNewAccount).post(accountCtrl.onSaveAccount);/*添加账户*/
 router.route('/accountDetail').get(accountCtrl.onShowDetailAccount)/*账户详情*/
 router.route('/removeAccount').get(accountCtrl.onRemoveAccount)/*删除账户*/
 router.route('/forbidAccount').get(accountCtrl.onForbidAccount)/*停用账户*/
 router.route('/startUseAccount').get(accountCtrl.onStartUseAccount)/*启用账户*/
+
+router.route('/shopDetail').get(shopCtrl.onShowShopDetail).post(shopCtrl.onSaveShopInfo)/*展示店铺详情*/
+router.route('/shopFuncModules').get(shopCtrl.onShowModuleList)/*展示店铺功能*/
 
 router.route('/onShowEdition').get(editionCtrl.onShowEdtion).post(editionCtrl.onSaveEdition)/*启用账户*/
 router.route('/addModuleForm').get(editionCtrl.onAddModule)/*添加新模块*/

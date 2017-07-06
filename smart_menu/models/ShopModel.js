@@ -15,6 +15,11 @@ exports.onCreate = function (sequelize) {
 				allowNull: false,
 				unique: true
 			},
+			shopEditionId: {
+				field: 'shop_edition_id',
+				type: Sequelize.BIGINT,
+				allowNull: false
+			},
 			shopName: {
 				field: 'shop_name',
 				type: Sequelize.STRING,
@@ -30,6 +35,11 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.STRING,
 				allowNull: true
 			},
+			shopModuleIds:{
+				field: 'shop_module_ids',
+				type: Sequelize.TEXT,
+				allowNull: true
+			}
 		},
 		{
 			tableName: 'shop',
@@ -61,6 +71,16 @@ exports.update = function (shop, condition, data, callBack, errBack) {
 	return shop.update(data, {
 		where: condition
 	}).then(function (result) {
+		callBack(result);
+	}).catch(function (err) {
+		errBack(err);
+		console.log("发生错误：" + err);
+	});
+}
+
+/*批量更新*/
+exports.updateBulk = function (shop, data, callBack, errBack) {
+	return shop.bulkCreate(data,{ updateOnDuplicate: true }).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
 		errBack(err);

@@ -79,6 +79,7 @@ exports.onUpload = function (req, res) {
 		var moduleName = fields.moduleName;
 		var moduleDesc = fields.moduleDesc;
 		var moduleField = fields.moduleField;
+		var isOperating = (fields.operateSelect == "false" ? false : true);
 
 		var func;
 		if (iconName) {
@@ -87,6 +88,7 @@ exports.onUpload = function (req, res) {
 				funcDesc: moduleDesc,
 				funcIconPath: iconName,
 				funcField: moduleField,
+				isOperating: isOperating,
 				isUsing:true,
 				updateTime: global.date
 			};
@@ -95,6 +97,7 @@ exports.onUpload = function (req, res) {
 				funcName: moduleName,
 				funcDesc: moduleDesc,
 				funcField: moduleField,
+				isOperating: isOperating,
 				isUsing:true,
 				updateTime: global.date
 			};
