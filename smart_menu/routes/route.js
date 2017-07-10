@@ -98,6 +98,12 @@ router.route('/showFuncModule').get(funcModuleCtrl.onShowFuncModule);/*展示模
 router.route('/addFuncModule').get(funcModuleCtrl.onAddFuncModule).post(funcModuleCtrl.onUpload);/*添加新模块*/
 router.route('/showDetailModule').get(funcModuleCtrl.onShowDetailFuncModule).post(funcModuleCtrl.onUpload);/*添加新模块*/
 router.route('/removeModule').get(funcModuleCtrl.onRemoveFuncModule);/*添加新模块*/
+router.route('/funcDataList').get(funcModuleCtrl.onShowFuncDataList);/*添加新模块*/
+
+router.route('/onRouteToView').get(funcModuleCtrl.onRouteToView);/*添加新模块*/
+
+/********************************************模块页面的跳转********************************************/
+
 
 var Api = require('../api/Api.js');
 var API = '/Api';

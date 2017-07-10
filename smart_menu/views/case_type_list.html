@@ -93,6 +93,8 @@
 	});
 
 	var results = JSON.parse('<%=JSON.stringify(results) %>'.replace(/&#34;/g, '"'));
+	var shop = JSON.parse('<%=JSON.stringify(shop) %>'.replace(/&#34;/g, '"'));
+
 	var html = '';
 	results.forEach(function (result) {
 		html += '<tr>' +
@@ -101,7 +103,7 @@
 				'<input type="checkbox" checked class="i-checks" name="input[]">' :
 				'<input type="checkbox" class="i-checks" name="input[]">') +
 			'<div class="mask_checked"></div>' +
-			'</td>'+
+			'</td>' +
 			'<td>' + result.caseTypeName + '</td>' +
 			'<td>' + result.caseNums + '</td>' +
 			'<td>' + result.caseOnNums + '</td>' +
@@ -136,6 +138,12 @@
 	}
 
 	function onDelete(caseTypeId, caseTypeName) {
+		if (caseTypeId == shop.shopSpecialCaseId) {
+			layer.msg('"' + caseTypeName + '"' + '不可删除', {time: 1000}, function () {
+				//parent.location.reload(); // 父页面刷新
+			});
+			return;
+		}
 		swal({
 			title: "您确定要删除 " + caseTypeName + " ?",
 			text: "删除后将无法恢复，请谨慎操作！",
@@ -143,6 +151,7 @@
 			showCancelButton: true,
 			confirmButtonColor: "#DD6B55",
 			confirmButtonText: "删除",
+			cancelButtonText: "取消",
 			closeOnConfirm: false
 		}, function () {
 			$.ajax({
@@ -170,6 +179,12 @@
 	$(".mask_checked").on('click', function () {
 		var index = $(this).parent().parent().index();
 		var checkedState = $(this).parent().find(".i-checks").attr('checked');
+		if (results[index].caseTypeId == shop.shopSpecialCaseId) {
+			layer.msg('"' + results[index].caseTypeName + '"' + '不可下架', {time: 1000}, function () {
+				//parent.location.reload(); // 父页面刷新
+			});
+			return;
+		}
 		if (checkedState == "checked") {
 			swal({
 				title: "您确定要将 " + results[index].caseTypeName + " 下架",
@@ -178,6 +193,7 @@
 				showCancelButton: true,
 				confirmButtonColor: "#DD6B55",
 				confirmButtonText: "下架",
+				cancelButtonText: "取消",
 				closeOnConfirm: false
 			}, function (isConfirm) {
 				if (isConfirm) {
@@ -208,8 +224,9 @@
 				text: "请谨慎操作！",
 				type: "warning",
 				showCancelButton: true,
-				confirmButtonColor: "#DD6B55",
+				confirmButtonColor: "#6AD118",
 				confirmButtonText: "上架",
+				cancelButtonText: "取消",
 				closeOnConfirm: false,
 			}, function (isConfirm) {
 				if (isConfirm) {

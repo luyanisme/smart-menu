@@ -44,14 +44,15 @@
                             <a aria-expanded="false" role="button" href=""> 返回首页</a>
                         </li>
                         <li>
-                            <a aria-expanded="false" role="button" href="showFuncModule"> 功能模块</a>
+                            <a aria-expanded="false" role="button" target="_blank" href="showFuncModule"> 功能模块</a>
                         </li>
                         <li class="dropdown">
                             <a aria-expanded="false" role="button" href="#" class="dropdown-toggle"
                                data-toggle="dropdown">软件功能<span class="caret"></span></a>
                             <ul role="menu" class="dropdown-menu">
                                 <%editions.forEach(function(edition){%>
-                                <li><a href="onShowEdition?editionId=<%=edition.dataValues.editionId%>"><%= edition.dataValues.editionName%></a>
+                                <li><a target="_blank" href="onShowEdition?editionId=<%=edition.dataValues.editionId%>"><%=
+                                    edition.dataValues.editionName%></a>
                                 </li>
                                 <%})%>
                             </ul>
@@ -144,10 +145,10 @@
                                                     启用
                                                 </button>
                                                 <%}%>
-                                                <button type="button" class="btn btn-primary btn-danger btn-xs"
-                                                        onclick="onRemove('<%= user.dataValues.userId%>')">
-                                                    删除
-                                                </button>
+                                                <!--<button type="button" class="btn btn-primary btn-danger btn-xs"-->
+                                                        <!--onclick="onRemove('<%= user.dataValues.userId%>','<%= user.dataValues.shopId%>')">-->
+                                                    <!--删除-->
+                                                <!--</button>-->
                                                 <%}%>
                                             </td>
                                         </tr>
@@ -177,7 +178,7 @@
 		location.href = 'addNewAccount'
 	}
 
-	function onRemove(userId) {
+	function onRemove(userId, shopId) {
 		swal({
 			title: "您确定要删除?",
 			text: "删除后将无法恢复，请谨慎操作！",
@@ -185,10 +186,11 @@
 			showCancelButton: true,
 			confirmButtonColor: "#DD6B55",
 			confirmButtonText: "删除",
+			cancelButtonText: "取消",
 			closeOnConfirm: false
 		}, function () {
 			$.ajax({
-				url: 'removeAccount?userId=' + userId,
+				url: 'removeAccount?userId=' + userId + '&shopId=' + shopId,
 				type: 'GET',
 				success: function (data) {
 					if (data.status == 0) {
@@ -217,6 +219,7 @@
 			showCancelButton: true,
 			confirmButtonColor: "#DD6B55",
 			confirmButtonText: "停用",
+			cancelButtonText: "取消",
 			closeOnConfirm: false
 		}, function () {
 			$.ajax({
@@ -247,8 +250,9 @@
 			text: "请谨慎操作！",
 			type: "warning",
 			showCancelButton: true,
-			confirmButtonColor: "#DD6B55",
+			confirmButtonColor: "#6AD118",
 			confirmButtonText: "启用",
+			cancelButtonText: "取消",
 			closeOnConfirm: false
 		}, function () {
 			$.ajax({

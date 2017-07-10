@@ -102,6 +102,7 @@ exports.onUpload = function (req, res) {
 
 		var caseName = fields.caseName;
 		var price = fields.price;
+		var discount = fields.discount;
 		var hotId = fields.hotId;
 		var caseTypeId = fields.caseTypeId;
 		var standardVals = fields.standardVals;
@@ -115,6 +116,7 @@ exports.onUpload = function (req, res) {
 				caseTypeId: caseTypeId,
 				caseHot: hotId,
 				casePrice: price,
+				caseDiscount: discount,
 				caseImagePath: avatarName,
 				caseStandardVals: standardVals,
 				casePropertyVals: propertyVals,
@@ -127,6 +129,7 @@ exports.onUpload = function (req, res) {
 				caseTypeId: caseTypeId,
 				caseHot: hotId,
 				casePrice: price,
+				caseDiscount: discount,
 				caseStandardVals: standardVals,
 				casePropertyVals: propertyVals,
 				caseScaling: caseScaling,

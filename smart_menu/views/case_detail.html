@@ -87,17 +87,6 @@
 
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <% if (locals.success) { %>
-                            <div id="alt_sucess" class="alert alert-success">
-                                <%- success %>
-                            </div>
-                            <% } %>
-
-                            <% if (locals.error) { %>
-                            <div id="alt_warning" class="alert alert-warning">
-                                <%= error %>
-                            </div>
-                            <% } %>
                             <label class="col-sm-2 control-label">商品图片</label>
 
                             <div class="col-sm-3">
@@ -162,6 +151,19 @@
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">商品折扣</label>
+
+                            <div class="col-sm-10">
+                                <div class="input-group m-b">
+                                    <input id="discount" name="discount" type="number" class="form-control"
+                                           placeholder="请输入折扣"
+                                           required="required" value="1"> <span
+                                        class="input-group-addon">折</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">热度</label>
 
                             <div class="col-sm-10">
@@ -177,14 +179,14 @@
                         </div>
                         <div class="hr-line-dashed"></div>
                         <!--<div class="form-group">-->
-                            <!--<label class="col-sm-2 control-label">是否上架</label>-->
+                        <!--<label class="col-sm-2 control-label">是否上架</label>-->
 
-                            <!--<div class="col-sm-10">-->
-                                <!--<select id="scaling" class="form-control m-b">-->
-                                    <!--<option>上架</option>-->
-                                    <!--<option>下架</option>-->
-                                <!--</select>-->
-                            <!--</div>-->
+                        <!--<div class="col-sm-10">-->
+                        <!--<select id="scaling" class="form-control m-b">-->
+                        <!--<option>上架</option>-->
+                        <!--<option>下架</option>-->
+                        <!--</select>-->
+                        <!--</div>-->
                         <!--</div>-->
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
@@ -220,7 +222,7 @@
 
 	var result = JSON.parse('<%=JSON.stringify(result) %>'.replace(/&#34;/g, '"'));
 	var caseTypeId = result.caseTypeId;
-		var caseId = result.caseId;
+	var caseId = result.caseId;
 
 	var imageName = result.caseImagePath;
 	if (imageName) {
@@ -231,6 +233,7 @@
 	}
 	$("#caseName").val(result.caseName);
 	$("#price").val(result.casePrice);
+	$("#discount").val(result.caseDiscount);
 	$("#hot_select option:eq(" + result.caseHot + ")").prop('selected', true);
 	result.caseStandardVals.forEach(function (caseStandardVal) {
 		standardVals.push(caseStandardVal);

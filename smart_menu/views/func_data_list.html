@@ -35,20 +35,13 @@
 
 <body class="gray-bg">
 <div class="wrapper wrapper-content">
-    <div class="alert alert-success" style="text-align: center">
-        保存成功
-    </div>
     <div class="row">
         <div class="col-sm-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <div class="panel-manager">
-                        <!--<h5>显示：</h5>-->
-                        <!--<a href="case_show_list.html#" class="panel-control active">宫格排列</a>-->
-                        <!--<a href="case_show_list.html#" class="panel-control">列表排列</a>-->
-
                         <div class="hr-line-dashed"></div>
-                        <button class="btn btn-primary btn-block" onclick="onAddCase('<%= caseTypeId%>')">添加商品</button>
+                        <button class="btn btn-primary btn-block" onclick="onAddCase()">添加商品</button>
                         <div class="hr-line-dashed"></div>
                         <div class="clearfix"></div>
                     </div>
@@ -56,6 +49,7 @@
             </div>
         </div>
         <div class="col-sm-9 animated fadeInRight">
+            <%if(datas.length > 0){%>
             <div class="row">
                 <div class="ibox-content">
                     <div class="table-responsive">
@@ -63,21 +57,24 @@
                             <thead>
                             <tr>
                                 <th>上架</th>
-                                <th>商品名称</th>
-                                <th>商品价格</th>
-                                <th>热度</th>
-                                <th>折扣(折)</th>
+                                <th>名称</th>
+                                <% if(datas[0].dataPrice != null){%>
+                                <th>价格</th>
+                                <%}%>
+                                <% if(datas[0].dataPrice != null){%>
+                                <th>描述</th>
+                                <%}%>
                                 <th>添加时间</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody class="case_table">
+                            <tbody class="data_table">
                             </tbody>
                         </table>
                     </div>
                 </div>
-
             </div>
+            <%}%>
         </div>
 
     </div>
@@ -98,40 +95,38 @@
 		$(".i-checks").iCheck({checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green"})
 	});
 
-	var results = JSON.parse('<%=JSON.stringify(results) %>'.replace(/&#34;/g, '"'));
+	var datas = JSON.parse('<%=JSON.stringify(datas) %>'.replace(/&#34;/g, '"'));
 	var html = '';
-	results.forEach(function (result, i) {
+		datas.forEach(function (data, i) {
 		html += '<tr>' +
 			'<td style="position: relative">' +
-			(result.caseScaling == true ?
+			(data.caseScaling == true ?
 				'<input type="checkbox" checked class="i-checks" name="input[]">' :
 				'<input type="checkbox" class="i-checks" name="input[]">') +
 			'<div class="mask_checked"></div>' +
 			'</td>' +
-			'<td>' + result.caseName + '</td>' +
-			'<td>' + result.casePrice + '</td>' +
-			'<td>' + result.caseHot + '</td>' +
-			'<td>' + result.caseDiscount + '</td>' +
-			'<td>' + result.updateTime + '</td>' +
-
+			'<td>' + data.dataName + '</td>' +
+			(data.dataPrice == null ? '' : '<td>' + data.dataPrice + '</td>') +
+			(data.dataDesc == null ? '' : '<td>' + data.dataDesc + '</td>') +
+			'<td>' + data.updateTime + '</td>' +
 			'<td>' +
 			'<a class="btn btn-primary btn-xs"' +
-			'href="caseDetail?caseId=' + result.caseId + '">详情</a>' +
+			'href="caseDetail?caseId=' + data.funcDataId + '">详情</a>' +
 			'<button type="button" style="margin-left: 5px" class="btn btn-primary btn-danger btn-xs"' +
-			'onclick=onRemove(' + result.caseId + ',"' + result.caseName + '")>' +
+			'onclick=onRemove(' + data.funcDataId + ',"' + data.dataName + '")>' +
 			'删除' +
 			'</button>' +
 			'</td>' +
 			'</tr>'
 	})
-	$(".case_table").html(html);
+	$(".data_table").html(html);
 
 	$(".mask_checked").on('click', function () {
 		var index = $(this).parent().parent().index();
 		var checkedState = $(this).parent().find(".i-checks").attr('checked');
 		if (checkedState == "checked") {
 			swal({
-				title: "您确定要将 " + results[index].caseName + " 下架",
+				title: "您确定要将 " + datas[index].caseName + " 下架",
 				text: "请谨慎操作！",
 				type: "warning",
 				showCancelButton: true,
@@ -141,7 +136,7 @@
 			}, function (isConfirm) {
 				if (isConfirm) {
 					$.ajax({
-						url: 'changeCaseSaling?caseId=' + results[index].caseId + "&caseScaling=false",
+						url: 'changeCaseSaling?caseId=' + datas[index].caseId + "&caseScaling=false",
 						type: 'GET',
 						success: function (data) {
 							if (data.status == 0) {
@@ -163,7 +158,7 @@
 			})
 		} else {
 			swal({
-				title: "您确定要将 " + results[index].caseName + " 上架",
+				title: "您确定要将 " + datas[index].caseName + " 上架",
 				text: "请谨慎操作！",
 				type: "warning",
 				showCancelButton: true,
@@ -174,7 +169,7 @@
 			}, function (isConfirm) {
 				if (isConfirm) {
 					$.ajax({
-						url: 'changeCaseSaling?caseId=' + results[index].caseId + "&caseScaling=true",
+						url: 'changeCaseSaling?caseId=' + datas[index].caseId + "&caseScaling=true",
 						type: 'GET',
 						success: function (data) {
 							if (data.status == 0) {
@@ -198,13 +193,13 @@
 		}
 	});
 
-	function onAddCase(caseTypeId) {
-		location.href = 'caseNew' + '?caseTypeId=' + caseTypeId
+	function onAddData() {
+
 	}
 
-	function onRemove(caseId, caseName) {
+	function onRemove(funcDataId, dataName) {
 		swal({
-			title: "您确定要删除 " + caseName + " ?",
+			title: "您确定要删除 " + dataName + " ?",
 			text: "删除后将无法恢复，请谨慎操作！",
 			type: "warning",
 			showCancelButton: true,
@@ -214,7 +209,7 @@
 			closeOnConfirm: false
 		}, function () {
 			$.ajax({
-				url: 'removeCase?caseId=' + caseId,
+				url: 'removeCase?caseId=' + funcDataId,
 				type: 'GET',
 				success: function (data) {
 					if (data.status == 0) {

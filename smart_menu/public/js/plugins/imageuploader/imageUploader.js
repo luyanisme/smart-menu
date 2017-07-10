@@ -100,6 +100,7 @@ $(function () {
 
 		var caseName = $('#caseName').val();
 		var price = $('#price').val();
+		var discount = $('#discount').val();
 		var hotId = $("#hot_select ").get(0).selectedIndex;
 		if (caseName == '') {
 			layer.msg('您还未输入商品名称', {time: 1000}, function () {
@@ -136,6 +137,7 @@ $(function () {
 		data.append('caseScaling', isScaling);
 		data.append('caseName', caseName);
 		data.append('price', price);
+		data.append('discount', discount);
 		data.append('caseTypeId', caseTypeId);
 		data.append('standardVals', JSON.stringify(standardVals));
 		data.append('propertyVals', JSON.stringify(propertyVals));

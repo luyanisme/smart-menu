@@ -162,9 +162,9 @@
 					}
 				}
 				var func = {
-					funcId:result.funcId,
-                  isUsing:true
-                };
+					funcId: result.funcId,
+					isUsing: true
+				};
 				modules.push(func);
 				layer.close(index);
 
@@ -201,11 +201,11 @@
 	});
 
 	$(".close").click(function () {
-		history.back(-1);
+		window.close();
 	});
 
 	$("#cancel").click(function () {
-		history.back(-1);
+		window.close();
 	});
 
 	$("#save").click(function () {

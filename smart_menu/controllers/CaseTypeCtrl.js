@@ -2,11 +2,17 @@
  * Created by luyan on 2/16/17.
  */
 var CaseTypeModel = require('../models/CaseTypeModel.js');
+var ShopModel = require('../models/ShopModel.js');
 
 exports.onShowCaseTypes = function (req, res) {
 	var shopId = req.session.user.shopId;
 	CaseTypeModel.findAll(global.sql.caseType, {shopId:shopId},function (result) {
-		res.render("case_type_list", {title: '商品分类', results: result});
+		ShopModel.findOne(global.sql.shop,{shopId: shopId},function (shop) {
+			shop.shopModuleIds = JSON.parse(shop.shopModuleIds);
+			res.render("case_type_list", {title: '商品分类', results: result, shop: shop});
+		},function (err) {
+			res.send({msg: err, status: 1});
+		})
 	},function (err) {
 		res.send({msg: err, status: 1});
 	});

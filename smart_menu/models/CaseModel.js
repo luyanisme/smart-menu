@@ -20,6 +20,11 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.FLOAT,
 				allowNull: false
 			},
+			caseDiscount: {
+				field: 'case_discount',
+				type: Sequelize.DECIMAL(4,1),
+				allowNull: false
+			},
 			caseName: {
 				field: 'case_name',
 				type: Sequelize.STRING,

@@ -6,6 +6,7 @@ var AuthorityModel = require('../models/AuthorityModel.js');
 var EditionModel = require('../models/EditionModel.js');
 var ShopModel = require('../models/ShopModel.js');
 var DeskCateModel = require('../models/DeskCateModel.js');
+var CaseTypeModel = require('../models/CaseTypeModel.js');
 
 exports.onAddNewAccount = function (req, res) {
 	AuthorityModel.findAll(global.sql.authority, {}, function (authorities) {
@@ -37,12 +38,27 @@ exports.onShowDetailAccount = function (req, res) {
 };
 
 exports.onRemoveAccount = function (req, res) {
-	var userId = req.query.userId;
-	UserModel.remove(global.sql.user, {userId:userId},function (result) {
-		res.send({msg: '账户删除成功', status: 0});
-	}, function (err) {
-		res.send({msg: err, status: 1});
-	})
+	// var userId = req.query.userId;
+	// var shopId = req.query.shopId;
+
+	// UserModel.remove(global.sql.user, {userId:userId},function (result) {
+	// 	CaseTypeModel.remove(global.sql.caseType,{shopId: shopId},function (result) {
+	// 		DeskCateModel.remove(global.sql.deskCate,{shopId: shopId},function () {
+	// 			ShopModel.remove(global.sql.shop, {shopId: shopId}, function (result) {
+	// 				res.send({msg: '账户删除成功', status: 0});
+	// 			}, function (err) {
+	// 				res.send({msg: err, status: 1});
+	// 			})
+	// 		}, function (err) {
+	// 			res.send({msg: err, status: 1});
+	// 		})
+	// 	}, function (err) {
+	// 		res.send({msg: err, status: 1});
+	// 	})
+	//
+	// }, function (err) {
+	// 	res.send({msg: err, status: 1});
+	// })
 };
 
 exports.onForbidAccount = function (req, res) {
@@ -164,16 +180,35 @@ exports.onSaveFormWizard = function (req, res) {
 		updateTime: global.date
 	};
 
+	var caseType = {
+		caseTypeName:'招牌',
+		caseNums:0,
+		caseOnNums:0,
+		caseOffNums:0,
+		caseTypeSaling:true,
+		updateTime: global.date
+	};
+
 		EditionModel.findOne(global.sql.edition,{editionId: editionId},function (edition) {
 			shop.shopModuleIds = edition.editionModuleIds;
 			shop.shopEditionId = edition.editionId;
 			ShopModel.insert(global.sql.shop,shop,function (result) {
 				user.shopId = result.dataValues.shopId;
+				req.session.user.shopId = result.dataValues.shopId;
+				caseType.shopId = result.dataValues.shopId;
 				deskCate1.shopId = result.dataValues.shopId;
 				deskCate2.shopId = result.dataValues.shopId;
 				UserModel.update(global.sql.user, {userId: userId}, user, function (result) {
 					DeskCateModel.inserts(global.sql.deskCate,[deskCate1,deskCate2],function (result) {
-						res.send({msg: "保存成功", status: 0});
+						CaseTypeModel.insert(global.sql.caseType, caseType, function(result){
+							ShopModel.update(global.sql.shop,{shopId:caseType.shopId},{shopSpecialCaseId: result.dataValues.caseTypeId},function (result) {
+								res.send({msg: '保存成功!', status: 0});
+							},function (err) {
+								res.send({msg: err, status: 1});
+							})
+						},function (err) {
+							res.send({msg: err, status: 1});
+						});
 					},function (err) {
 						res.send({msg: err, status: 1});
 					})
@@ -186,8 +221,5 @@ exports.onSaveFormWizard = function (req, res) {
 		},function (err) {
 			res.send({msg: err, status: 1});
 		})
-
-
-
 
 };

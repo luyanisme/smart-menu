@@ -2,6 +2,7 @@
  * Created by luyan on 28/06/2017.
  */
 var FuncModel = require('../models/FuncModel.js');
+var FuncDataModuleModel = require('../models/FuncDataModuleModel.js');
 var formidable = require('formidable'),
 	fs = require('fs')
 var randomID = require('../utils/randomIdUtil.js');
@@ -164,3 +165,23 @@ exports.onRemoveFuncModule = function (req, res) {
 		res.send({msg: err, status: 1});
 	});
 };
+
+exports.onRouteToView = function (req, res) {
+	var funcId = req.query.funcId;
+	FuncModel.findOne(global.sql.func, {funcId:funcId}, function (func) {
+		res.send({msg: '获取成功', data:func.funcField,status: 0});
+	},function (err) {
+		res.send({msg: err, status: 1});
+	});
+}
+
+exports.onShowFuncDataList = function (req, res) {
+	var funcId = req.query.funcId;
+	FuncDataModuleModel.findAll(global.sql.funcDataModule,{funcId:funcId},function (funcDatas) {
+		res.render("func_data_list", {title: '模块数据列表', datas:funcDatas});
+	},function (err) {
+		res.send({msg: err, status: 1});
+	})
+}
+
+

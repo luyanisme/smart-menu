@@ -20,6 +20,11 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.BIGINT,
 				allowNull: false
 			},
+			shopSpecialCaseId: {
+				field: 'shop_special_case_id',
+				type: Sequelize.BIGINT,
+				allowNull: true
+			},
 			shopName: {
 				field: 'shop_name',
 				type: Sequelize.STRING,

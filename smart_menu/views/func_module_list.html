@@ -51,7 +51,7 @@
                                     <% if(func.isOperating) {%>
                                     <div>
                                         <a class="btn btn-primary btn-xs"
-                                           href="">编辑</a>
+                                           onclick="onTapEdit('<%= func.funcId%>')">编辑</a>
                                         <%if(func.isWorking){%>
                                         <button type="button" class="btn btn-primary btn-danger btn-xs"
                                                 onclick="onStop('<%= func.funcId%>')">
@@ -92,6 +92,30 @@
 
 <script>
 
+    function onTapEdit(funcId) {
+//	    $.ajax({
+//		    url: 'onRouteToView?funcId=' + funcId,
+//		    type: 'GET',
+//		    success: function (data) {
+//			    if (data.status == 0) {
+//				    layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+//					    location.href = data.data;
+//				    });
+//			    }
+//		    },
+//		    error: function (err) {
+//			    console.log(err);
+//			    if (err.status == 1) {
+//				    layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+//					    //parent.location.reload(); // 父页面刷新
+//				    });
+//			    }
+//		    }
+//	    })
+
+      location.href = 'funcDataList?funcId=' + funcId;
+    }
+
 	function onStop(funcId) {
 		swal({
 			title: "您确定要停用该模块?",
@@ -100,6 +124,7 @@
 			showCancelButton: true,
 			confirmButtonColor: "#DD6B55",
 			confirmButtonText: "停用",
+			cancelButtonText: "取消",
 			closeOnConfirm: false
 		}, function () {
 			$.ajax({
@@ -124,37 +149,38 @@
 		})
 	}
 
-		function onStart(funcId) {
-			swal({
-				title: "您确定要启用该模块?",
-				text: "请谨慎操作！",
-				type: "warning",
-				showCancelButton: true,
-				confirmButtonColor: "#DD6B55",
-				confirmButtonText: "启用",
-				closeOnConfirm: false
-			}, function () {
-				$.ajax({
-					url: 'onStopOrStartModule?funcId=' + funcId,
-					type: 'GET',
-					success: function (data) {
-						if (data.status == 0) {
-							layer.msg(data.msg, {time: 1000, icon: 1}, function () {
-								location.reload(); // 父页面刷新
-							});
-						}
-					},
-					error: function (err) {
-						console.log(err);
-						if (err.status == 1) {
-							layer.msg(err.msg, {time: 1000, icon: 1}, function () {
-								//parent.location.reload(); // 父页面刷新
-							});
-						}
+	function onStart(funcId) {
+		swal({
+			title: "您确定要启用该模块?",
+			text: "请谨慎操作！",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#6AD118",
+			confirmButtonText: "启用",
+			cancelButtonText: "取消",
+			closeOnConfirm: false
+		}, function () {
+			$.ajax({
+				url: 'onStopOrStartModule?funcId=' + funcId,
+				type: 'GET',
+				success: function (data) {
+					if (data.status == 0) {
+						layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+							location.reload(); // 父页面刷新
+						});
 					}
-				})
+				},
+				error: function (err) {
+					console.log(err);
+					if (err.status == 1) {
+						layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+							//parent.location.reload(); // 父页面刷新
+						});
+					}
+				}
 			})
-		}
+		})
+	}
 </script>
 
 <script src="js/plugins/layer/layer.min.js"></script>
