@@ -8,6 +8,8 @@ var formidable = require('formidable'),
 var randomID = require('../utils/randomIdUtil.js');
 var fsmanager = require('../utils/fileManagerUtil.js');
 
+var config = require('../Config.js');
+
 exports.onShowPostMaterial = function (req, res) {
 	var shopId = req.session.user.shopId;
 	PostModel.findAll(global.sql.post, {shopId:shopId},function (result) {
@@ -193,7 +195,7 @@ exports.onUploadImage = function (req, res) {
 			var newPath = form.uploadDir + avatarName;
 			fs.renameSync(files[key].path, newPath);  //重命名
 
-			res.send({msg: '图片上传成功!', status: 0, url: avatarName});
+			res.send({msg: '图片上传成功!', status: 0, url: config.severIP +''+avatarName});
 		}
 
 	});
@@ -272,3 +274,4 @@ exports.onRemovePost = function (req, res) {
 	});
 
 };
+

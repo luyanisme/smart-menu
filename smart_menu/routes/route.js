@@ -116,6 +116,7 @@ router.route(API+'/postOrderedList').post(Api.postOrderedList);/*获取已点商
 /********************************************微信小程序接口********************************************/
 var WECHAT = '/Api/Wechat';
 router.route(WECHAT+'/getMenu').get(Api.getWeChatMenuList);/*获取菜单*/
+router.route(WECHAT+'/getMainData').get(Api.getMainData);/*获取菜单*/
 
 const WebSocket = require('ws');
 

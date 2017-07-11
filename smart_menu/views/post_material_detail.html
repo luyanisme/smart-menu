@@ -63,17 +63,6 @@
 
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <% if (locals.success) { %>
-                            <div id="alt_sucess" class="alert alert-success">
-                                <%- success %>
-                            </div>
-                            <% } %>
-
-                            <% if (locals.error) { %>
-                            <div id="alt_warning" class="alert alert-warning">
-                                <%= error %>
-                            </div>
-                            <% } %>
                             <label class="col-sm-2 control-label">海报图片</label>
 
                             <div class="col-sm-3">
@@ -104,8 +93,10 @@
                             <label class="col-sm-2 control-label">时间</label>
 
                             <div class="col-sm-10">
-                                <input value="<%=result.dataValues.postStartDate%>" placeholder="开始日期" class="form-control layer-date" id="start">
-                                <input value="<%=result.dataValues.postEndDate%>" placeholder="结束日期" class="form-control layer-date" id="end">
+                                <input value="<%=result.dataValues.postStartDate%>" placeholder="开始日期"
+                                       class="form-control layer-date" id="start">
+                                <input value="<%=result.dataValues.postEndDate%>" placeholder="结束日期"
+                                       class="form-control layer-date" id="end">
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -195,7 +186,7 @@
 						success: function (data) {
 							if (data.status == 0) {
 								layer.msg('图片上传成功', {time: 1000}, function () {
-									$('.summernote').summernote('insertImage', data.url);
+									$('.summernote').summernote('insertImage',data.url);
 								});
 							}
 
@@ -215,7 +206,7 @@
 
 <script type="text/javascript">
 
-    var postId = '<%=result.dataValues.postId%>';
+	var postId = '<%=result.dataValues.postId%>';
 	var imageName = '<%=result.dataValues.postImagePath%>';
 	if (imageName) {
 		$(".btns_container").css('display', 'block');
@@ -224,16 +215,16 @@
 		$(".fileImage").css('display', 'block');
 	}
 
-    $('#hidden_div').html('<%=result.dataValues.postDesc%>');
-    $('.summernote').html($('#hidden_div').text());
+	$('#hidden_div').html('<%=result.dataValues.postDesc%>');
+	$('.summernote').html($('#hidden_div').text());
 
 	$(".close").on('click', function () {
 		history.back(-1);
 	});
 
-    $("#cancel").on('click', function () {
-	    history.back(-1);
-    });
+	$("#cancel").on('click', function () {
+		history.back(-1);
+	});
 
 </script>
 </body>

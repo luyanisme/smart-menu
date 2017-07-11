@@ -102,7 +102,8 @@ $(function () {
 		var startDate = $('#start').val();
 		var endDate = $('#end').val();
 		var aHtml = $('.summernote').summernote('code');
-		aHtml = aHtml.replace(/\n/ig, '').replace(/\s+/g, "");
+
+		// aHtml = aHtml.replace(/\n/ig, '').replace(/\s+/g, "");
 
 		if (postName == '') {
 			layer.msg('您还未输入海报名称', {time: 1000}, function () {

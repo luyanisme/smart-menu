@@ -94,7 +94,9 @@ exports.updateBulk = function (shop, data, callBack, errBack) {
 }
 
 exports.findAll = function (shop, condition, callBack, errBack) {
-	return shop.findAll(condition).then(
+	return shop.findAll({
+		where: condition
+	}).then(
 		function (result) {
 			callBack(result);
 		}
