@@ -173,6 +173,7 @@
 		$(".summernote").summernote({
 			lang: "zh-CN",
 			height: 400,
+			placeholder: '请输入文章内容',
 			callbacks: {
 				onImageUpload: function (files) {
 					var formData = new FormData();
@@ -186,7 +187,7 @@
 						success: function (data) {
 							if (data.status == 0) {
 								layer.msg('图片上传成功', {time: 1000}, function () {
-									$('.summernote').summernote('insertImage',data.url);
+									$('.summernote').summernote('insertImage', data.url);
 								});
 							}
 
