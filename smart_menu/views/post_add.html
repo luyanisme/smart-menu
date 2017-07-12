@@ -26,9 +26,6 @@
 
 <body class="gray-bg">
 <div class="wrapper wrapper-content">
-    <div class="alert alert-success" style="text-align: center">
-        保存成功
-    </div>
     <div class="row">
         <div class="col-sm-3">
             <div class="ibox float-e-margins">
@@ -50,13 +47,13 @@
 
                     <ul class="sortable-list connectList agile-list">
                         <%results.forEach(function(result){%>
-                        <li id="1" class="success-element" onclick="onTapPost('<%=result.dataValues.postId%>')">
+                        <li id="<%=result.dataValues.postId%>" class="success-element">
                             <%=result.dataValues.postName%>
                             <div class="agile-detail">
-                                <a href="#"
-                                   onclick="onRemovePost('<%=result.dataValues.postId%>','<%=result.dataValues.postName%>')"
+                                <a onclick="onRemovePost('<%=result.dataValues.postId%>','<%=result.dataValues.postName%>')"
                                    class="pull-right btn btn-xs btn-danger">删除</a>
-                                <i class="fa fa-clock-o"></i> <%=result.dataValues.postStartDate%>至<%=result.dataValues.postEndDate%>
+                                <i class="fa fa-clock-o"></i>
+                                <%=result.dataValues.postStartDate%>至<%=result.dataValues.postEndDate%>
                             </div>
                         </li>
                         <%})%>
@@ -81,7 +78,31 @@
 		$(".sortable-list").sortable({
 			connectWith: ".connectList",
 			update: function (event, ui) {       //更新排序之后
-				alert($(this).sortable("toArray"));
+				var updateIds = $(this).sortable("toArray");
+				updateIds = "[" + updateIds + "]";
+				$.ajax({
+					url: 'updatePostOrder?updateIds=' + updateIds,
+					type: 'GET',
+					success: function (data) {
+						if (data.status == 0) {
+							layer.msg(data.msg, {time: 1000, icon: 1}, function () {
+								location.reload(); // 父页面刷新
+							});
+						}
+
+						if (data.status == 1) {
+							layer.msg(data.msg, {time: 1500}, function () {
+							});
+						}
+					},
+					error: function (err) {
+						if (err.status == 1) {
+							layer.msg(err.msg, {time: 1000, icon: 1}, function () {
+								//parent.location.reload(); // 父页面刷新
+							});
+						}
+					}
+				})
 			}
 		}).disableSelection()
 	});
@@ -95,10 +116,6 @@
 		});
 	}
 
-	function onTapPost(postId) {
-		location.href = "postDetailMaterial?postId=" + postId;
-	}
-
 	function onRemovePost(postId, postName) {
 		swal({
 			title: '您确定要移除"' + postName + '"?',
@@ -107,6 +124,7 @@
 			showCancelButton: true,
 			confirmButtonColor: "#DD6B55",
 			confirmButtonText: "移除",
+			cancelButtonText: "取消",
 			closeOnConfirm: false
 		}, function () {
 			$.ajax({

@@ -111,9 +111,22 @@ exports.update = function (Post, condition, data, callBack, errBack) {
 	});
 }
 
+/*批量更新*/
+exports.updateBulk = function (Post, data, callBack, errBack) {
+	return Post.bulkCreate(data,{ updateOnDuplicate: true}).then(function (result) {
+		callBack(result);
+	}).catch(function (err) {
+		errBack(err);
+		console.log("发生错误：" + err);
+	});
+}
+
 exports.findAll = function (Post,condition, callBack, errBack) {
 	return Post.findAll({
-		where: condition
+		where: condition,
+		order: [
+			['postShowIndex', 'ASC']
+		],
 	}).then(
 		function (result) {
 			callBack(result);

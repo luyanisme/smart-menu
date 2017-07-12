@@ -12,9 +12,9 @@ var config = require('../Config.js');
 
 exports.onShowPostMaterial = function (req, res) {
 	var shopId = req.session.user.shopId;
-	PostModel.findAll(global.sql.post, {shopId:shopId},function (result) {
+	PostModel.findAll(global.sql.post, {shopId: shopId}, function (result) {
 		res.render("post_material_list", {title: '海报素材', results: result});
-	},function (err) {
+	}, function (err) {
 		res.send({msg: err, status: 1});
 	})
 }
@@ -25,11 +25,44 @@ exports.onShowNewPostMaterial = function (req, res) {
 
 exports.onShowDetailPostMaterial = function (req, res) {
 	var postId = req.query.postId;
-	PostModel.findOne(global.sql.post, {postId:postId}, function (result) {
+	PostModel.findOne(global.sql.post, {postId: postId}, function (result) {
 		res.render("post_material_detail", {title: '海报详情', result: result});
-	},function (err) {
+	}, function (err) {
 		res.send({msg: err, status: 1});
 	})
+}
+
+exports.onUpdatePostOrder = function (req, res) {
+	var updateIds = JSON.parse(req.query.updateIds);
+
+	PostModel.findAll(global.sql.post, {postIsChoosed: true}, function (posts) {
+		var updatePosts = [];
+		var indexes = [];
+		posts.forEach(function (post) {
+			indexes.push(post.postShowIndex);
+		})
+		indexes.forEach(function (postShowIndex, index) {
+			var updatePost = findPostById(updateIds[index], posts);
+			updatePost.dataValues.postShowIndex = postShowIndex;
+			updatePosts.push(updatePost.dataValues);
+		})
+
+		PostModel.updateBulk(global.sql.post,updatePosts,function (result) {
+			res.send({msg: '更新成功', status: 0});
+		}, function (err) {
+			res.send({msg: err, status: 1});
+		})
+	}, function (err) {
+		res.send({msg: err, status: 1});
+	})
+}
+
+function findPostById(id, posts) {
+	for(var i=0;i<posts.length;i++){
+		if (id == posts[i].dataValues.postId){
+			return posts[i];
+		}
+	}
 }
 
 /*上传*/
@@ -92,7 +125,7 @@ exports.onUpload = function (req, res) {
 				postImagePath: avatarName,
 				postStartDate: startDate,
 				postEndDate: endDate,
-				shopId:shopId,
+				shopId: shopId,
 				updateTime: global.date
 			};
 		} else {
@@ -101,7 +134,7 @@ exports.onUpload = function (req, res) {
 				postDesc: aHtml,
 				postStartDate: startDate,
 				postEndDate: endDate,
-				shopId:shopId,
+				shopId: shopId,
 				updateTime: global.date
 			};
 		}
@@ -109,30 +142,35 @@ exports.onUpload = function (req, res) {
 		/*如果是修改海报信息*/
 		if (fields.postId) {
 			if (post.caseImagePath != null) {
-				PostModel.findOne(global.sql.post, {postId:fields.postId}, function (result) {
+				PostModel.findOne(global.sql.post, {postId: fields.postId}, function (result) {
 					//将图片删除
 					var path = global.uploadFloder + result.dataValues.caseImagePath;
 					fsmanager.deleteFile(path, function () {
-						PostModel.update(global.sql.post, {postId:fields.postId}, post, function (result) {
+						PostModel.update(global.sql.post, {postId: fields.postId}, post, function (result) {
 							res.send({msg: '保存成功!', status: 0});
-						},function (err) {
+						}, function (err) {
 							res.send({msg: err, status: 1});
 						});
 					})
-				},function (err) {
+				}, function (err) {
 					res.send({msg: err, status: 1});
 				})
 			} else {
-				PostModel.update(global.sql.post, {postId:fields.postId}, post, function (result) {
+				PostModel.update(global.sql.post, {postId: fields.postId}, post, function (result) {
 					res.send({msg: '保存成功!', status: 0});
-				},function (err) {
+				}, function (err) {
 					res.send({msg: err, status: 1});
 				});
 			}
 		} else {
-			PostModel.insert(global.sql.post, post, function (result) {
-				res.send({msg: '保存成功!', status: 0});
-			},function (err) {
+			PostModel.findAll(global.sql.post, {}, function (posts) {
+				post.postShowIndex = posts.length + 1;
+				PostModel.insert(global.sql.post, post, function (result) {
+					res.send({msg: '保存成功!', status: 0});
+				}, function (err) {
+					res.send({msg: err, status: 1});
+				});
+			}, function (err) {
 				res.send({msg: err, status: 1});
 			});
 		}
@@ -195,7 +233,7 @@ exports.onUploadImage = function (req, res) {
 			var newPath = form.uploadDir + avatarName;
 			fs.renameSync(files[key].path, newPath);  //重命名
 
-			res.send({msg: '图片上传成功!', status: 0, url: config.severIP +''+avatarName});
+			res.send({msg: '图片上传成功!', status: 0, url: config.severIP + '' + avatarName});
 		}
 
 	});
@@ -205,26 +243,39 @@ exports.onUploadImage = function (req, res) {
 /*删除海报素材*/
 exports.onRemovePostMaterial = function (req, res) {
 	var postId = req.query.postId;
-	PostModel.findOne(global.sql.post, {postId:postId}, function (result) {
+	PostModel.findOne(global.sql.post, {postId: postId}, function (result) {
 		var path = global.uploadFloder + result.dataValues.postImagePath;
-		PostModel.remove(global.sql.post, {postId:postId}, function (result) {
+		PostModel.remove(global.sql.post, {postId: postId}, function (result) {
 			//将图片删除
 			fsmanager.deleteFile(path, function () {
-				res.send({msg: '删除成功', status: 0});
+				PostModel.findAll(global.sql.post, {}, function (posts) {
+					var updatePosts = [];
+					posts.forEach(function (post, index) {
+						post.postShowIndex = index + 1;
+						updatePosts.push(post.dataValues);
+					})
+					PostModel.updateBulk(global.sql.post, updatePosts, function (result) {
+						res.send({msg: '删除成功', status: 0});
+					}, function (err) {
+						res.send({msg: err, status: 1});
+					})
+				}, function (err) {
+					res.send({msg: err, status: 1});
+				})
 			})
-		},function (err) {
+		}, function (err) {
 			res.send({msg: err, status: 1});
 		});
-	},function (err) {
+	}, function (err) {
 		res.send({msg: err, status: 1});
 	});
 };
 
 /*添加海报*/
 exports.onAddPost = function (req, res) {
-	PostModel.findAll(global.sql.post,{postIsChoosed: true},function (result) {
+	PostModel.findAll(global.sql.post, {postIsChoosed: true}, function (result) {
 		res.render('post_add', {title: '海报添加', results: result});
-	},function (err) {
+	}, function (err) {
 		res.send({msg: err, status: 1});
 	})
 };
@@ -232,9 +283,9 @@ exports.onAddPost = function (req, res) {
 /*添加海报页面*/
 exports.onShowPostChooseForm = function (req, res) {
 	var shopId = req.session.user.shopId;
-	PostModel.findAll(global.sql.post, {shopId:shopId},function (result) {
+	PostModel.findAll(global.sql.post, {shopId: shopId}, function (result) {
 		res.render('post_choose_form', {title: '海报选择', results: result});
-	},function (err) {
+	}, function (err) {
 		res.send({msg: err, status: 1});
 	});
 };
@@ -242,20 +293,20 @@ exports.onShowPostChooseForm = function (req, res) {
 /*添加海报*/
 exports.onChoosePost = function (req, res) {
 	var postId = req.query.postId;
-	PostModel.findOne(global.sql.post, {postId:postId}, function (result) {
-		if (result.dataValues.postIsChoosed == true){
-			res.send({msg:'"'+result.dataValues.postName + '"已添加，请重新选择', status: 1});
+	PostModel.findOne(global.sql.post, {postId: postId}, function (result) {
+		if (result.dataValues.postIsChoosed == true) {
+			res.send({msg: '"' + result.dataValues.postName + '"已添加，请重新选择', status: 1});
 		} else {
 			var post = {
 				postIsChoosed: true
 			}
-			PostModel.update(global.sql.post, {postId:postId}, post, function (result) {
+			PostModel.update(global.sql.post, {postId: postId}, post, function (result) {
 				res.send({msg: '添加成功', status: 0});
-			},function (err) {
+			}, function (err) {
 				res.send({msg: err, status: 1});
 			});
 		}
-	},function (err) {
+	}, function (err) {
 		res.send({msg: err, status: 1});
 	});
 
@@ -267,9 +318,9 @@ exports.onRemovePost = function (req, res) {
 	var post = {
 		postIsChoosed: false
 	}
-	PostModel.update(global.sql.post, postId, post, function (result) {
+	PostModel.update(global.sql.post, {postId: postId}, post, function (result) {
 		res.send({msg: '移除成功', status: 0});
-	},function (err) {
+	}, function (err) {
 		res.send({msg: err, status: 1});
 	});
 

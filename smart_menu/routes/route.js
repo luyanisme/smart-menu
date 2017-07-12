@@ -76,6 +76,7 @@ router.route('/addPost').get(postCtrl.onAddPost);/*添加海报*/
 router.route('/choosePostForm').get(postCtrl.onShowPostChooseForm);/*海报选择*/
 router.route('/choosePost').get(postCtrl.onChoosePost);/*海报添加*/
 router.route('/removePost').get(postCtrl.onRemovePost);/*移除海报*/
+router.route('/updatePostOrder').get(postCtrl.onUpdatePostOrder);/*更新海报顺序*/
 
 router.route('/deskCate').get(deskCateCtrl.onShowDeskCate);/*桌位分类*/
 router.route('/deskCateForm').get(deskCateCtrl.onShowDeskCateForm);/*桌位分类添加*/

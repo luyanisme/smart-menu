@@ -39,7 +39,10 @@ exports.getMainData = function (req, res) {
 			}).then(
 				function (funcs) {
 					global.sql.post.findAll({
-						where:{shopId:shopId,postIsChoosed:true}
+						where:{shopId:shopId,postIsChoosed:true},
+						order: [
+							['postShowIndex', 'ASC']
+						]
 					}).then(
 						function (posts) {
 							res.send({msg: '请求成功', statue: 0, data: {funcs:funcs, posts:posts}});
