@@ -20,6 +20,8 @@ var mobileCtrl = require('../controllers/MobileCtrl.js');
 var funcModuleCtrl = require('../controllers/FuncModuleCtrl.js');
 var shopCtrl = require('../controllers/ShopCtrl.js');
 
+var webSocketCtrl = require('../controllers/WebSocketCtrl.js');
+
 router.route('/addNewAccount').get(accountCtrl.onAddNewAccount).post(accountCtrl.onSaveAccount);/*添加账户*/
 router.route('/accountDetail').get(accountCtrl.onShowDetailAccount)/*账户详情*/
 router.route('/removeAccount').get(accountCtrl.onRemoveAccount)/*删除账户*/
@@ -114,51 +116,13 @@ router.route(API+'/insertNotice').get(Api.insertNotice);/*插入新的消息*/
 router.route(API+'/getNotices').get(Api.getNotices);/*获取消息列表*/
 router.route(API+'/postOrderedList').post(Api.postOrderedList);/*获取已点商品*/
 
+
 /********************************************微信小程序接口********************************************/
 var WECHAT = '/Api/Wechat';
 router.route(WECHAT+'/getMenu').get(Api.getWeChatMenuList);/*获取菜单*/
 router.route(WECHAT+'/getMainData').get(Api.getMainData);/*获取菜单*/
 
-const WebSocket = require('ws');
-
-const wss = new WebSocket.Server({ port: 8181 });
-
-//广播
-wss.broadcast = function broadcast(s,ws) {
-	// console.log(ws);
-	// debugger;
-	wss.clients.forEach(function each(client) {
-		// if (typeof client.user != "undefined") {
-		if(s == 1){
-			client.send(ws.name + ":" + ws.msg);
-		}
-		if(s == 0){
-			client.send(ws + "退出聊天室");
-		}
-		// }
-	});
-};
-
-wss.on('connection', function connection(ws) {
-	ws.on('message', function incoming(message) {
-		if(message){
-			// Api.insertNotice(JSON.parse(message),function (result) {
-			//
-			// }, function (err) {
-			//
-			// })
-		}
-
-		console.log('received: %s', JSON.stringify(message));
-		wss.clients.forEach(function each(client) {
-			/*判断当前客户端是否为本身*/
-			if (client !== ws && client.readyState === WebSocket.OPEN) {
-				client.send(message);
-			}
-		});
-	});
-
-	//ws.send('something');
-});
+/********************************************socket********************************************/
+webSocketCtrl.initWS();
 
 module.exports = router;

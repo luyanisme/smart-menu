@@ -32,6 +32,7 @@ var db = {
 			'dialect': 'mysql',  // 数据库使用mysql
 			'host': 'localhost', // 数据库服务器ip
 			'port': 3306,        // 数据库服务器端口
+			"timezone": "+08:00",
 			'define': {
 				// 字段以下划线（_）来分割（默认是驼峰命名风格）
 				'underscored': true

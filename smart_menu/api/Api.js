@@ -97,15 +97,42 @@ exports.postOrderedList = function (req, res) {
 
 /*获取消息列表，需要添加分页查询*/
 exports.getNotices = function (req, res) {
-
+	var condition = {};
+	var page = parseInt(req.query.page);
+	var pageSize = parseInt(req.query.pageSize);
+	global.sql.notice.findAndCountAll({
+		order: [
+			['noticeIsDealed', 'ASC'],
+				['dateTime', 'DESC']
+		],
+		where: condition,
+		offset:(page - 1) * pageSize,
+		limit:pageSize
+	}).then(
+		function (data) {
+			res.send({msg: '请求成功', statue: 0, data: data.rows});
+		}
+	).catch(function (err) {
+		console.log("发生错误：" + err);
+	})
 }
 
 /****************************************Api of Socket***********************************************/
 /*插入消息*/
 exports.insertNotice = function (notice, callBack, errBack) {
-	notice.noticeIsDealed = false;
-	notice.shopId = 1;
 	global.sql.notice.create(notice).then(function (result) {
+		callBack(result);
+	}).catch(function (err) {
+		errBack(err);
+		console.log("发生错误：" + err);
+	});
+}
+
+/*更新消息*/
+exports.updateNotice = function (condition, data, callBack, errBack) {
+	global.sql.notice.update(data, {
+		where: condition
+	}).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
 		errBack(err);

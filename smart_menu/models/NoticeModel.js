@@ -15,6 +15,26 @@ exports.onCreate = function (sequelize) {
 				allowNull: false,
 				unique: true
 			},
+			noticeKey: {
+				field: 'notice_key',
+				type: Sequelize.STRING,
+				allowNull: false
+			},
+			clientType: {
+				field: 'client_type',
+				type: Sequelize.BIGINT,
+				allowNull: false
+			},
+			noticeType: {
+				field: 'notice_type',
+				type: Sequelize.BIGINT,
+				allowNull: false
+			},
+			deskId: {
+				field: 'desk_id',
+				type: Sequelize.BIGINT,
+				allowNull: false
+			},
 			deskNum: {
 				field: 'desk_num',
 				type: Sequelize.STRING,
@@ -41,6 +61,12 @@ exports.onCreate = function (sequelize) {
 					key: 'shop_id'
 				},
 			},
+			dateTime: {
+				field: 'date_time',
+				type: Sequelize.DATE,
+				defaultValue: Sequelize.NOW,
+				allowNull: true
+			}
 		},
 		{
 			tableName: 'notice',

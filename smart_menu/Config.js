@@ -4,7 +4,9 @@
 var Config = {
 	imagePath: "/Users/luyan/Documents/IMAGES/",
 	iconPath: "/Users/luyan/Documents/ICONS/",
-  severIP:"http://"+getIPv4()+":8080/"
+  severIP:"http://"+getIPv4()+":8080/",
+	WECHAT:0,
+	ANDROID:1,
 }
 
 function getIPv4() {

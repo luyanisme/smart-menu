@@ -61,6 +61,12 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.TEXT,
 				allowNull: true
 			},
+			/*商品制作进度*/
+			caseProgress: {
+				field: 'case_progress',
+				type: Sequelize.BIGINT,
+				allowNull: false
+			},
 			/*是否上架*/
 			caseScaling: {
 				field: 'case_scaling',
@@ -155,3 +161,4 @@ exports.findOne = function (Case, condition, callBack, errBack) {
 		console.log("发生错误：" + err);
 	});
 }
+

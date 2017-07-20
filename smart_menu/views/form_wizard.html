@@ -13,6 +13,7 @@
     <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet">
+    <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
     <link href="css/animate.min.css" rel="stylesheet">
     <link href="css/style.min.css?v=4.1.0" rel="stylesheet">
 
@@ -108,9 +109,23 @@
                                         <input placeholder="请输入店铺电话" id="shopPhoneNum" name="shopPhoneNum" type="text"
                                                class="form-control">
                                     </div>
+
                                 </div>
                                 <div class="col-sm-6">
-
+                                    <div class="form-group">
+                                        <label>营业开始时间 *</label>
+                                        <div class="input-group clockpicker" data-autoclose="true">
+                                            <input placeholder="请输入开始时间" id="shopOpenTime" name="shopOpenTime" type="text" class="form-control" value="">
+                                            <span class="input-group-addon"><span class="fa fa-clock-o"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>营业结束时间 *</label>
+                                        <div class="input-group clockpicker" data-autoclose="true">
+                                            <input placeholder="请输入结束时间" id="shopEndTime" name="shopEndTime" type="text" class="form-control" value="">
+                                            <span class="input-group-addon"><span class="fa fa-clock-o"></span></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </fieldset>
@@ -247,6 +262,7 @@
 <script src="js/jquery.min.js?v=2.1.4"></script>
 <script src="js/jquery.form.js"></script>
 <script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/plugins/clockpicker/clockpicker.js"></script>
 <script src="js/plugins/staps/jquery.steps.min.js"></script>
 <script src="js/plugins/validate/jquery.validate.min.js"></script>
 <script src="js/plugins/validate/messages_zh.min.js"></script>
@@ -254,6 +270,7 @@
 
 <script>
 	$(document).ready(function () {
+
 		// 身份证号码验证
 		jQuery.validator.addMethod("isIdCardNo", function (value, element) {
 			return this.optional(element) || validateUtil.checkIdCardNo(value);
@@ -292,6 +309,7 @@
 				if (currentIndex === 2 && priorIndex === 3) {
 					$(this).steps("previous")
 				}
+				$('.clockpicker').clockpicker();
 			}, onFinishing: function (event, currentIndex) {
 				var form = $(this);
 				form.validate().settings.ignore = ":disabled";
@@ -344,8 +362,10 @@
 			},
 		})
 	});
+
 </script>
-<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+<script>
+</script>
 </body>
 
 </html>

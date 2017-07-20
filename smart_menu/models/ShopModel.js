@@ -44,6 +44,18 @@ exports.onCreate = function (sequelize) {
 				field: 'shop_module_ids',
 				type: Sequelize.TEXT,
 				allowNull: true
+			},
+			/*店铺营业开始时间*/
+			shopOpenTime:{
+				field: 'shop_open_time',
+				type: Sequelize.STRING,
+				allowNull: false
+			},
+			/*店铺打烊时间*/
+			shopEndTime:{
+				field: 'shop_end_time',
+				type: Sequelize.STRING,
+				allowNull: false
 			}
 		},
 		{

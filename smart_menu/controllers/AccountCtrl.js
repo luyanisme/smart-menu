@@ -136,6 +136,8 @@ exports.onSaveFormWizard = function (req, res) {
 	var realName = req.body.realName;
 	var phoneNum = req.body.phoneNum;
 	var identity = req.body.identity;
+	var shopOpenTime = req.body.shopOpenTime;
+	var shopEndTime = req.body.shopEndTime;
 
 	var email = req.body.email;
 	var shopName = req.body.shopName;
@@ -162,6 +164,8 @@ exports.onSaveFormWizard = function (req, res) {
 		shopName:shopName,
 		shopAddress: shopAddress,
 		shopPhoneNum: shopPhoneNum,
+		shopOpenTime: shopOpenTime,
+		shopEndTime: shopEndTime,
 	}
 
 	var deskCate1 = {
