@@ -100,12 +100,13 @@ exports.getNotices = function (req, res) {
 	var condition = {};
 	var page = parseInt(req.query.page);
 	var pageSize = parseInt(req.query.pageSize);
+	var shopId = req.query.shopId;
 	global.sql.notice.findAndCountAll({
 		order: [
 			['noticeIsDealed', 'ASC'],
 				['dateTime', 'DESC']
 		],
-		where: condition,
+		where: {shopId: shopId},
 		offset:(page - 1) * pageSize,
 		limit:pageSize
 	}).then(
@@ -133,6 +134,16 @@ exports.updateNotice = function (condition, data, callBack, errBack) {
 	global.sql.notice.update(data, {
 		where: condition
 	}).then(function (result) {
+		callBack(result);
+	}).catch(function (err) {
+		errBack(err);
+		console.log("发生错误：" + err);
+	});
+}
+
+/*插入订单*/
+exports.insertOrder = function (order, callBack, errBack) {
+	global.sql.order.create(order).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
 		errBack(err);

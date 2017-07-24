@@ -141,3 +141,4 @@ exports.findOne = function (notice, condition, callBack, errBack) {
 		console.log("发生错误：" + err);
 	});
 }
+

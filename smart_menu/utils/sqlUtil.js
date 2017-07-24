@@ -18,6 +18,7 @@ var deskCateModel = require('../models/DeskCateModel.js');
 var deskModel = require('../models/DeskModel.js');
 var mobileModel = require('../models/MobileModel.js');
 var noticeModel = require('../models/NoticeModel.js');
+var orderModel = require('../models/OrderModel.js');
 var funcModel = require('../models/FuncModel.js');
 var funcDataModule = require('../models/FuncDataModuleModel.js');
 
@@ -86,15 +87,18 @@ db.mobile = mobileModel.onCreate(db.sequelize);
 /*消息*/
 db.notice = noticeModel.onCreate(db.sequelize);
 
+/*订单*/
+db.order = orderModel.onCreate(db.sequelize);
+
 /*功能模块*/
 db.func = funcModel.onCreate(db.sequelize);
 
 /*功能数据*/
 db.funcDataModule = funcDataModule.onCreate(db.sequelize);
 
-
 /*测试模块*/
 db.test = testModel.onCreate(db.sequelize);
 
+// db.sequelize.query("DROP event IF EXISTS e_delete_wxauth; CREATE EVENT e_delete_wxauth ON SCHEDULE EVERY 1 DAY STARTS '2000-01-01 00:00:00' DO DELETE FROM notice WHERE DATE < DATE_SUB(CURRENT_TIMESTAMP,INTERVAL 30 MINUTE);");
 
 module.exports = db;
