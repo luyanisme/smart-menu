@@ -42,7 +42,7 @@ exports.onCreate = function (sequelize) {
 			},
 			orderContent: {
 				field: 'order_content',
-				type: Sequelize.STRING,
+				type: Sequelize.TEXT,
 				allowNull: false
 			},
 			//消息是否已处理

@@ -1,7 +1,7 @@
 /**
  * Created by luyan on 4/11/17.
  */
-
+var moment = require('moment');
 /****************************************Api of Http*************************************************/
 /*获取菜单列表*/
 exports.getMenuList = function (req, res) {
@@ -75,14 +75,14 @@ exports.getWeChatMenuList = function (req, res) {
 			for (var j = 0; j < casecates[i].cases.length; j++) {
 				casecates[i].cases[j].dataValues.orderNum = 0;
 				casecates[i].cases[j].dataValues.orderAllNum = 0;
-				var standardVals = JSON.parse(casecates[i].cases[j].caseStandardVals);
-				var propertyVals = JSON.parse(casecates[i].cases[j].casePropertyVals);
+				casecates[i].cases[j].caseStandardVals = JSON.parse(casecates[i].cases[j].caseStandardVals);
+				casecates[i].cases[j].casePropertyVals = JSON.parse(casecates[i].cases[j].casePropertyVals);
 				casecates[i].cases[j].dataValues.standards = [];
-				if (standardVals.length > 0) {
-					casecates[i].cases[j].dataValues.standards.push(standardVals);
+				if (casecates[i].cases[j].caseStandardVals.length > 0) {
+					casecates[i].cases[j].dataValues.standards.push(casecates[i].cases[j].caseStandardVals);
 				}
-				if (propertyVals.length > 0) {
-					casecates[i].cases[j].dataValues.standards.push(propertyVals);
+				if (casecates[i].cases[j].casePropertyVals.length > 0) {
+					casecates[i].cases[j].dataValues.standards.push(casecates[i].cases[j].casePropertyVals);
 				}
 			}
 		}
@@ -118,6 +118,32 @@ exports.getNotices = function (req, res) {
 	})
 }
 
+/*获取订单列表，需要添加分页查询*/
+exports.getOrders = function (req, res) {
+	var condition = {};
+	var page = parseInt(req.query.page);
+	var pageSize = parseInt(req.query.pageSize);
+	var shopId = req.query.shopId;
+	global.sql.order.findAndCountAll({
+		order: [
+			['orderIsDealed', 'ASC'],
+			['dateTime', 'DESC']
+		],
+		where: {shopId: shopId},
+		offset:(page - 1) * pageSize,
+		limit:pageSize
+	}).then(
+		function (data) {
+			data.rows.forEach(function (row) {
+				row.dataValues.dateTime = moment(new Date(row.dataValues.dateTime)).format('YYYY-MM-DD HH:mm:ss');
+			})
+			res.send({msg: '请求成功', statue: 0, data: data.rows});
+		}
+	).catch(function (err) {
+		console.log("发生错误：" + err);
+	})
+}
+
 /****************************************Api of Socket***********************************************/
 /*插入消息*/
 exports.insertNotice = function (notice, callBack, errBack) {
@@ -132,6 +158,18 @@ exports.insertNotice = function (notice, callBack, errBack) {
 /*更新消息*/
 exports.updateNotice = function (condition, data, callBack, errBack) {
 	global.sql.notice.update(data, {
+		where: condition
+	}).then(function (result) {
+		callBack(result);
+	}).catch(function (err) {
+		errBack(err);
+		console.log("发生错误：" + err);
+	});
+}
+
+/*更新订单*/
+exports.updateOrder = function (condition, data, callBack, errBack) {
+	global.sql.order.update(data, {
 		where: condition
 	}).then(function (result) {
 		callBack(result);

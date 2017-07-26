@@ -114,8 +114,8 @@ var API = '/Api';
 router.route(API+'/getMenu').get(Api.getMenuList);/*获取菜单*/
 router.route(API+'/insertNotice').get(Api.insertNotice);/*插入新的消息*/
 router.route(API+'/getNotices').get(Api.getNotices);/*获取消息列表*/
+router.route(API+'/getOrders').get(Api.getOrders);/*获取订单列表*/
 router.route(API+'/postOrderedList').post(Api.postOrderedList);/*获取已点商品*/
-
 
 /********************************************微信小程序接口********************************************/
 var WECHAT = '/Api/Wechat';
