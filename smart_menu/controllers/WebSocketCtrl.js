@@ -68,6 +68,7 @@ exports.initWS = function () {
 
 							case 1:/*订单*/
 								message.orderKey = randomID.getUUID();
+								message.orderIsOrdered = true;
 								Api.insertOrder(message, function (order) {
 									result.statue = 0;
 									result.msg = '下单成功';
@@ -93,6 +94,7 @@ exports.initWS = function () {
 					case config.ANDROID:
 					{
 						switch (message.noticeType){
+							//消息
 							case 0:
 								var notice = {
 									noticeIsDealed: message.noticeIsDealed,
@@ -113,6 +115,7 @@ exports.initWS = function () {
 								})
 								break;
 
+							//订单
 							case 1:
 								var order = {
 									orderIsDealed: message.orderIsDealed,

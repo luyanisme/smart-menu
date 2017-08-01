@@ -144,6 +144,76 @@ exports.getOrders = function (req, res) {
 	})
 }
 
+/*获取订单列表，需要添加分页查询*/
+exports.getOrdered = function (req, res) {
+	var shopId = req.query.shopId;
+	var deskId = req.query.deskId;
+	var condition = {
+		shopId: shopId,
+		deskId: deskId,
+		orderIsOrdered: true,//已下单
+		orderIsUsing:true,//改桌位是否在使用
+	};
+	global.sql.order.findAll({
+		where: condition
+	}).then(
+		function (orders) {
+			var ordered = [];
+			var totalPrice = 0;
+			var data = {};
+			orders.forEach(function (order) {
+				totalPrice += parseFloat(order.dataValues.orderPrice);
+				ordered = ordered.concat(JSON.parse(order.dataValues.orderContent));
+			})
+			data.ordered = ordered;
+			data.totalPrice = totalPrice;
+			res.send({msg: '请求成功', statue: 0, data: data});
+		}
+	).catch(function (err) {
+		res.send({msg: '请求失败', statue: 1, data: null});
+	});
+}
+
+/*改变桌位状态*/
+exports.changeDeskStatue = function (req, res) {
+	var deskId = req.query.deskId;
+	var deskStatue = req.query.deskStatue;
+	var condition = {
+		deskId: deskId,
+	};
+	var desk = {
+		deskStatue: deskStatue
+	}
+	global.sql.desk.update(desk,{
+		where: condition
+	}).then(
+		function (result) {
+			res.send({msg: '修改成功', statue: 0, data: null});
+		}
+	).catch(function (err) {
+		res.send({msg: '请求失败', statue: 1, data: null});
+	});
+}
+
+/*获取桌位列表*/
+exports.getDesk = function (req, res) {
+	var shopId = req.query.shopId;
+	var condition = {
+		shopId: shopId,
+	};
+	global.sql.deskCate.hasMany(global.sql.desk, {foreignKey: 'deskCateId'});
+	global.sql.deskCate.findAll({
+		where: condition,
+		include: {model: global.sql.desk}
+	}).then(
+		function (desks) {
+			res.send({msg: '请求成功', statue: 0, data: desks});
+		}
+	).catch(function (err) {
+		res.send({msg: '请求失败', statue: 1, data: null});
+	});
+}
+
 /****************************************Api of Socket***********************************************/
 /*插入消息*/
 exports.insertNotice = function (notice, callBack, errBack) {

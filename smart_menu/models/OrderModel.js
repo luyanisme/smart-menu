@@ -45,9 +45,27 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.TEXT,
 				allowNull: false
 			},
-			//消息是否已处理
+			//订单是否已处理
 			orderIsDealed: {
 				field: 'order_is_dealed',
+				type: Sequelize.BOOLEAN,
+				allowNull: true
+			},
+			//点单是否已支付
+			orderIsPayed: {
+				field: 'order_is_payed',
+				type: Sequelize.BOOLEAN,
+				allowNull: true
+			},
+			//点单是否已下单
+			orderIsOrdered: {
+				field: 'order_is_ordered',
+				type: Sequelize.BOOLEAN,
+				allowNull: true
+			},
+			//订单是否在使用
+			orderIsUsing: {
+				field: 'order_is_using',
 				type: Sequelize.BOOLEAN,
 				allowNull: true
 			},

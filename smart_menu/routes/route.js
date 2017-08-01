@@ -89,6 +89,7 @@ router.route('/addDeskCateForm').get(deskCateCtrl.onAddDeskCate);/*桌位分类�
 router.route('/onShowDesks').get(deskCtrl.onShowDesks);/*桌位展示*/
 router.route('/addNewDesk').get(deskCtrl.onShowNewDesk).post(deskCtrl.onSaveNewDesk);/*桌位添加*/
 router.route('/detailDesk').get(deskCtrl.onShowDeskDetail);/*展示桌位详情*/
+router.route('/removeDesk').get(deskCtrl.onRemoveDesk);/*删除桌位*/
 
 router.route('/showOrders').get(ordersCtrl.onShowOrderList);/*订单详情*/
 
@@ -116,11 +117,14 @@ router.route(API+'/insertNotice').get(Api.insertNotice);/*插入新的消息*/
 router.route(API+'/getNotices').get(Api.getNotices);/*获取消息列表*/
 router.route(API+'/getOrders').get(Api.getOrders);/*获取订单列表*/
 router.route(API+'/postOrderedList').post(Api.postOrderedList);/*获取已点商品*/
+router.route(API+'/changeDeskStatue').get(Api.changeDeskStatue);/*改变桌位状态*/
+router.route(API+'/getDesk').get(Api.getDesk);
 
 /********************************************微信小程序接口********************************************/
 var WECHAT = '/Api/Wechat';
 router.route(WECHAT+'/getMenu').get(Api.getWeChatMenuList);/*获取菜单*/
 router.route(WECHAT+'/getMainData').get(Api.getMainData);/*获取菜单*/
+router.route(WECHAT+'/getOrdered').get(Api.getOrdered);/*获取菜单*/
 
 /********************************************socket********************************************/
 webSocketCtrl.initWS();
