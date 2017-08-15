@@ -61,7 +61,7 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.TEXT,
 				allowNull: true
 			},
-			/*商品制作进度*/
+			/*商品制作进度, 0:开始制作;1:制作中;2:制作完成;*/
 			caseProgress: {
 				field: 'case_progress',
 				type: Sequelize.BIGINT,

@@ -19,6 +19,7 @@ var deskModel = require('../models/DeskModel.js');
 var mobileModel = require('../models/MobileModel.js');
 var noticeModel = require('../models/NoticeModel.js');
 var orderModel = require('../models/OrderModel.js');
+var orderedModel = require('../models/OrderedModel.js');
 var funcModel = require('../models/FuncModel.js');
 var funcDataModule = require('../models/FuncDataModuleModel.js');
 
@@ -89,6 +90,9 @@ db.notice = noticeModel.onCreate(db.sequelize);
 
 /*订单*/
 db.order = orderModel.onCreate(db.sequelize);
+
+/*已订单*/
+db.ordered = orderedModel.onCreate(db.sequelize);
 
 /*功能模块*/
 db.func = funcModel.onCreate(db.sequelize);

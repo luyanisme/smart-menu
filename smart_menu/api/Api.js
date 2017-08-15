@@ -144,7 +144,29 @@ exports.getOrders = function (req, res) {
 	})
 }
 
-/*获取订单列表，需要添加分页查询*/
+/*获取订单列表*/
+exports.getNowdayOrders = function (req, res) {
+	var shopId = req.query.shopId;
+	var condition = {shopId: shopId,orderIsDealed: true};
+
+	global.sql.ordered.findAndCountAll({
+		order: [
+			['dateTime', 'DESC']
+		],
+		where: condition,
+	}).then(
+		function (data) {
+			data.rows.forEach(function (row) {
+				row.dataValues.dateTime = moment(new Date(row.dataValues.dateTime)).format('YYYY-MM-DD HH:mm:ss');
+			})
+			res.send({msg: '请求成功', statue: 0, data: data.rows});
+		}
+	).catch(function (err) {
+		console.log("发生错误：" + err);
+	})
+}
+
+/*获取订单列表*/
 exports.getOrdered = function (req, res) {
 	var shopId = req.query.shopId;
 	var deskId = req.query.deskId;
@@ -258,3 +280,42 @@ exports.insertOrder = function (order, callBack, errBack) {
 		console.log("发生错误：" + err);
 	});
 }
+
+/*插入已下单订单*/
+exports.insertOrdered = function (ordered, callBack, errBack) {
+	global.sql.ordered.create(ordered).then(function (result) {
+		callBack(result);
+	}).catch(function (err) {
+		errBack(err);
+		console.log("发生错误：" + err);
+	});
+}
+
+/*找出已下单订单*/
+exports.findOrdered = function (condition, callBack, errBack) {
+	global.sql.ordered.findOne({
+		where: condition
+	}).then(
+		function (result) {
+			callBack(result);
+		}
+	).catch(function (err) {
+		errBack(err);
+		console.log("发生错误：" + err);
+	});
+}
+
+
+/*更新已订订单*/
+exports.updateOrdered = function (condition, data, callBack, errBack) {
+	global.sql.ordered.update(data, {
+		where: condition
+	}).then(function (result) {
+		callBack(result);
+	}).catch(function (err) {
+		errBack(err);
+		console.log("发生错误：" + err);
+	});
+}
+
+

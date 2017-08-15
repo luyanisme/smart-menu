@@ -7,6 +7,7 @@ var Config = {
   severIP:"http://"+getIPv4()+":8080/",
 	WECHAT:0,
 	ANDROID:1,
+	ANDROID_PAD:2,
 }
 
 function getIPv4() {

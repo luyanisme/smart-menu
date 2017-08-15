@@ -31,11 +31,10 @@ exports.initWS = function () {
 		ws.on('message', function incoming(message) {
 			/*获取安卓客户端传过来sokcet加标识*/
 			var sokectMsg = JSON.parse(message);
-			if (sokectMsg.isSendTag == true){
-				if (sokectMsg.clientType == config.ANDROID){
-					ws.shopId = sokectMsg.shopId;
-					return;
-				}
+			if (sokectMsg.isSendTag == true) {
+				ws.shopId = sokectMsg.shopId;
+				ws.clientType = sokectMsg.clientType;
+				return;
 			}
 			if (message) {
 				var result = {};
@@ -87,13 +86,13 @@ exports.initWS = function () {
 								})
 								break;
 						}
+						sendMsgToClient(message, ws, config.ANDROID);
 					}
 						break;
 
 					/*更新消息*/
-					case config.ANDROID:
-					{
-						switch (message.noticeType){
+					case config.ANDROID: {
+						switch (message.noticeType) {
 							//消息
 							case 0:
 								var notice = {
@@ -118,10 +117,80 @@ exports.initWS = function () {
 							//订单
 							case 1:
 								var order = {
+									isRead: message.isRead,
 									orderIsDealed: message.orderIsDealed,
 									orderContent: message.orderContent
 								};
 								Api.updateOrder({orderKey: message.orderKey}, order, function (order) {
+									result.statue = 0;
+									result.msg = '处理成功';
+									result.noticeType = 3;
+									result.callbackNoticeType = message.noticeType;
+									Api.findOrdered({
+										shopId: message.shopId,
+										deskId: message.deskId,
+										orderIsPayed: message.orderIsPayed
+									}, function (ordered) {
+										if (ordered != null){
+											var orderContent = JSON.parse(ordered.orderContent).concat(JSON.parse(message.orderContent));
+											var orderPrice = parseFloat(ordered.orderPrice) + parseFloat(message.orderPrice);
+											Api.updateOrdered({
+												shopId: message.shopId,
+												deskId: message.deskId,
+												orderIsPayed: message.orderIsPayed
+											},{orderContent: JSON.stringify(orderContent),orderPrice:orderPrice},function (r) {
+												ws.send(JSON.stringify(result));
+											},function (err) {
+												result.statue = 1;
+												result.msg = '处理失败';
+												result.noticeType = 3;
+												result.callbackNoticeType = message.noticeType;
+												ws.send(JSON.stringify(result));
+											})
+										} else {
+											Api.insertOrdered(message,function (r) {
+												ws.send(JSON.stringify(result));
+											},function (err) {
+												result.statue = 1;
+												result.msg = '处理失败';
+												result.noticeType = 3;
+												result.callbackNoticeType = message.noticeType;
+												ws.send(JSON.stringify(result));
+											})
+										}
+									},function (err) {
+										result.statue = 1;
+										result.msg = '处理失败';
+										result.noticeType = 3;
+										result.callbackNoticeType = message.noticeType;
+										ws.send(JSON.stringify(result));
+									})
+
+								}, function (err) {
+									result.statue = 1;
+									result.msg = '处理失败';
+									result.noticeType = 3;
+									result.callbackNoticeType = message.noticeType;
+									ws.send(JSON.stringify(result));
+								})
+								sendMsgToClient(message, ws, config.ANDROID_PAD);
+								break;
+						}
+
+					}
+						break;
+
+					case config.ANDROID_PAD: {
+						switch (message.noticeType) {
+							case 0:
+								break;
+
+							case 1:
+								var ordered = {
+									isRead: message.isRead,
+									orderContent: message.orderContent
+								};
+								Api.updateOrdered({orderKey: message.orderKey}, ordered, function (order) {
 									result.statue = 0;
 									result.msg = '处理成功';
 									result.noticeType = 3;
@@ -134,9 +203,9 @@ exports.initWS = function () {
 									result.callbackNoticeType = message.noticeType;
 									ws.send(JSON.stringify(result));
 								})
+								sendMsgToClient(message, ws, config.ANDROID_PAD);
 								break;
 						}
-
 					}
 						break;
 				}
@@ -151,15 +220,15 @@ exports.initWS = function () {
 			// 	}
 			// });
 
-			sendMsgToClient(message, ws);
+			// sendMsgToClient(message, ws);
 		});
 	});
 }
 
-function sendMsgToClient(msg, ws) {
+function sendMsgToClient(msg, ws, clientType) {
 	wss.clients.forEach(function each(client) {
 		/*判断当前客户端是否为本身*/
-		if (client !== ws && client.readyState === WebSocket.OPEN && client.shopId == msg.shopId) {
+		if (client !== ws && client.readyState === WebSocket.OPEN && client.shopId == msg.shopId && client.clientType == clientType) {
 			client.send(JSON.stringify(msg));
 		}
 	});

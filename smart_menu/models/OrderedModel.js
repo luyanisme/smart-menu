@@ -4,8 +4,8 @@
 var Sequelize = require('sequelize');
 
 exports.onCreate = function (sequelize) {
-	var order = sequelize.define(
-		'order',
+	var ordered = sequelize.define(
+		'ordered',
 		{
 			orderId: {
 				field: 'order_id',
@@ -58,7 +58,7 @@ exports.onCreate = function (sequelize) {
 				allowNull: true
 			},
 			//点单是否已下单
-			orderIsOrdered: {
+			orderIsordered: {
 				field: 'order_is_ordered',
 				type: Sequelize.BOOLEAN,
 				allowNull: true
@@ -98,7 +98,7 @@ exports.onCreate = function (sequelize) {
 			}
 		},
 		{
-			tableName: 'order',
+			tableName: 'ordered',
 			timestamps: false,
 			freezeTableName: true
 		}
@@ -110,7 +110,7 @@ exports.onCreate = function (sequelize) {
 		console.log("Server failed to start due to error: %s", err);
 	});
 
-	return order;
+	return ordered;
 }
 
 exports.insert = function (order, data, callBack, errBack) {
