@@ -39,13 +39,13 @@ exports.getMainData = function (req, res) {
 			}).then(
 				function (funcs) {
 					global.sql.post.findAll({
-						where:{shopId:shopId,postIsChoosed:true},
+						where: {shopId: shopId, postIsChoosed: true},
 						order: [
 							['postShowIndex', 'ASC']
 						]
 					}).then(
 						function (posts) {
-							res.send({msg: '请求成功', statue: 0, data: {funcs:funcs, posts:posts}});
+							res.send({msg: '请求成功', statue: 0, data: {funcs: funcs, posts: posts}});
 						}
 					).catch(function (err) {
 						res.send({msg: err, statue: 1});
@@ -104,11 +104,11 @@ exports.getNotices = function (req, res) {
 	global.sql.notice.findAndCountAll({
 		order: [
 			['noticeIsDealed', 'ASC'],
-				['dateTime', 'DESC']
+			['dateTime', 'DESC']
 		],
 		where: {shopId: shopId},
-		offset:(page - 1) * pageSize,
-		limit:pageSize
+		offset: (page - 1) * pageSize,
+		limit: pageSize
 	}).then(
 		function (data) {
 			res.send({msg: '请求成功', statue: 0, data: data.rows});
@@ -130,8 +130,8 @@ exports.getOrders = function (req, res) {
 			['dateTime', 'DESC']
 		],
 		where: {shopId: shopId},
-		offset:(page - 1) * pageSize,
-		limit:pageSize
+		offset: (page - 1) * pageSize,
+		limit: pageSize
 	}).then(
 		function (data) {
 			data.rows.forEach(function (row) {
@@ -147,7 +147,7 @@ exports.getOrders = function (req, res) {
 /*获取订单列表*/
 exports.getNowdayOrders = function (req, res) {
 	var shopId = req.query.shopId;
-	var condition = {shopId: shopId,orderIsDealed: true};
+	var condition = {shopId: shopId, orderIsDealed: true};
 
 	global.sql.ordered.findAndCountAll({
 		order: [
@@ -174,21 +174,16 @@ exports.getOrdered = function (req, res) {
 		shopId: shopId,
 		deskId: deskId,
 		orderIsOrdered: true,//已下单
-		orderIsUsing:true,//改桌位是否在使用
+		orderIsUsing: true,//改桌位是否在使用
+		orderIsPayed: false
 	};
-	global.sql.order.findAll({
+	global.sql.ordered.findOne({
 		where: condition
 	}).then(
-		function (orders) {
-			var ordered = [];
-			var totalPrice = 0;
+		function (order) {
 			var data = {};
-			orders.forEach(function (order) {
-				totalPrice += parseFloat(order.dataValues.orderPrice);
-				ordered = ordered.concat(JSON.parse(order.dataValues.orderContent));
-			})
-			data.ordered = ordered;
-			data.totalPrice = totalPrice;
+			data.ordered = JSON.parse(order.orderContent);
+			data.totalPrice = order.orderPrice;
 			res.send({msg: '请求成功', statue: 0, data: data});
 		}
 	).catch(function (err) {
@@ -206,7 +201,7 @@ exports.changeDeskStatue = function (req, res) {
 	var desk = {
 		deskStatue: deskStatue
 	}
-	global.sql.desk.update(desk,{
+	global.sql.desk.update(desk, {
 		where: condition
 	}).then(
 		function (result) {

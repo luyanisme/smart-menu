@@ -58,7 +58,7 @@ exports.onCreate = function (sequelize) {
 				allowNull: true
 			},
 			//点单是否已下单
-			orderIsordered: {
+			orderIsOrdered: {
 				field: 'order_is_ordered',
 				type: Sequelize.BOOLEAN,
 				allowNull: true
