@@ -91,8 +91,41 @@ exports.getWeChatMenuList = function (req, res) {
 };
 
 exports.postOrderedList = function (req, res) {
-	var orderedItem = req.body;
-	res.send({msg: "下单成功", status: 0, data: null});
+	var orderItem = req.body;
+	global.sql.ordered.findOne({
+		where: {
+			shopId: orderItem.shopId,
+			deskId: orderItem.deskId,
+			orderIsPayed: false
+		}
+	}).then(
+		function (ordered) {
+			if(ordered == null){
+				global.sql.ordered.create(orderItem).then(function (result) {
+					res.send({msg: "下单成功", statue: 0, data: null});
+				}).catch(function (err) {
+					res.send({msg: "系统错误", statue: 1, data: null});
+					console.log("发生错误：" + err);
+				});
+			} else {
+				var orderContent = JSON.parse(ordered.orderContent).concat(JSON.parse(orderItem.orderContent));
+				var orderPrice = parseFloat(ordered.orderPrice) + parseFloat(orderItem.orderPrice);
+				global.sql.ordered.update({orderContent: JSON.stringify(orderContent),orderPrice:orderPrice}, {
+					where: {
+						shopId: ordered.shopId,
+						deskId: ordered.deskId,
+						orderIsPayed: ordered.orderIsPayed
+					}
+				}).then(function (result) {
+					res.send({msg: "下单成功", statue: 0, data: null});
+				}).catch(function (err) {
+					res.send({msg: "系统错误", statue: 1, data: null});
+				});
+			}
+		}
+	).catch(function (err) {
+		res.send({msg: "系统错误", statue: 1, data: null});
+	});
 }
 
 /*获取消息列表，需要添加分页查询*/
@@ -166,6 +199,28 @@ exports.getNowdayOrders = function (req, res) {
 	})
 }
 
+/*在安卓端获取列表*/
+exports.getOrderedByAndroid = function (req, res) {
+	var shopId = req.query.shopId;
+	var deskId = req.query.deskId;
+	var condition = {
+		shopId: shopId,
+		deskId: deskId,
+		orderIsOrdered: true,//已下单
+		orderIsUsing: true,//改桌位是否在使用
+		orderIsPayed: false
+	};
+	global.sql.ordered.findAll({
+		where: condition
+	}).then(
+		function (orders) {
+			res.send({msg: '请求成功', statue: 0, data: orders});
+		}
+	).catch(function (err) {
+		res.send({msg: '请求失败', statue: 1, data: null});
+	});
+}
+
 /*获取订单列表*/
 exports.getOrdered = function (req, res) {
 	var shopId = req.query.shopId;
@@ -181,10 +236,14 @@ exports.getOrdered = function (req, res) {
 		where: condition
 	}).then(
 		function (order) {
-			var data = {};
-			data.ordered = JSON.parse(order.orderContent);
-			data.totalPrice = order.orderPrice;
-			res.send({msg: '请求成功', statue: 0, data: data});
+			if (order == null) {
+				res.send({msg: '尚无订单', statue: 0, data: null});
+			} else {
+				var data = {};
+				data.ordered = JSON.parse(order.orderContent);
+				data.totalPrice = order.orderPrice;
+				res.send({msg: '请求成功', statue: 0, data: data});
+			}
 		}
 	).catch(function (err) {
 		res.send({msg: '请求失败', statue: 1, data: null});

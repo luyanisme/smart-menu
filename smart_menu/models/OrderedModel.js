@@ -18,7 +18,7 @@ exports.onCreate = function (sequelize) {
 			orderKey: {
 				field: 'order_key',
 				type: Sequelize.STRING,
-				allowNull: false
+				allowNull: true
 			},
 			clientType: {
 				field: 'client_type',
@@ -28,7 +28,7 @@ exports.onCreate = function (sequelize) {
 			noticeType: {
 				field: 'notice_type',
 				type: Sequelize.BIGINT,
-				allowNull: false
+				allowNull: true
 			},
 			deskId: {
 				field: 'desk_id',
@@ -38,7 +38,7 @@ exports.onCreate = function (sequelize) {
 			deskNum: {
 				field: 'desk_num',
 				type: Sequelize.STRING,
-				allowNull: false
+				allowNull: true
 			},
 			orderContent: {
 				field: 'order_content',

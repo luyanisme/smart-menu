@@ -186,11 +186,12 @@ exports.initWS = function () {
 								break;
 
 							case 1:
+								/*后台消息过来处理*/
 								var ordered = {
 									isRead: message.isRead,
 									orderContent: message.orderContent
 								};
-								Api.updateOrdered({orderKey: message.orderKey}, ordered, function (order) {
+								Api.updateOrdered({shopId: message.shopId, deskId: message.deskId}, ordered, function (order) {
 									result.statue = 0;
 									result.msg = '处理成功';
 									result.noticeType = 3;
@@ -203,6 +204,11 @@ exports.initWS = function () {
 									result.callbackNoticeType = message.noticeType;
 									ws.send(JSON.stringify(result));
 								})
+								sendMsgToClient(message, ws, config.ANDROID_PAD);
+								break;
+
+								/*安卓手机端发来消息*/
+							case 2:
 								sendMsgToClient(message, ws, config.ANDROID_PAD);
 								break;
 						}

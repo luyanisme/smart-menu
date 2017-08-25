@@ -120,6 +120,7 @@ router.route(API+'/getNowdayOrders').get(Api.getNowdayOrders);/*pad端获取今�
 router.route(API+'/postOrderedList').post(Api.postOrderedList);/*获取已点商品*/
 router.route(API+'/changeDeskStatue').get(Api.changeDeskStatue);/*改变桌位状态*/
 router.route(API+'/getDesk').get(Api.getDesk);
+router.route(API+'/getOrdered').get(Api.getOrderedByAndroid);/*获取订单*/
 
 /********************************************微信小程序接口********************************************/
 var WECHAT = '/Api/Wechat';
