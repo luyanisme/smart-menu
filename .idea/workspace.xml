@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8bcddbfd-bd93-4340-82f0-726b3b90317a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smart_menu/Config.js" afterPath="$PROJECT_DIR$/smart_menu/Config.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smart_menu/api/Api.js" afterPath="$PROJECT_DIR$/smart_menu/api/Api.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smart_menu/controllers/LoginCtrl.js" afterPath="$PROJECT_DIR$/smart_menu/controllers/LoginCtrl.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smart_menu/controllers/WebSocketCtrl.js" afterPath="$PROJECT_DIR$/smart_menu/controllers/WebSocketCtrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smart_menu/models/OrderedModel.js" afterPath="$PROJECT_DIR$/smart_menu/models/OrderedModel.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smart_menu/routes/route.js" afterPath="$PROJECT_DIR$/smart_menu/routes/route.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smart_menu/views/login.html" afterPath="$PROJECT_DIR$/smart_menu/views/login.html" />
     </list>
     <ignored path="smart-menu.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -26,11 +27,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="WebSocketCtrl.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="WebSocketCtrl.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/smart_menu/controllers/WebSocketCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="194" column="10" lean-forward="false" selection-start-line="194" selection-start-column="10" selection-end-line="194" selection-end-column="10" />
+            <state relative-caret-position="618">
+              <caret line="81" column="36" lean-forward="true" selection-start-line="81" selection-start-column="36" selection-end-line="81" selection-end-column="36" />
               <folding>
                 <element signature="e#0#42#0" expanded="false" />
               </folding>
@@ -38,22 +39,26 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/smart_menu/app.js">
+      <file leaf-file-name="Api.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/smart_menu/api/Api.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="295">
+              <caret line="246" column="24" lean-forward="true" selection-start-line="246" selection-start-column="24" selection-end-line="246" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#39#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="login.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/smart_menu/views/login.html">
+      <file leaf-file-name="aesUtil.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/smart_menu/utils/aesUtil.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="325">
-              <caret line="136" column="0" lean-forward="false" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="240">
+              <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#42#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -68,14 +73,34 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Api.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/smart_menu/api/Api.js">
+      <file leaf-file-name="base64.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/smart_menu/public/js/base64.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
-              <caret line="113" column="2" lean-forward="true" selection-start-line="113" selection-start-column="2" selection-end-line="113" selection-end-column="2" />
+            <state relative-caret-position="484">
+              <caret line="114" column="3" lean-forward="true" selection-start-line="15" selection-start-column="2" selection-end-line="114" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base64Util.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/smart_menu/utils/base64Util.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="465">
+              <caret line="33" column="7" lean-forward="false" selection-start-line="33" selection-start-column="7" selection-end-line="33" selection-end-column="7" />
               <folding>
-                <element signature="e#0#39#0" expanded="false" />
+                <element signature="e#0#42#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="login.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/smart_menu/views/login.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="284">
+              <caret line="87" column="19" lean-forward="false" selection-start-line="87" selection-start-column="19" selection-end-line="87" selection-end-column="19" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -83,28 +108,8 @@
       <file leaf-file-name="Config.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/smart_menu/Config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="2" lean-forward="false" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sqlUtil.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/smart_menu/utils/sqlUtil.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="245">
-              <caret line="95" column="0" lean-forward="true" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="OrderModel.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/smart_menu/models/OrderModel.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="356">
-              <caret line="121" column="5" lean-forward="true" selection-start-line="116" selection-start-column="14" selection-end-line="121" selection-end-column="5" />
+            <state relative-caret-position="45">
+              <caret line="3" column="4" lean-forward="false" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -113,18 +118,18 @@
       <file leaf-file-name="route.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/smart_menu/routes/route.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="262">
-              <caret line="122" column="53" lean-forward="true" selection-start-line="122" selection-start-column="53" selection-end-line="122" selection-end-column="53" />
+            <state relative-caret-position="232">
+              <caret line="123" column="32" lean-forward="false" selection-start-line="123" selection-start-column="19" selection-end-line="123" selection-end-column="32" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/smart_menu/package.json">
+      <file leaf-file-name="LoginCtrl.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/smart_menu/controllers/LoginCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="10" lean-forward="false" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="10" />
+            <state relative-caret-position="330">
+              <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -142,14 +147,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>update</find>
-      <find>remove_icon</find>
-      <find>standard</find>
-      <find>result</find>
-      <find>hot_select</find>
-      <find>push</find>
-      <find>a4.jpg</find>
-      <find>post</find>
       <find>funcDataList</find>
       <find>图片上传成功</find>
       <find>onUploadImage</find>
@@ -170,8 +167,16 @@
       <find>routeHelper</find>
       <find>orderIsPayed</find>
       <find>status</find>
-      <find>getOrdered</find>
       <find>orderContent</find>
+      <find>s</find>
+      <find>stastue</find>
+      <find>stastu</find>
+      <find>stast</find>
+      <find>stas</find>
+      <find>sta</find>
+      <find>statue</find>
+      <find>getOrdered</find>
+      <find>gt</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -197,6 +202,7 @@
       <replace>func_data</replace>
       <replace>ordered</replace>
       <replace>order</replace>
+      <replace>status</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$USER_HOME$/Desktop/下载/RN-ListViewLoadMore-master</dir>
@@ -208,12 +214,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/smart_menu/views/func_module_new.html" />
-        <option value="$PROJECT_DIR$/smart_menu/models/FuncModel.js" />
-        <option value="$PROJECT_DIR$/smart_menu/models/EditionModel.js" />
-        <option value="$PROJECT_DIR$/smart_menu/controllers/EditionCtrl.js" />
-        <option value="$PROJECT_DIR$/smart_menu/views/shop_detail.html" />
-        <option value="$PROJECT_DIR$/smart_menu/controllers/ShopCtrl.js" />
         <option value="$PROJECT_DIR$/smart_menu/views/index.html" />
         <option value="$PROJECT_DIR$/smart_menu/views/desk_cate_list.html" />
         <option value="$PROJECT_DIR$/smart_menu/views/case_property_list.html" />
@@ -250,15 +250,21 @@
         <option value="$PROJECT_DIR$/smart_menu/controllers/AccountCtrl.js" />
         <option value="$PROJECT_DIR$/smart_menu/models/NoticeModel.js" />
         <option value="$PROJECT_DIR$/smart_menu/models/DeskModel.js" />
-        <option value="$PROJECT_DIR$/smart_menu/Config.js" />
         <option value="$PROJECT_DIR$/smart_menu/models/CaseModel.js" />
         <option value="$PROJECT_DIR$/smart_menu/models/OrderModel.js" />
         <option value="$PROJECT_DIR$/smart_menu/utils/sqlUtil.js" />
+        <option value="$PROJECT_DIR$/smart_menu/models/OrderedModel.js" />
+        <option value="$PROJECT_DIR$/smart_menu/utils/MD5Util.js" />
+        <option value="$PROJECT_DIR$/smart_menu/controllers/DeskCtrl.js" />
+        <option value="$PROJECT_DIR$/smart_menu/controllers/WebSocketCtrl.js" />
+        <option value="$PROJECT_DIR$/smart_menu/Config.js" />
+        <option value="$PROJECT_DIR$/smart_menu/utils/aesUtil.js" />
+        <option value="$PROJECT_DIR$/smart_menu/public/js/base64.js" />
         <option value="$PROJECT_DIR$/smart_menu/views/login.html" />
+        <option value="$PROJECT_DIR$/smart_menu/utils/base64Util.js" />
+        <option value="$PROJECT_DIR$/smart_menu/controllers/LoginCtrl.js" />
         <option value="$PROJECT_DIR$/smart_menu/routes/route.js" />
         <option value="$PROJECT_DIR$/smart_menu/api/Api.js" />
-        <option value="$PROJECT_DIR$/smart_menu/models/OrderedModel.js" />
-        <option value="$PROJECT_DIR$/smart_menu/controllers/WebSocketCtrl.js" />
       </list>
     </option>
   </component>
@@ -362,6 +368,46 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="routes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="smart-menu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="smart-menu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="smart_menu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="smart-menu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="smart-menu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="smart_menu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -611,12 +657,12 @@
       <workItem from="1500885330427" duration="54050000" />
       <workItem from="1501732518578" duration="54948000" />
       <workItem from="1502928991965" duration="1662000" />
-      <workItem from="1503111303804" duration="41837000" />
+      <workItem from="1503111303804" duration="66110000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1042748000" />
+    <option name="totallyTimeSpent" value="1067021000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -634,11 +680,12 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2114165" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32859176" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23328592" sideWeight="0.5024665" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21529745" sideWeight="0.49753347" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19546743" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21529745" sideWeight="0.49753347" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32719547" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32859176" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30878186" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30878186" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -647,7 +694,6 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19630156" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -710,39 +756,11 @@
           <option name="timeStamp" value="298" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="444" />
+      <option name="time" value="465" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/smart_menu/controllers/FuncModuleCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2505">
-          <caret line="167" column="0" lean-forward="false" selection-start-line="167" selection-start-column="0" selection-end-line="167" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/smart_menu/models/FuncDataModuleModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="29" column="25" lean-forward="false" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/smart_menu/views/func_data_list.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="73" column="26" lean-forward="false" selection-start-line="73" selection-start-column="26" selection-end-line="73" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/smart_menu/views/case_new.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="269" column="20" lean-forward="false" selection-start-line="269" selection-start-column="20" selection-end-line="271" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/smart_menu/views/case_type_list.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="291">
@@ -897,13 +915,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/smart_menu/controllers/AccountCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-479">
-          <caret line="167" column="29" lean-forward="false" selection-start-line="167" selection-start-column="29" selection-end-line="167" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/smart_menu/node_modules/sequelize/lib/model.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -929,14 +940,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/smart_menu/controllers/DeskCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="810">
-          <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1000,34 +1003,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/smart_menu/models/UserModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="17" lean-forward="false" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/smart_menu/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="17" column="10" lean-forward="false" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/smart_menu/views/login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="136" column="0" lean-forward="false" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/smart_menu/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1048,10 +1027,104 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/smart_menu/models/UserModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="439">
+          <caret line="85" column="7" lean-forward="true" selection-start-line="9" selection-start-column="6" selection-end-line="85" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smart_menu/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smart_menu/controllers/AccountCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="183" column="9" lean-forward="false" selection-start-line="183" selection-start-column="8" selection-end-line="183" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smart_menu/controllers/DeskCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="32" column="4" lean-forward="false" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smart_menu/controllers/WebSocketCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="618">
+          <caret line="81" column="36" lean-forward="true" selection-start-line="81" selection-start-column="36" selection-end-line="81" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#42#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smart_menu/Config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="4" lean-forward="false" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smart_menu/public/js/base64.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="114" column="3" lean-forward="true" selection-start-line="15" selection-start-column="2" selection-end-line="114" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smart_menu/utils/aesUtil.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#42#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smart_menu/utils/base64Util.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="33" column="7" lean-forward="false" selection-start-line="33" selection-start-column="7" selection-end-line="33" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#42#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smart_menu/views/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="87" column="19" lean-forward="false" selection-start-line="87" selection-start-column="19" selection-end-line="87" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smart_menu/controllers/LoginCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/smart_menu/routes/route.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="122" column="53" lean-forward="true" selection-start-line="122" selection-start-column="53" selection-end-line="122" selection-end-column="53" />
+        <state relative-caret-position="232">
+          <caret line="123" column="32" lean-forward="false" selection-start-line="123" selection-start-column="19" selection-end-line="123" selection-end-column="32" />
           <folding />
         </state>
       </provider>
@@ -1066,28 +1139,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/smart_menu/api/Api.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="113" column="2" lean-forward="true" selection-start-line="113" selection-start-column="2" selection-end-line="113" selection-end-column="2" />
+        <state relative-caret-position="295">
+          <caret line="246" column="24" lean-forward="true" selection-start-line="246" selection-start-column="24" selection-end-line="246" selection-end-column="24" />
           <folding>
             <element signature="e#0#39#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/smart_menu/Config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="2" lean-forward="false" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/smart_menu/controllers/WebSocketCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="194" column="10" lean-forward="false" selection-start-line="194" selection-start-column="10" selection-end-line="194" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#42#0" expanded="false" />
           </folding>
         </state>
       </provider>

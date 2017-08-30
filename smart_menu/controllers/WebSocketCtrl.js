@@ -47,7 +47,7 @@ exports.initWS = function () {
 							case 0:/*通知*/
 								message.noticeKey = randomID.getUUID();
 								Api.insertNotice(message, function (notice) {
-									result.statue = 0;
+									result.status = 0;
 									result.msg = '呼叫成功，请稍等...';
 									result.data = null;
 									// NoticeModel.remove(global.sql.notice,{dateTime:{$lt: '2017-07-21 11:49:00'}},function (r) {
@@ -57,7 +57,7 @@ exports.initWS = function () {
 									// })
 									ws.send(JSON.stringify(result));
 								}, function (err) {
-									result.statue = 1;
+									result.status = 1;
 									result.msg = '系统故障';
 									result.data = null;
 									ws.send(JSON.stringify(result));
@@ -69,7 +69,7 @@ exports.initWS = function () {
 								message.orderKey = randomID.getUUID();
 								message.orderIsOrdered = true;
 								Api.insertOrder(message, function (order) {
-									result.statue = 0;
+									result.status = 0;
 									result.msg = '下单成功';
 									result.noticeType = message.noticeType;
 									// NoticeModel.remove(global.sql.notice,{dateTime:{$lt: '2017-07-21 11:49:00'}},function (r) {
@@ -79,7 +79,7 @@ exports.initWS = function () {
 									// })
 									ws.send(JSON.stringify(result));
 								}, function (err) {
-									result.statue = 1;
+									result.status = 1;
 									result.msg = '系统故障';
 									result.noticeType = message.noticeType;
 									ws.send(JSON.stringify(result));
@@ -100,13 +100,13 @@ exports.initWS = function () {
 									noticeContent: message.noticeContent
 								};
 								Api.updateNotice({noticeKey: message.noticeKey}, notice, function (notice) {
-									result.statue = 0;
+									result.status = 0;
 									result.msg = '处理成功';
 									result.noticeType = 3;
 									result.callbackNoticeType = message.noticeType;
 									ws.send(JSON.stringify(result));
 								}, function (err) {
-									result.statue = 1;
+									result.status = 1;
 									result.msg = '处理失败';
 									result.noticeType = 3;
 									result.callbackNoticeType = message.noticeType;
@@ -122,7 +122,7 @@ exports.initWS = function () {
 									orderContent: message.orderContent
 								};
 								Api.updateOrder({orderKey: message.orderKey}, order, function (order) {
-									result.statue = 0;
+									result.status = 0;
 									result.msg = '处理成功';
 									result.noticeType = 3;
 									result.callbackNoticeType = message.noticeType;
@@ -141,7 +141,7 @@ exports.initWS = function () {
 											},{orderContent: JSON.stringify(orderContent),orderPrice:orderPrice},function (r) {
 												ws.send(JSON.stringify(result));
 											},function (err) {
-												result.statue = 1;
+												result.status = 1;
 												result.msg = '处理失败';
 												result.noticeType = 3;
 												result.callbackNoticeType = message.noticeType;
@@ -151,7 +151,7 @@ exports.initWS = function () {
 											Api.insertOrdered(message,function (r) {
 												ws.send(JSON.stringify(result));
 											},function (err) {
-												result.statue = 1;
+												result.status = 1;
 												result.msg = '处理失败';
 												result.noticeType = 3;
 												result.callbackNoticeType = message.noticeType;
@@ -159,7 +159,7 @@ exports.initWS = function () {
 											})
 										}
 									},function (err) {
-										result.statue = 1;
+										result.status = 1;
 										result.msg = '处理失败';
 										result.noticeType = 3;
 										result.callbackNoticeType = message.noticeType;
@@ -167,7 +167,7 @@ exports.initWS = function () {
 									})
 
 								}, function (err) {
-									result.statue = 1;
+									result.status = 1;
 									result.msg = '处理失败';
 									result.noticeType = 3;
 									result.callbackNoticeType = message.noticeType;
@@ -192,13 +192,13 @@ exports.initWS = function () {
 									orderContent: message.orderContent
 								};
 								Api.updateOrdered({shopId: message.shopId, deskId: message.deskId}, ordered, function (order) {
-									result.statue = 0;
+									result.status = 0;
 									result.msg = '处理成功';
 									result.noticeType = 3;
 									result.callbackNoticeType = message.noticeType;
 									ws.send(JSON.stringify(result));
 								}, function (err) {
-									result.statue = 1;
+									result.status = 1;
 									result.msg = '处理失败';
 									result.noticeType = 3;
 									result.callbackNoticeType = message.noticeType;

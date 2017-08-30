@@ -51,6 +51,8 @@
 <script src="js/jquery.min.js?v=2.1.4"></script>
 <script src="js/bootstrap.min.js?v=3.3.6"></script>
 <script src="js/plugins/layer/layer.min.js"></script>
+<script src="js/base64.js"></script>
+
 
 <script>
 	$(document).ready(function () {
@@ -79,9 +81,8 @@
 			};
 		}
 	})
-
 	function onSubmit() {
-		var username = $('#username').val();
+        var username = $('#username').val();
 		var password = $('#password').val();
 		if (username == '') {
 			return;
@@ -92,7 +93,7 @@
 		}
 		var data = {
 			username: username,
-			password: password
+			password: new Base64().encode(password)
 		};
 		$.ajax({
 			url: 'login',
@@ -100,13 +101,13 @@
 			data: data,
 			success: function (data) {
 				if (data.status == 0) {
-					if (data.user.authorityId == 2) {
+					if (data.data.authorityId == 2) {
 						location.href = 'index_v1'
 					} else {
-						if (data.user.shopId) {
+						if (data.data.shopId) {
 							location.href = 'index';
 						} else {
-							location.href = 'formWizard?userId=' + data.user.userId;
+							location.href = 'formWizard?userId=' + data.data.userId;
 						}
 					}
 				}

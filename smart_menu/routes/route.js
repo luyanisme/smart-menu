@@ -121,6 +121,9 @@ router.route(API+'/postOrderedList').post(Api.postOrderedList);/*获取已点商
 router.route(API+'/changeDeskStatue').get(Api.changeDeskStatue);/*改变桌位状态*/
 router.route(API+'/getDesk').get(Api.getDesk);
 router.route(API+'/getOrdered').get(Api.getOrderedByAndroid);/*获取订单*/
+router.route(API+'/getAllOrdered').get(Api.getAllOrderedByDate);/*获取所有订单*/
+router.route(API+'/login').post(Api.login);/*登录*/
+
 
 /********************************************微信小程序接口********************************************/
 var WECHAT = '/Api/Wechat';

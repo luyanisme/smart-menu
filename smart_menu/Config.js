@@ -8,6 +8,7 @@ var Config = {
 	WECHAT:0,
 	ANDROID:1,
 	ANDROID_PAD:2,
+	AES_KEY:"9ce62c1836d128cfc875c9026db7564c"
 }
 
 function getIPv4() {

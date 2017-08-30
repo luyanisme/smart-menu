@@ -2,6 +2,7 @@
  * Created by luyan on 4/11/17.
  */
 var moment = require('moment');
+var loginCtrl = require('../controllers/LoginCtrl.js');
 /****************************************Api of Http*************************************************/
 /*获取菜单列表*/
 exports.getMenuList = function (req, res) {
@@ -19,9 +20,13 @@ exports.getMenuList = function (req, res) {
 				casecates[i].cases[j].casePropertyVals = JSON.parse(casecates[i].cases[j].casePropertyVals);
 			}
 		}
-		res.send({msg: '请求成功', statue: 0, data: casecates});
+		res.send({msg: '请求成功', status: 0, data: casecates});
 	});
 };
+
+exports.login = function (req, res) {
+	loginCtrl.login(req, res);
+}
 
 /*获取首页数据*/
 exports.getMainData = function (req, res) {
@@ -45,20 +50,20 @@ exports.getMainData = function (req, res) {
 						]
 					}).then(
 						function (posts) {
-							res.send({msg: '请求成功', statue: 0, data: {funcs: funcs, posts: posts}});
+							res.send({msg: '请求成功', status: 0, data: {funcs: funcs, posts: posts}});
 						}
 					).catch(function (err) {
-						res.send({msg: err, statue: 1});
+						res.send({msg: err, status: 1});
 						console.log("发生错误：" + err);
 					});
 				}
 			).catch(function (err) {
-				res.send({msg: err, statue: 1});
+				res.send({msg: err, status: 1});
 				console.log("发生错误：" + err);
 			});
 		}
 	).catch(function (err) {
-		res.send({msg: err, statue: 1});
+		res.send({msg: err, status: 1});
 		console.log("发生错误：" + err);
 	});
 }
@@ -86,7 +91,7 @@ exports.getWeChatMenuList = function (req, res) {
 				}
 			}
 		}
-		res.send({msg: '请求成功', statue: 0, data: casecates});
+		res.send({msg: '请求成功', status: 0, data: casecates});
 	});
 };
 
@@ -100,31 +105,31 @@ exports.postOrderedList = function (req, res) {
 		}
 	}).then(
 		function (ordered) {
-			if(ordered == null){
+			if (ordered == null) {
 				global.sql.ordered.create(orderItem).then(function (result) {
-					res.send({msg: "下单成功", statue: 0, data: null});
+					res.send({msg: "下单成功", status: 0, data: null});
 				}).catch(function (err) {
-					res.send({msg: "系统错误", statue: 1, data: null});
+					res.send({msg: "系统错误", status: 1, data: null});
 					console.log("发生错误：" + err);
 				});
 			} else {
 				var orderContent = JSON.parse(ordered.orderContent).concat(JSON.parse(orderItem.orderContent));
 				var orderPrice = parseFloat(ordered.orderPrice) + parseFloat(orderItem.orderPrice);
-				global.sql.ordered.update({orderContent: JSON.stringify(orderContent),orderPrice:orderPrice}, {
+				global.sql.ordered.update({orderContent: JSON.stringify(orderContent), orderPrice: orderPrice}, {
 					where: {
 						shopId: ordered.shopId,
 						deskId: ordered.deskId,
 						orderIsPayed: ordered.orderIsPayed
 					}
 				}).then(function (result) {
-					res.send({msg: "下单成功", statue: 0, data: null});
+					res.send({msg: "下单成功", status: 0, data: null});
 				}).catch(function (err) {
-					res.send({msg: "系统错误", statue: 1, data: null});
+					res.send({msg: "系统错误", status: 1, data: null});
 				});
 			}
 		}
 	).catch(function (err) {
-		res.send({msg: "系统错误", statue: 1, data: null});
+		res.send({msg: "系统错误", status: 1, data: null});
 	});
 }
 
@@ -144,7 +149,7 @@ exports.getNotices = function (req, res) {
 		limit: pageSize
 	}).then(
 		function (data) {
-			res.send({msg: '请求成功', statue: 0, data: data.rows});
+			res.send({msg: '请求成功', status: 0, data: data.rows});
 		}
 	).catch(function (err) {
 		console.log("发生错误：" + err);
@@ -170,7 +175,7 @@ exports.getOrders = function (req, res) {
 			data.rows.forEach(function (row) {
 				row.dataValues.dateTime = moment(new Date(row.dataValues.dateTime)).format('YYYY-MM-DD HH:mm:ss');
 			})
-			res.send({msg: '请求成功', statue: 0, data: data.rows});
+			res.send({msg: '请求成功', status: 0, data: data.rows});
 		}
 	).catch(function (err) {
 		console.log("发生错误：" + err);
@@ -192,15 +197,16 @@ exports.getNowdayOrders = function (req, res) {
 			data.rows.forEach(function (row) {
 				row.dataValues.dateTime = moment(new Date(row.dataValues.dateTime)).format('YYYY-MM-DD HH:mm:ss');
 			})
-			res.send({msg: '请求成功', statue: 0, data: data.rows});
+			res.send({msg: '请求成功', status: 0, data: data.rows});
 		}
 	).catch(function (err) {
 		console.log("发生错误：" + err);
 	})
 }
 
-/*在安卓端获取列表*/
+/*在安卓端获取订单列表*/
 exports.getOrderedByAndroid = function (req, res) {
+
 	var shopId = req.query.shopId;
 	var deskId = req.query.deskId;
 	var condition = {
@@ -210,15 +216,50 @@ exports.getOrderedByAndroid = function (req, res) {
 		orderIsUsing: true,//改桌位是否在使用
 		orderIsPayed: false
 	};
-	global.sql.ordered.findAll({
+	global.sql.ordered.findOne({
 		where: condition
 	}).then(
-		function (orders) {
-			res.send({msg: '请求成功', statue: 0, data: orders});
+		function (order) {
+			res.send({msg: '请求成功', status: 0, data: order});
 		}
 	).catch(function (err) {
-		res.send({msg: '请求失败', statue: 1, data: null});
+		res.send({msg: '请求失败', status: 1, data: null});
 	});
+}
+
+/*在安卓端获取所有列表*/
+exports.getAllOrderedByDate = function (req, res) {
+	var condition = {};
+	var page = parseInt(req.query.page);
+	var pageSize = parseInt(req.query.pageSize);
+	var shopId = req.query.shopId;
+	var startDate = req.query.startDate;
+	var endDate = req.query.endDate;
+	global.sql.ordered.findAndCountAll({
+		order: [
+			['dateTime', 'DESC']
+		],
+		where: {
+			shopId: shopId,
+			orderIsPayed: false,
+			dateTime: {
+				/*时间区间*/
+				$gte: startDate,
+				$lt: endDate
+			}
+		},
+		offset: (page - 1) * pageSize,
+		limit: pageSize
+	}).then(
+		function (data) {
+			data.rows.forEach(function (row) {
+				row.dataValues.dateTime = moment(new Date(row.dataValues.dateTime)).format('YYYY-MM-DD HH:mm:ss');
+			})
+			res.send({msg: '请求成功', status: 0, data: data.rows});
+		}
+	).catch(function (err) {
+		console.log("发生错误：" + err);
+	})
 }
 
 /*获取订单列表*/
@@ -237,37 +278,37 @@ exports.getOrdered = function (req, res) {
 	}).then(
 		function (order) {
 			if (order == null) {
-				res.send({msg: '尚无订单', statue: 0, data: null});
+				res.send({msg: '尚无订单', status: 0, data: null});
 			} else {
 				var data = {};
 				data.ordered = JSON.parse(order.orderContent);
 				data.totalPrice = order.orderPrice;
-				res.send({msg: '请求成功', statue: 0, data: data});
+				res.send({msg: '请求成功', status: 0, data: data});
 			}
 		}
 	).catch(function (err) {
-		res.send({msg: '请求失败', statue: 1, data: null});
+		res.send({msg: '请求失败', status: 1, data: null});
 	});
 }
 
 /*改变桌位状态*/
 exports.changeDeskStatue = function (req, res) {
 	var deskId = req.query.deskId;
-	var deskStatue = req.query.deskStatue;
+	var deskstatus = req.query.deskstatus;
 	var condition = {
 		deskId: deskId,
 	};
 	var desk = {
-		deskStatue: deskStatue
+		deskstatus: deskstatus
 	}
 	global.sql.desk.update(desk, {
 		where: condition
 	}).then(
 		function (result) {
-			res.send({msg: '修改成功', statue: 0, data: null});
+			res.send({msg: '修改成功', status: 0, data: null});
 		}
 	).catch(function (err) {
-		res.send({msg: '请求失败', statue: 1, data: null});
+		res.send({msg: '请求失败', status: 1, data: null});
 	});
 }
 
@@ -283,10 +324,10 @@ exports.getDesk = function (req, res) {
 		include: {model: global.sql.desk}
 	}).then(
 		function (desks) {
-			res.send({msg: '请求成功', statue: 0, data: desks});
+			res.send({msg: '请求成功', status: 0, data: desks});
 		}
 	).catch(function (err) {
-		res.send({msg: '请求失败', statue: 1, data: null});
+		res.send({msg: '请求失败', status: 1, data: null});
 	});
 }
 
