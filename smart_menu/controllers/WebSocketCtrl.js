@@ -10,6 +10,8 @@ var config = require('../Config.js');
 var randomID = require('../utils/randomIdUtil.js');
 var NoticeModel = require('../models/NoticeModel.js');
 
+var JPush = require("jpush-sdk/lib/JPush/JPush.js")
+
 exports.initWS = function () {
 	//广播
 	wss.broadcast = function broadcast(s, ws) {
@@ -56,6 +58,7 @@ exports.initWS = function () {
 									//
 									// })
 									ws.send(JSON.stringify(result));
+
 								}, function (err) {
 									result.status = 1;
 									result.msg = '系统故障';
@@ -219,14 +222,6 @@ exports.initWS = function () {
 			}
 
 			console.log('received: %s', JSON.stringify(message));
-			// wss.clients.forEach(function each(client) {
-			// 	/*判断当前客户端是否为本身*/
-			// 	if (client !== ws && client.readyState === WebSocket.OPEN) {
-			// 		client.send(JSON.stringify(message));
-			// 	}
-			// });
-
-			// sendMsgToClient(message, ws);
 		});
 	});
 }

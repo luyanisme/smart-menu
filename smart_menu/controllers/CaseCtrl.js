@@ -121,6 +121,7 @@ exports.onUpload = function (req, res) {
 				caseStandardVals: standardVals,
 				casePropertyVals: propertyVals,
 				caseScaling: caseScaling,
+				caseProgress:0,
 				updateTime: global.date
 			};
 		} else {
@@ -133,6 +134,7 @@ exports.onUpload = function (req, res) {
 				caseStandardVals: standardVals,
 				casePropertyVals: propertyVals,
 				caseScaling: caseScaling,
+				caseProgress:0,
 				updateTime: global.date
 			};
 		}
@@ -171,6 +173,8 @@ exports.onUpload = function (req, res) {
 					res.send({msg: err, status: 1});
 				})
 
+			},function (err) {
+				res.send({msg: err, status: 1});
 			});
 		}
 

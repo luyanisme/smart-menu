@@ -101,12 +101,13 @@ exports.onCreate = function (sequelize) {
 	return Case;
 }
 
-exports.insert = function (Case, data, callBack) {
+exports.insert = function (Case, data, callBack, errBack) {
 	//User.sync({force: true}).then(function () {
 	// Table created
 	return Case.create(data).then(function (result) {
 		callBack(result);
 	}).catch(function (err) {
+		errBack(err);
 		console.log("发生错误：" + err);
 	});
 	//})

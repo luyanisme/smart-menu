@@ -40,7 +40,6 @@ router.route('/logout').get(loginCtrl.onLogout);/*登出*/
 router.route('/formWizard').get(accountCtrl.onShowFormWizard).post(accountCtrl.onSaveFormWizard)/*表单验证*/
 
 router.route('/index').get(indexCtrl.doLoad);/*主页*/
-router.route('/index_v1').get(indexCtrl.doLoadV1);/*账号管理界面*/
 router.route('/caseType').get(caseTypeCtrl.onShowCaseTypes);/*商品分类*/
 router.route('/caseTypeForm').get(caseTypeCtrl.onShowCaseTypesForm);/*商品分类*/
 router.route('/caseTypeAmendForm').get(caseTypeCtrl.onShowCaseAmendTypesForm);/*商品分类*/
@@ -115,7 +114,9 @@ var API = '/Api';
 router.route(API+'/getMenu').get(Api.getMenuList);/*获取菜单*/
 router.route(API+'/insertNotice').get(Api.insertNotice);/*插入新的消息*/
 router.route(API+'/getNotices').get(Api.getNotices);/*获取消息列表*/
+router.route(API+'/clearNotices').get(Api.clearNotices);/*清空消息列表*/
 router.route(API+'/getOrders').get(Api.getOrders);/*获取订单列表*/
+router.route(API+'/clearOrders').get(Api.clearOrders);/*清空订单列表*/
 router.route(API+'/getNowdayOrders').get(Api.getNowdayOrders);/*pad端获取今日的所有订单*/
 router.route(API+'/postOrderedList').post(Api.postOrderedList);/*获取已点商品*/
 router.route(API+'/changeDeskStatue').get(Api.changeDeskStatue);/*改变桌位状态*/
@@ -124,11 +125,11 @@ router.route(API+'/getOrdered').get(Api.getOrderedByAndroid);/*获取订单*/
 router.route(API+'/getAllOrdered').get(Api.getAllOrderedByDate);/*获取所有订单*/
 router.route(API+'/login').post(Api.login);/*登录*/
 
-
 /********************************************微信小程序接口********************************************/
 var WECHAT = '/Api/Wechat';
 router.route(WECHAT+'/getMenu').get(Api.getWeChatMenuList);/*获取菜单*/
 router.route(WECHAT+'/getMainData').get(Api.getMainData);/*获取主页*/
+router.route(WECHAT+'/getShopInfo').get(Api.getShopInfo);/*获取店铺信息*/
 router.route(WECHAT+'/getOrdered').get(Api.getOrdered);/*获取订单*/
 
 /********************************************socket********************************************/

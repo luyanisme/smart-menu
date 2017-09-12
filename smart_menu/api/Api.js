@@ -68,6 +68,21 @@ exports.getMainData = function (req, res) {
 	});
 }
 
+/*获取shop信息*/
+exports.getShopInfo = function (req, res) {
+	var shopId = req.query.shopId;
+	global.sql.shop.findOne({
+		where: {shopId: shopId}
+	}).then(
+		function (shop) {
+			res.send({msg: '请求成功', status: 0, data: shop});
+		}
+	).catch(function (err) {
+		res.send({msg: err, status: 1});
+		console.log("发生错误：" + err);
+	});
+}
+
 /*获取菜单列表*/
 exports.getWeChatMenuList = function (req, res) {
 	var shopId = req.query.shopId;
@@ -156,6 +171,20 @@ exports.getNotices = function (req, res) {
 	})
 }
 
+/*清空消息列表*/
+exports.clearNotices = function (req, res) {
+	var shopId = req.query.shopId;
+	global.sql.notice.destroy({
+		where: {shopId: shopId},
+	}).then(
+		function (result) {
+			res.send({msg: '清除成功', status: 0, data: null});
+		}
+	).catch(function (err) {
+		console.log("发生错误：" + err);
+	})
+}
+
 /*获取订单列表，需要添加分页查询*/
 exports.getOrders = function (req, res) {
 	var condition = {};
@@ -176,6 +205,21 @@ exports.getOrders = function (req, res) {
 				row.dataValues.dateTime = moment(new Date(row.dataValues.dateTime)).format('YYYY-MM-DD HH:mm:ss');
 			})
 			res.send({msg: '请求成功', status: 0, data: data.rows});
+		}
+	).catch(function (err) {
+		console.log("发生错误：" + err);
+	})
+}
+
+/*清空消息列表*/
+exports.clearOrders = function (req, res) {
+	var shopId = req.query.shopId;
+	global.sql.order.destroy({
+		where: {shopId: shopId,
+			orderIsOrdered: true},
+	}).then(
+		function (result) {
+			res.send({msg: '清除成功', status: 0, data: null});
 		}
 	).catch(function (err) {
 		console.log("发生错误：" + err);
