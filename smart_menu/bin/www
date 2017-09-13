@@ -87,3 +87,12 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+/**
+ *WebSocket
+ */
+var webSocketCtrl = require('../controllers/WebSocketCtrl.js');
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({server, path: '/wss' });
+
+webSocketCtrl.initWS(wss);

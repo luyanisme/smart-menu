@@ -132,7 +132,4 @@ router.route(WECHAT+'/getMainData').get(Api.getMainData);/*获取主页*/
 router.route(WECHAT+'/getShopInfo').get(Api.getShopInfo);/*获取店铺信息*/
 router.route(WECHAT+'/getOrdered').get(Api.getOrdered);/*获取订单*/
 
-/********************************************socket********************************************/
-webSocketCtrl.initWS();
-
 module.exports = router;

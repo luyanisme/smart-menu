@@ -1,18 +1,14 @@
 /**
  * Created by luyan on 17/07/2017.
  */
-const WebSocket = require('ws');
 
-const wss = new WebSocket.Server({port: 8181});
 var Api = require('../api/Api.js');
 var dateUtil = require('../utils/dateUtil.js');
 var config = require('../Config.js');
 var randomID = require('../utils/randomIdUtil.js');
 var NoticeModel = require('../models/NoticeModel.js');
 
-var JPush = require("jpush-sdk/lib/JPush/JPush.js")
-
-exports.initWS = function () {
+exports.initWS = function (wss) {
 	//广播
 	wss.broadcast = function broadcast(s, ws) {
 		// console.log(ws);
@@ -89,7 +85,7 @@ exports.initWS = function () {
 								})
 								break;
 						}
-						sendMsgToClient(message, ws, config.ANDROID);
+						sendMsgToClient(wss, message, ws, config.ANDROID);
 					}
 						break;
 
@@ -134,16 +130,16 @@ exports.initWS = function () {
 										deskId: message.deskId,
 										orderIsPayed: message.orderIsPayed
 									}, function (ordered) {
-										if (ordered != null){
+										if (ordered != null) {
 											var orderContent = JSON.parse(ordered.orderContent).concat(JSON.parse(message.orderContent));
 											var orderPrice = parseFloat(ordered.orderPrice) + parseFloat(message.orderPrice);
 											Api.updateOrdered({
 												shopId: message.shopId,
 												deskId: message.deskId,
 												orderIsPayed: message.orderIsPayed
-											},{orderContent: JSON.stringify(orderContent),orderPrice:orderPrice},function (r) {
+											}, {orderContent: JSON.stringify(orderContent), orderPrice: orderPrice}, function (r) {
 												ws.send(JSON.stringify(result));
-											},function (err) {
+											}, function (err) {
 												result.status = 1;
 												result.msg = '处理失败';
 												result.noticeType = 3;
@@ -151,9 +147,9 @@ exports.initWS = function () {
 												ws.send(JSON.stringify(result));
 											})
 										} else {
-											Api.insertOrdered(message,function (r) {
+											Api.insertOrdered(message, function (r) {
 												ws.send(JSON.stringify(result));
-											},function (err) {
+											}, function (err) {
 												result.status = 1;
 												result.msg = '处理失败';
 												result.noticeType = 3;
@@ -161,7 +157,7 @@ exports.initWS = function () {
 												ws.send(JSON.stringify(result));
 											})
 										}
-									},function (err) {
+									}, function (err) {
 										result.status = 1;
 										result.msg = '处理失败';
 										result.noticeType = 3;
@@ -176,7 +172,7 @@ exports.initWS = function () {
 									result.callbackNoticeType = message.noticeType;
 									ws.send(JSON.stringify(result));
 								})
-								sendMsgToClient(message, ws, config.ANDROID_PAD);
+								sendMsgToClient(wss, message, ws, config.ANDROID_PAD);
 								break;
 						}
 
@@ -207,12 +203,12 @@ exports.initWS = function () {
 									result.callbackNoticeType = message.noticeType;
 									ws.send(JSON.stringify(result));
 								})
-								sendMsgToClient(message, ws, config.ANDROID_PAD);
+								sendMsgToClient(wss, message, ws, config.ANDROID_PAD);
 								break;
 
-								/*安卓手机端发来消息*/
+							/*安卓手机端发来消息*/
 							case 2:
-								sendMsgToClient(message, ws, config.ANDROID_PAD);
+								sendMsgToClient(wss, message, ws, config.ANDROID_PAD);
 								break;
 						}
 					}
@@ -226,7 +222,7 @@ exports.initWS = function () {
 	});
 }
 
-function sendMsgToClient(msg, ws, clientType) {
+function sendMsgToClient(wss, msg, ws, clientType) {
 	wss.clients.forEach(function each(client) {
 		/*判断当前客户端是否为本身*/
 		if (client !== ws && client.readyState === WebSocket.OPEN && client.shopId == msg.shopId && client.clientType == clientType) {
