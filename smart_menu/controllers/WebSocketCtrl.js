@@ -7,6 +7,7 @@ var dateUtil = require('../utils/dateUtil.js');
 var config = require('../Config.js');
 var randomID = require('../utils/randomIdUtil.js');
 var NoticeModel = require('../models/NoticeModel.js');
+const WebSocket = require('ws');
 
 exports.initWS = function (wss) {
 	//广播
@@ -68,15 +69,22 @@ exports.initWS = function (wss) {
 								message.orderKey = randomID.getUUID();
 								message.orderIsOrdered = true;
 								Api.insertOrder(message, function (order) {
-									result.status = 0;
-									result.msg = '下单成功';
-									result.noticeType = message.noticeType;
-									// NoticeModel.remove(global.sql.notice,{dateTime:{$lt: '2017-07-21 11:49:00'}},function (r) {
-									//
-									// },function (err) {
-									//
-									// })
-									ws.send(JSON.stringify(result));
+									Api.changeDeskToFull(message.deskId, 2,function () {
+										result.status = 0;
+										result.msg = '下单成功';
+										result.noticeType = message.noticeType;
+										// NoticeModel.remove(global.sql.notice,{dateTime:{$lt: '2017-07-21 11:49:00'}},function (r) {
+										//
+										// },function (err) {
+										//
+										// })
+										ws.send(JSON.stringify(result));
+									}, function (err) {
+										result.status = 1;
+										result.msg = '系统故障';
+										result.noticeType = message.noticeType;
+										ws.send(JSON.stringify(result));
+									})
 								}, function (err) {
 									result.status = 1;
 									result.msg = '系统故障';

@@ -93,6 +93,6 @@ function onListening() {
  */
 var webSocketCtrl = require('../controllers/WebSocketCtrl.js');
 const WebSocket = require('ws');
-const wss = new WebSocket.Server({server, path: '/wss' });
+const wss = new WebSocket.Server({server, path: '/' });
 
 webSocketCtrl.initWS(wss);

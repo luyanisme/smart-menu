@@ -190,6 +190,7 @@ exports.onSaveFormWizard = function (req, res) {
 		caseOnNums:0,
 		caseOffNums:0,
 		caseTypeSaling:true,
+		caseTypeIsSpecial:true,
 		updateTime: global.date
 	};
 

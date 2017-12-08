@@ -30,6 +30,11 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.BIGINT,
 				allowNull: false
 			},
+			caseTypeIsSpecial: {
+				field: 'case_type_is_special',
+				type: Sequelize.BOOLEAN,
+				allowNull: false
+			},
 			caseOffNums: {
 				field: 'case_off_num',
 				type: Sequelize.BIGINT,

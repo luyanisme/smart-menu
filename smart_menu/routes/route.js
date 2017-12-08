@@ -20,8 +20,6 @@ var mobileCtrl = require('../controllers/MobileCtrl.js');
 var funcModuleCtrl = require('../controllers/FuncModuleCtrl.js');
 var shopCtrl = require('../controllers/ShopCtrl.js');
 
-var webSocketCtrl = require('../controllers/WebSocketCtrl.js');
-
 router.route('/addNewAccount').get(accountCtrl.onAddNewAccount).post(accountCtrl.onSaveAccount);/*添加账户*/
 router.route('/accountDetail').get(accountCtrl.onShowDetailAccount)/*账户详情*/
 router.route('/removeAccount').get(accountCtrl.onRemoveAccount)/*删除账户*/
@@ -126,10 +124,13 @@ router.route(API+'/getAllOrdered').get(Api.getAllOrderedByDate);/*获取所有�
 router.route(API+'/login').post(Api.login);/*登录*/
 
 /********************************************微信小程序接口********************************************/
-var WECHAT = '/Api/Wechat';
+var WECHAT = '/Api/Weixin';
 router.route(WECHAT+'/getMenu').get(Api.getWeChatMenuList);/*获取菜单*/
 router.route(WECHAT+'/getMainData').get(Api.getMainData);/*获取主页*/
 router.route(WECHAT+'/getShopInfo').get(Api.getShopInfo);/*获取店铺信息*/
 router.route(WECHAT+'/getOrdered').get(Api.getOrdered);/*获取订单*/
+router.route(WECHAT+'/getSpecialCases').get(Api.getSpecialCases);/*获取特色菜*/
+router.route(WECHAT+'/payAll').get(Api.payALL);/*小程序支付接口*/
+router.route(WECHAT+'/paySuccess').get(Api.paySuccess);/*小程序支付接口*/
 
 module.exports = router;

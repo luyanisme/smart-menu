@@ -30,6 +30,9 @@ var db = {
 		'test', // 数据库名
 		'admin',   // 用户名
 		'',   // 用户密码
+		// 'sm_db', // 数据库名
+		// 'root',   // 用户名
+		// 'ly1qaz@WSX3edc',   // 用户密码
 		{
 			'dialect': 'mysql',  // 数据库使用mysql
 			'host': 'localhost', // 数据库服务器ip

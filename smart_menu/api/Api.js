@@ -3,6 +3,12 @@
  */
 var moment = require('moment');
 var loginCtrl = require('../controllers/LoginCtrl.js');
+var config = require('../Config');
+var md5Util = require('../utils/md5Util');
+var parseString = require('xml2js').parseString; // xml转js对象
+var randomIdUtil = require('../utils/randomIdUtil');
+var request = require('request');
+
 /****************************************Api of Http*************************************************/
 /*获取菜单列表*/
 exports.getMenuList = function (req, res) {
@@ -31,6 +37,7 @@ exports.login = function (req, res) {
 /*获取首页数据*/
 exports.getMainData = function (req, res) {
 	var shopId = req.query.shopId;
+	var deskId = req.query.deskId;
 	global.sql.shop.findOne({
 		where: {shopId: shopId}
 	}).then(
@@ -50,7 +57,16 @@ exports.getMainData = function (req, res) {
 						]
 					}).then(
 						function (posts) {
-							res.send({msg: '请求成功', status: 0, data: {funcs: funcs, posts: posts}});
+							global.sql.desk.findOne({
+								where:{deskId:deskId}
+							}).then(
+								function (desk) {
+									res.send({msg: '请求成功', status: 0, data: {deskInfo:desk,shopInfo:shop,funcs: funcs, posts: posts}});
+								}
+							).catch(function (err) {
+								res.send({msg: err, status: 1});
+								console.log("发生错误：" + err);
+							});
 						}
 					).catch(function (err) {
 						res.send({msg: err, status: 1});
@@ -89,7 +105,10 @@ exports.getWeChatMenuList = function (req, res) {
 	global.sql.caseType.hasMany(global.sql.case, {foreignKey: 'caseTypeId'});
 	global.sql.caseType.findAll({
 		where: {shopId: shopId},
-		include: {model: global.sql.case}
+		include: {model: global.sql.case},
+		order: [
+			['caseTypeIsSpecial', 'DESC']
+		],
 	}).then(function (casecates) {
 		for (var i = 0; i < casecates.length; i++) {
 			for (var j = 0; j < casecates[i].cases.length; j++) {
@@ -229,7 +248,7 @@ exports.clearOrders = function (req, res) {
 /*获取订单列表*/
 exports.getNowdayOrders = function (req, res) {
 	var shopId = req.query.shopId;
-	var condition = {shopId: shopId, orderIsDealed: true};
+	var condition = {shopId: shopId, orderIsDealed: true, orderIsPayed:false};
 
 	global.sql.ordered.findAndCountAll({
 		order: [
@@ -285,7 +304,7 @@ exports.getAllOrderedByDate = function (req, res) {
 		],
 		where: {
 			shopId: shopId,
-			orderIsPayed: false,
+			orderIsPayed: true,
 			dateTime: {
 				/*时间区间*/
 				$gte: startDate,
@@ -338,18 +357,49 @@ exports.getOrdered = function (req, res) {
 /*改变桌位状态*/
 exports.changeDeskStatue = function (req, res) {
 	var deskId = req.query.deskId;
-	var deskstatus = req.query.deskstatus;
+	var deskStatue = req.query.deskStatue;
 	var condition = {
 		deskId: deskId,
 	};
+
 	var desk = {
-		deskstatus: deskstatus
+		deskStatue: deskStatue
 	}
 	global.sql.desk.update(desk, {
 		where: condition
 	}).then(
 		function (result) {
-			res.send({msg: '修改成功', status: 0, data: null});
+			if(deskStatue != "2"){
+				global.sql.ordered.findOne({
+					where: {
+						deskId: deskId,
+						orderIsPayed: false
+					}
+				}).then(
+					function (order) {
+						if (order == null){
+							res.send({msg: '修改成功', status: 0, data: null});
+						} else {
+							global.sql.ordered.update({orderIsPayed: true}, {
+								where: {
+									deskId: deskId,
+									orderIsPayed: false
+								}
+							}).then(function (result) {
+								res.send({msg: '修改成功', status: 0, data: null});
+							}).catch(function (err) {
+								res.send({msg: '请求失败', status: 1, data: null});
+								console.log("发生错误：" + err);
+							});
+						}
+
+					}
+				).catch(function (err) {
+					res.send({msg: '请求失败', status: 1, data: null});
+				});
+			} else {
+				res.send({msg: '修改成功', status: 0, data: null});
+			}
 		}
 	).catch(function (err) {
 		res.send({msg: '请求失败', status: 1, data: null});
@@ -373,6 +423,115 @@ exports.getDesk = function (req, res) {
 	).catch(function (err) {
 		res.send({msg: '请求失败', status: 1, data: null});
 	});
+}
+
+/*获取特色菜列表*/
+exports.getSpecialCases = function (req, res) {
+	var shopId = req.query.shopId;
+	global.sql.caseType.hasMany(global.sql.case, {foreignKey: 'caseTypeId'});
+	global.sql.caseType.findAll({
+		where: {shopId: shopId,caseTypeIsSpecial:true},
+		include: {model: global.sql.case}
+	}).then(function (casecates) {
+		for (var i = 0; i < casecates.length; i++) {
+			for (var j = 0; j < casecates[i].cases.length; j++) {
+				casecates[i].cases[j].dataValues.orderNum = 0;
+				casecates[i].cases[j].dataValues.orderAllNum = 0;
+				casecates[i].cases[j].caseStandardVals = JSON.parse(casecates[i].cases[j].caseStandardVals);
+				casecates[i].cases[j].casePropertyVals = JSON.parse(casecates[i].cases[j].casePropertyVals);
+				casecates[i].cases[j].dataValues.standards = [];
+				if (casecates[i].cases[j].caseStandardVals.length > 0) {
+					casecates[i].cases[j].dataValues.standards.push(casecates[i].cases[j].caseStandardVals);
+				}
+				if (casecates[i].cases[j].casePropertyVals.length > 0) {
+					casecates[i].cases[j].dataValues.standards.push(casecates[i].cases[j].casePropertyVals);
+				}
+			}
+		}
+		res.send({msg: '请求成功', status: 0, data: casecates});
+	});
+}
+
+/****************************************Api of Pay***********************************************/
+exports.payALL=function (req, res) {
+	var code = req.query.code;
+	var totalPrice = req.query.totalPrice;
+
+	var url = 'https://api.weixin.qq.com/sns/jscode2session'+'?appid='+config.wx.AppID+'&secret='+config.wx.Secret+'&js_code='+code+'&grant_type=authorization_code';
+	request(url, function (error, response, body) {
+		if (!error && response.statusCode == 200) {
+			var body = JSON.parse(response.body);
+			if(body.openid != null & body.openid != undefined){
+				var openId = body.openid;
+				var spbill_create_ip = req.ip.replace(/::ffff:/, ''); // 获取客户端ip
+				var body = '商品支付'; // 商品描述
+				var notify_url = 'https://huiyidian.morecloud.net.cn/Api/Weixin/paySuccess' // 支付成功的回调地址  可访问 不带参数
+				var nonce_str = randomIdUtil.getUUID(); // 随机字符串
+				var out_trade_no = config.wx.getWxPayOrdrID(); // 商户订单号
+				var total_fee = totalPrice; // 订单价格 单位是 分
+				var timestamp = Math.round(new Date().getTime()/1000); // 当前时间
+
+				var bodyData = '<xml>';
+				bodyData += '<appid>' + config.wx.AppID + '</appid>';  // 小程序ID
+				bodyData += '<body>' + body + '</body>'; // 商品描述
+				bodyData += '<mch_id>' + config.wx.Mch_id + '</mch_id>'; // 商户号
+				bodyData += '<nonce_str>' + nonce_str + '</nonce_str>'; // 随机字符串
+				bodyData += '<notify_url>' + notify_url + '</notify_url>'; // 支付成功的回调地址
+				bodyData += '<openid>' + openId + '</openid>'; // 用户标识
+				bodyData += '<out_trade_no>' + out_trade_no + '</out_trade_no>'; // 商户订单号
+				bodyData += '<spbill_create_ip>' + spbill_create_ip + '</spbill_create_ip>'; // 终端IP
+				bodyData += '<total_fee>' + total_fee + '</total_fee>'; // 总金额 单位为分
+				bodyData += '<trade_type>JSAPI</trade_type>'; // 交易类型 小程序取值如下：JSAPI
+
+				// 签名
+				var sign = md5Util.paySignJsApi(
+					config.wx.AppID,
+					body,
+					config.wx.Mch_id,
+					nonce_str,
+					notify_url,
+					openId,
+					out_trade_no,
+					spbill_create_ip,
+					total_fee
+				);
+				bodyData += '<sign>' + sign + '</sign>';
+				bodyData += '</xml>';
+				// 微信小程序统一下单接口
+				var urlStr = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
+				request({
+					url: urlStr,
+					method: 'POST',
+					body: bodyData
+				}, function (error, response, body) {
+					if (!error && response.statusCode == 200) {
+						var returnValue = {};
+						parseString(body, function (err, result) {
+							if (result.xml.return_code[0] == 'SUCCESS') {
+								returnValue.msg = '操作成功';
+								returnValue.out_trade_no = out_trade_no;  // 商户订单号
+								// 小程序 客户端支付需要 nonceStr,timestamp,package,paySign  这四个参数
+								returnValue.nonceStr = result.xml.nonce_str[0]; // 随机字符串
+								returnValue.timestamp = timestamp.toString(); // 时间戳
+								returnValue.package = 'prepay_id=' + result.xml.prepay_id[0]; // 统一下单接口返回的 prepay_id 参数值
+								returnValue.paySign = md5Util.paysignjs(config.wx.AppID, returnValue.nonceStr, returnValue.package, 'MD5',timestamp); // 签名
+								res.send({msg: '请求成功', status: 0, data: JSON.stringify(returnValue)});
+							} else{
+								returnValue.msg = result.xml.return_msg[0];
+								res.send({msg: '请求失败', status: 1, data: JSON.stringify(returnValue)});
+							}
+						});
+					}
+				})
+			}
+
+		}
+	})
+
+}
+
+exports.paySuccess=function (req, res) {
+	res.send({msg: '支付成功', status: 0, data: {}});
 }
 
 /****************************************Api of Socket***********************************************/
@@ -457,4 +616,22 @@ exports.updateOrdered = function (condition, data, callBack, errBack) {
 	});
 }
 
+/*修改桌位状态*/
+exports.changeDeskToFull = function (deskId, deskStatue, callBack, errBack) {
+	var condition = {
+		deskId: deskId,
+	};
+	var desk = {
+		deskStatue: deskStatue
+	}
+	global.sql.desk.update(desk, {
+		where: condition
+	}).then(
+		function (result) {
+			callBack(result);
+		}
+	).catch(function (err) {
+		errBack(err);
+	});
+}
 

@@ -54,6 +54,7 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
+                                <th>桌位ID</th>
                                 <th>桌位名称</th>
                                 <th>桌位人数</th>
                                 <th>添加时间</th>
@@ -63,6 +64,7 @@
                             <tbody>
                             <%results.forEach(function(result){%>
                             <tr>
+                                <td><%= result.dataValues.deskId%></td>
                                 <td><%= result.dataValues.deskName%></td>
                                 <td><%= result.dataValues.deskCapacity%></td>
                                 <td><%= result.dataValues.updateTime%></td>

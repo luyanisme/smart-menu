@@ -49,6 +49,7 @@ exports.onAddCaseType = function(req, res) {
 		caseOnNums:0,
 		caseOffNums:0,
 		caseTypeSaling:true,
+		caseTypeIsSpecial:false,
 		shopId:req.session.user.shopId,
 		updateTime: global.date
 	};

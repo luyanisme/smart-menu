@@ -165,7 +165,7 @@
 		$(".btns_container").css('display', 'block');
 	}
 
-	$("#operateSelect option[value='"+operateSelect+"']").prop('selected', true);
+	$("#operateSelect option[value='" + operateSelect + "']").prop('selected', true);
 
 	jQuery.validator.addMethod("isEnglish", function (value, element) {
 		return this.optional(element) || validateUtil.checkEnglishField(value);
@@ -233,6 +233,10 @@
 		var options = {
 			url: 'addFuncModule',
 			type: 'post',
+			async: true,
+			cache: false,
+			contentType: false,
+			processData: false,
 			success: function (data) {    //成功执行的方法
 				if (data.status == 0) {
 					layer.msg(data.msg, {time: 1000, icon: 1}, function () {
