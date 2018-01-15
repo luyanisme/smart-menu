@@ -7,6 +7,10 @@ var dateUtil = require('../utils/dateUtil.js');
 var config = require('../Config.js');
 var randomID = require('../utils/randomIdUtil.js');
 var NoticeModel = require('../models/NoticeModel.js');
+
+var JPush = require("jpush-sdk")
+var client = JPush.buildClient(config.jpush.appKey,config.jpush.masterSecret);
+
 const WebSocket = require('ws');
 
 exports.initWS = function (wss) {
@@ -49,11 +53,6 @@ exports.initWS = function (wss) {
 									result.status = 0;
 									result.msg = '呼叫成功，请稍等...';
 									result.data = null;
-									// NoticeModel.remove(global.sql.notice,{dateTime:{$lt: '2017-07-21 11:49:00'}},function (r) {
-									//
-									// },function (err) {
-									//
-									// })
 									ws.send(JSON.stringify(result));
 
 								}, function (err) {
@@ -73,11 +72,6 @@ exports.initWS = function (wss) {
 										result.status = 0;
 										result.msg = '下单成功';
 										result.noticeType = message.noticeType;
-										// NoticeModel.remove(global.sql.notice,{dateTime:{$lt: '2017-07-21 11:49:00'}},function (r) {
-										//
-										// },function (err) {
-										//
-										// })
 										ws.send(JSON.stringify(result));
 									}, function (err) {
 										result.status = 1;
@@ -93,7 +87,20 @@ exports.initWS = function (wss) {
 								})
 								break;
 						}
-						sendMsgToClient(wss, message, ws, config.ANDROID);
+						// sendMsgToClient(wss, message, ws, config.ANDROID);
+						client.push().setPlatform('android')
+							.setAudience(JPush.alias(message.shopId))
+							.setNotification('慧易点', JPush.android(message.noticeType == 0 ? message.noticeContent : "新订单", message.deskNum, 1, message))
+							.setMessage('msg content')
+							.setOptions(null, 60)
+							.send(function(err, res) {
+								if (err) {
+									console.log(err.message)
+								} else {
+									console.log('Sendno: ' + res.sendno)
+									console.log('Msg_id: ' + res.msg_id)
+								}
+							});
 					}
 						break;
 

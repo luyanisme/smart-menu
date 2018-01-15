@@ -56,7 +56,7 @@ exports.onCreate = function (sequelize) {
 				field: 'shop_end_time',
 				type: Sequelize.STRING,
 				allowNull: false
-			}
+			},
 		},
 		{
 			tableName: 'shop',

@@ -13,6 +13,10 @@ var Config = {
 	ANDROID_PAD:2,
 	AES_KEY:"9ce62c1836d128cfc875c9026db7564c",
 
+	jpush:{
+		appKey:'9524f6b16102a500127c9178',
+		masterSecret:'a60249599f16fc1cbde0195b'
+	},
 	wx : {
 		AppID: "wxd2d717c0d5f14c46",  // 小程序ID
 		Secret: "fb29e8887d8b689a43bcee467e352e30",  // 小程序Secret

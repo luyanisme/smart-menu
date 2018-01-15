@@ -79,6 +79,12 @@ exports.onCreate = function (sequelize) {
 				type: Sequelize.BOOLEAN,
 				allowNull: true
 			},
+			isNoticeNeedConfirm:{
+				field: 'is_notice_need_confirm',
+				type: Sequelize.BOOLEAN,
+				defaultValue: true,
+				allowNull: true
+			},
 			updateTime: {
 				field: 'update_time',
 				type: Sequelize.STRING,

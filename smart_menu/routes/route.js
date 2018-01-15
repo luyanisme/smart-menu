@@ -19,6 +19,7 @@ var editionCtrl = require('../controllers/EditionCtrl.js');
 var mobileCtrl = require('../controllers/MobileCtrl.js');
 var funcModuleCtrl = require('../controllers/FuncModuleCtrl.js');
 var shopCtrl = require('../controllers/ShopCtrl.js');
+var settingCtrl = require('../controllers/SettingCtrl.js');
 
 router.route('/addNewAccount').get(accountCtrl.onAddNewAccount).post(accountCtrl.onSaveAccount);/*添加账户*/
 router.route('/accountDetail').get(accountCtrl.onShowDetailAccount)/*账户详情*/
@@ -122,6 +123,7 @@ router.route(API+'/getDesk').get(Api.getDesk);
 router.route(API+'/getOrdered').get(Api.getOrderedByAndroid);/*获取订单*/
 router.route(API+'/getAllOrdered').get(Api.getAllOrderedByDate);/*获取所有订单*/
 router.route(API+'/login').post(Api.login);/*登录*/
+router.route(API+'/onChangeNoticeNeedConfirm').get(settingCtrl.onChangeNoticeNeedConfirm);/*是否确认订单按钮*/
 
 /********************************************微信小程序接口********************************************/
 var WECHAT = '/Api/Weixin';
